@@ -1,2 +1,3 @@
-# puzzleknight
-Puzzle Knight - A Third Person Fantasy Hack&amp;Slash Puzzle Adventure Game
+# Puzzle Knight
+
+A Third Person Fantasy Hack & Slash Puzzle Adventure Game
