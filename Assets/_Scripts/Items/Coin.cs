@@ -3,8 +3,10 @@
 [RequireComponent(typeof(AudioSource))]
 public class Coin : MonoBehaviour
 {
+    /// <summary>The amount of money that should be given to the entity that collects the coin.</summary>
     public int CoinValue;
     
+    /// <summary>The list of sounds to be randomly played when the coin is picked up.</summary>
     public AudioClip[] pickupSounds;
 
     private void OnTriggerEnter(Collider other)

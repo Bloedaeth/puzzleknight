@@ -27,6 +27,8 @@ public class Health : MonoBehaviour
         timeSinceDamageTaken += Time.deltaTime;
     }
 
+    /// <summary>Deals damage to the entity, reducing its health.</summary>
+    /// <param name="amount">The amount of damage to deal to the entity.</param>
     public void TakeDamage(int amount)
     {
         timeSinceDamageTaken = 0f;
@@ -46,6 +48,8 @@ public class Health : MonoBehaviour
             HealthText.Value = HealthRemaining / InitialAndMaxHealth;
     }
 
+    /// <summary>Heals the entity, increasing its health.</summary>
+    /// <param name="amount">The amount of health to recover.</param>
     public void RecoverHealth(int amount)
     {
         HealthRemaining += amount;

@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public abstract class ThrowableItem : Item
 {
+    /// <summary>The particle effect to be displayed when the item collides with an object.</summary>
     public GameObject CollisionEffect;
 
     /// <summary>The sound to be played when the item hits something.</summary>
@@ -16,16 +16,15 @@ public abstract class ThrowableItem : Item
     protected bool active;
     protected Collider throwHit;
 
-    public override void UseOn(Entity self)
-    {
-        base.UseOn(self);
-    }
+    /// <summary>Uses the item on the given entity.</summary>
+    /// <param name="self">The entity using the item.</param>
+    public abstract override void UseOn(Entity self);
 
-    protected override void UseOn(Entity[] targets)
-    {
-        base.UseOn(targets);
-    }
+    /// <summary>Uses the item on the given list of entities.</summary>
+    /// <param name="targets">The list of entities to use the item on.</param>
+    protected abstract override void UseOn(Entity[] targets);
 
+    /// <summary>Throws the item in the direction the entity is facing.</summary>
     public virtual void Throw()
     {
         SimulateThrow throwSim = gameObject.AddComponent<SimulateThrow>();

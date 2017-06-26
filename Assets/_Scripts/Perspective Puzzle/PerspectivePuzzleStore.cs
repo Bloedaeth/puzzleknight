@@ -52,8 +52,8 @@ public class PerspectivePuzzleStore : MonoBehaviour {
 	GameObject[] solvedPieceList;
 	GameObject[] brokenPieceList;
 
-	// Runs with the first frame
-	void Start() {
+    // Runs with the first frame
+    private void Start() {
 		puzzleDone = false;
 
 		doorToCam = -doorLocation.transform.localPosition + cameraLocation.transform.localPosition;
@@ -105,8 +105,8 @@ public class PerspectivePuzzleStore : MonoBehaviour {
 		buttonEndLoc = buttonStartLoc - new Vector3 (0,2,0);
 	}
 
-	// Runs with every frame
-	void Update() {
+    // Runs with every frame
+    private void Update() {
 		checkPuzzle = button.playerStanding;
 
 		//DrawGrid ();
@@ -164,7 +164,7 @@ public class PerspectivePuzzleStore : MonoBehaviour {
 			ResizePiece (brokenPieceList [i]);
 
 			GameObject block = Instantiate (blockPusher, new Vector3 (brokenPieceList [i].transform.position.x, transform.position.y, brokenPieceList [i].transform.position.z), transform.localRotation, this.transform);
-			block.GetComponent<PushingBlock> ().init (brokenPieceList [i], i);
+			block.GetComponent<PushingBlock> ().Init (brokenPieceList [i], i);
 			blockPushers [i] = block;
 
 		} // END FOR
@@ -212,6 +212,8 @@ public class PerspectivePuzzleStore : MonoBehaviour {
 		return piece.transform.localPosition - doorLocation.transform.localPosition;
 	}
 
+    /// <summary>Scales a puzzle piece based on the camera location.</summary>
+    /// <param name="piece">The puzzle piece to be resized.</param>
 	public void ResizePiece(GameObject piece) {
 		float scaleFactor;
 
@@ -224,6 +226,8 @@ public class PerspectivePuzzleStore : MonoBehaviour {
 
 	}
 
+    /// <summary>Determines whether the puzzle has been solved or not.</summary>
+    /// <returns>true if solved, false otherwise.</returns>
 	public bool PuzzleSolved() {
 		for (int i = 0; i < brokenPieceList.Length; i++) {
 			if (brokenPieceList [i].transform.localPosition != Vector3.Project (DoorToPiece (brokenPieceList [i]), doorToCam) + doorLocation.transform.localPosition) {
@@ -233,6 +237,7 @@ public class PerspectivePuzzleStore : MonoBehaviour {
 		return true;
 	}
 
+    /// <summary>Finalizes the puzzle by building and opening the door and disabling the puzzle.</summary>
 	public void FinalizePuzzle() {
 		DestroyPuzzlePieces ();
 		EnablePuzzlePieces ();

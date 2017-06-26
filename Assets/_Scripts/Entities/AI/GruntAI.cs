@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class GruntAI : MonoBehaviour {
@@ -28,8 +26,7 @@ public class GruntAI : MonoBehaviour {
     private float fieldOfView = 80.0f;
     public float speed = -2;
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
         try
         {
@@ -42,8 +39,7 @@ public class GruntAI : MonoBehaviour {
         timer = wanderTimer;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         currentState = newState;
         switch (currentState)
@@ -144,6 +140,11 @@ public class GruntAI : MonoBehaviour {
         }
     }
 
+    /// <summary></summary>
+    /// <param name="origin"></param>
+    /// <param name="dist"></param>
+    /// <param name="layermask"></param>
+    /// <returns></returns>
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
     {
         Vector3 randDirection = Random.insideUnitSphere * dist;
@@ -223,12 +224,14 @@ public class GruntAI : MonoBehaviour {
         return false;
     }
 
+    /// <summary>Sets the grunt's alert state to true.</summary>
     public void AlertMyself()
     {
         print("Pass 1");
         isAlerted = true;
     }
 
+    /// <summary>Sets the grunt's combat state to true.</summary>
     public void CombatMyself()
     {
         isInCombat = true;

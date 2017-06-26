@@ -13,14 +13,10 @@ public class GameStateManager : MonoBehaviour
         CurrentGameState = new GameState(FindObjectOfType<Player>());
     }
 
-    /// <summary>
-    /// The current state of the game. Readonly property, write directly to the GameState class to modify.
-    /// </summary>
+    /// <summary>The current state of the game. Readonly property, write directly to the GameState class to modify.</summary>
 	public GameState CurrentGameState { get; private set; }
 
-    /// <summary>
-    /// Saves the game state.
-    /// </summary>
+    /// <summary>Saves the game state.</summary>
     public void SaveGame()
     {
         try
@@ -33,9 +29,7 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Loads the game state.
-    /// </summary>
+    /// <summary>Loads the game state.</summary>
     public void LoadGame()
     {
         try

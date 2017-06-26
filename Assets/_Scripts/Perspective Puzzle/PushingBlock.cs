@@ -26,11 +26,14 @@ public class PushingBlock : MonoBehaviour {
 	private float pushTime;
 	private float pushRate = 0.5f;
 
-	void Start() {
+    private void Start() {
 		gridSize = PerspectivePuzzleStore.gridSize;
 	}
 
-	public void init (GameObject piece, int blockNumber) {
+    /// <summary>Initializes the pushing block with a particular piece and number.</summary>
+    /// <param name="piece">The puzzle piece to be associated with the pushing block.</param>
+    /// <param name="blockNumber">The block number for the pushing block.</param>
+	public void Init (GameObject piece, int blockNumber) {
 		this.piece = piece.transform;
 		this.blockNumber = blockNumber;
 
@@ -42,6 +45,8 @@ public class PushingBlock : MonoBehaviour {
 		gridLocation = new int[2] { -1, -1 };
 	}
 
+    /// <summary>Gets the list of all PushingBlock objects in the scene.</summary>
+    /// <param name="blockPushersObjects">The list of block pusher game objects.</param>
 	public static void FindAllPushers(GameObject[] blockPushersObjects) {
 
 		blockPushers = new PushingBlock[blockPushersObjects.Length];
@@ -51,6 +56,7 @@ public class PushingBlock : MonoBehaviour {
 		}
 	}
 
+    /// <summary>Randomly positions the pushing block in the puzzle area.</summary>
 	public void RandomisePosition() {
 		int x = Random.Range (0, blockPushers.Length);
 		int y = Random.Range (0, PerspectivePuzzleStore.gridSize);
@@ -88,8 +94,8 @@ public class PushingBlock : MonoBehaviour {
 		pointPosition = ps.grid [gridLocation [0],gridLocation [1]];
 	}
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    private void Update() {
 		if (Vector3.Distance (currPosition, pointPosition) > 0.03f) {
 			currPosition = Vector3.Lerp (currPosition, pointPosition, 0.1f);
 		} else {
@@ -132,7 +138,7 @@ public class PushingBlock : MonoBehaviour {
 		return ang > 135 && ang < 225;
 	}
 
-	void OnTriggerStay(Collider o) {
+    private void OnTriggerStay(Collider o) {
 
 
 		if (!ps.puzzleDone &&  o.gameObject.tag.ToLower () == "player" && pushTime < Time.time) {

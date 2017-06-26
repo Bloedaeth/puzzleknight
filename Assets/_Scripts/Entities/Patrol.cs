@@ -2,6 +2,12 @@
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
+//
+// ~~ REDUNDANT CLASS ~~
+//
+// USED FOR SEAN'S INITIAL TESTING ONLY
+//
+
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(ThirdPersonCharacter))]
 public class Patrol : MonoBehaviour

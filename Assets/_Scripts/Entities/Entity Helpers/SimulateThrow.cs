@@ -10,6 +10,8 @@ public class SimulateThrow : MonoBehaviour
     private float gravity = 1f;
     private float launchAngle = 45f;
 
+    /// <summary>Simulates an item being thrown along an arced trajectory.</summary>
+    /// <returns>null</returns>
     public IEnumerator ThrowSimulation()
     {
         //TODO make variable landing position

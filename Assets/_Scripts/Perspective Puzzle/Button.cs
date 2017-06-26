@@ -16,13 +16,13 @@ public class Button : MonoBehaviour {
 	UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl tpuc;
 
 	// Use this for initialization
-	void Start () {
+	private void Start() {
 		isActive = true;
 		deactivateCalled = false;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update() {
 		if (isActive) {
 			if (deactivateCalled) {
 				if (Time.time > deactivateTime) {
@@ -32,23 +32,25 @@ public class Button : MonoBehaviour {
 		}
 	}
 
+    /// <summary></summary>
 	public void Deactivate() {
 		deactivateTime = Time.time + deactivateDelay;
 		deactivateCalled = true;
 	}
 
+    /// <summary></summary>
 	public GameObject GetCameraPoint() {
 		return cameraPoint;
 	}
 
-	void OnTriggerEnter(Collider o) {
+	private void OnTriggerEnter(Collider o) {
 		if (o.gameObject.transform.tag.ToLower() == "player" && isActive) {
 			playerStanding = true;
 			tpuc = o.GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl> ();
 		}
 	}
 
-	void OnTriggerExit(Collider o) {
+    private void OnTriggerExit(Collider o) {
 		if (o.gameObject.transform.tag.ToLower() == "player") {
 			playerStanding = false;
 
@@ -58,7 +60,7 @@ public class Button : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerStay(Collider o) {
+    private void OnTriggerStay(Collider o) {
 		if (o.gameObject.transform.tag.ToLower() == "player" && isActive) {
 			tpuc.isLooking = true;
 			tpuc.SetCameraToZeros();

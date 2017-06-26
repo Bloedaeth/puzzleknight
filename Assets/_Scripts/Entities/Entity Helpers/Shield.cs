@@ -4,8 +4,11 @@ public class Shield : MonoBehaviour
 {
     public Entity Self;
 
+    /// <summary>Gets whether the entity is currently blocking.</summary>
     public bool IsBlocking { get; set; }
 
+    /// <summary>Performs a random check to determine whether the block was successful or not.</summary>
+    /// <returns>true if successful, false otherwise.</returns>
     public bool BlockSuccessful()
     {
         //80% chance to block an attack

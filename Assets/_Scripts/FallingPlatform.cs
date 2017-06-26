@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FallingPlatform : MonoBehaviour {
@@ -7,12 +6,12 @@ public class FallingPlatform : MonoBehaviour {
     private Rigidbody rbody;
     public float fallDelay;
 
-    void Start()
+    private void Start()
     {
         rbody = GetComponent<Rigidbody>();
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
@@ -20,12 +19,12 @@ public class FallingPlatform : MonoBehaviour {
         }
     }
 
-    IEnumerator Fall()
+    private IEnumerator Fall()
     {
+        ///longer delay (2 seconds?) and a "shake" animation before falling would be good at some point
         yield return new WaitForSeconds(fallDelay);
         rbody.isKinematic = false;
         GetComponent<Collider>().isTrigger = true;
         yield return 0;
-
     }
 }

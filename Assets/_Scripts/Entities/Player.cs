@@ -48,7 +48,7 @@ public class Player : Entity
 
         Invoke("PlayMorpheusSounds", Random.Range(20, 30));
     }
-
+    
     private void PlayMorpheusSounds()
     {
         audio.clip = idleSounds[Random.Range(0, idleSounds.Length)];
@@ -123,7 +123,7 @@ public class Player : Entity
 		//	ThrowEquippedItem ();
 		
 	}
-
+    
     private void SetBlocking(bool value)
     {
 		shield.IsBlocking = value;
@@ -131,6 +131,9 @@ public class Player : Entity
         animator.SetBool("Blocking", value);
     }
 
+    /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
+    /// <param name="target">The entity to attack.</param>
+    /// <param name="damage">The damage to deal to the entity.</param>
     public override void Attack(Entity target, int damage)
     {
         if(!(target is Enemy))
@@ -139,6 +142,7 @@ public class Player : Entity
         base.Attack(target, damage);
     }
 
+    /// <summary>Uses the currently equipped item from the player's inventory.</summary>
     public void UseEquippedItem()
     {
         Item equippedItem = inventory.EquippedItem;
@@ -149,6 +153,7 @@ public class Player : Entity
         inventory.RemoveItem(equippedItem);
     }
 
+    /// <summary>Throws the currently equipped item from the player's inventory.</summary>
     public void ThrowEquippedItem()
     {
         ThrowableItem equippedItem = inventory.EquippedItem as ThrowableItem;

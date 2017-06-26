@@ -25,15 +25,15 @@ public class Inventory : MonoBehaviour
         inventoryLimit = GuiInventory.childCount;
     }
 
-    /// <summary>
-    /// Toggles the visibility of the GUI Inventory.
-    /// </summary>
+    /// <summary>Toggles the visibility of the GUI Inventory.</summary>
     public void ToggleGuiInventory()
     {
         IsOpen = !GuiInventory.gameObject.activeInHierarchy;
         GuiInventory.gameObject.SetActive(IsOpen);
     }
 
+    /// <summary>Sets an item from the player's inventory as the currently equipped item.</summary>
+    /// <param name="index">The index of the item in the inventory.</param>
     public void EquipItem(int index)
     {
         if(index >= inventory.Count)
@@ -43,6 +43,8 @@ public class Inventory : MonoBehaviour
         GuiEquippedItem.sprite = EquippedItem.Icon;
     }
 
+    /// <summary>Adds an item to the player's inventory.</summary>
+    /// <param name="item">The item to add to the inventory.</param>
     public void AddItem(Item item)
     {
         if(inventory.Count == inventoryLimit)
@@ -54,6 +56,8 @@ public class Inventory : MonoBehaviour
         GuiInventory.GetChild(inventory.Count).GetComponentInChildren<Image>().sprite = item.Icon;
     }
 
+    /// <summary>Removes an item from the player's inventory.</summary>
+    /// <param name="item">The item to remove from the inventory.</param>
     public void RemoveItem(Item item)
     {
         inventory.Remove(item);
@@ -68,6 +72,9 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    /// <summary>Retrieves an item from the player's inventory.</summary>
+    /// <param name="index">The index of the item in the player's inventory.</param>
+    /// <returns>The item at the given index in the player's inventory.</returns>
     public Item GetItem(int index)
     {
         if(index < inventory.Count)
@@ -76,11 +83,14 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
+    /// <summary>Clear's the player's inventory.</summary>
     public void Clear()
     {
         inventory.Clear();
     }
 
+    /// <summary>Increases the amount of money the player has.</summary>
+    /// <param name="value">The amount of money to give to the player.</param>
     public void AddMoney(int value)
     {
         Money += value;

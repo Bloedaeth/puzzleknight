@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Contains the abstract code required for each puzzle.</summary>
 public abstract class Puzzle : MonoBehaviour {
-// This will contain the abstract codes for each puzzle
 
 	public bool solved;
 	public bool done;
 
 	public float doorMoveSpeed = 0.02f;
 
-	// Use this to make sure that the puzzles are to be finilised. If all pieces are in location, and the puzzle is solved return true, false if otherwise
-	public abstract void CheckFinalizePuzzle ();
-
+    /// <summary>Checks if the puzzle is to be solved and finalized, and sets the solved variable accordingly.</summary>
+    public abstract void CheckFinalizePuzzle ();
 }
