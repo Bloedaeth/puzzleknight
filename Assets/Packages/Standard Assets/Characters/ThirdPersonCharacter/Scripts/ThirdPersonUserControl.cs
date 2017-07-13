@@ -93,9 +93,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         // Fixed update is called in sync with physics
         private void FixedUpdate()
         {
-			if (!movementActive) {   // <----------------- CHANGE
-				return;
-			}
+			//if (!movementActive) {   // <----------------- CHANGE
+				//return;
+			//}
             // read inputs
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
@@ -113,6 +113,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 // we use world-relative directions in the case of no main camera
                 m_Move = v*Vector3.forward + h*Vector3.right;
             }
+
 #if !MOBILE_INPUT
 			// walk speed multiplier
 			if (!Input.GetKey(KeyCode.LeftShift) || isLooking) { // <------------------ CHANGE
@@ -121,7 +122,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				m_Move *= runSpeed;
 			}
 #endif
-
 
 			if (Input.GetKeyDown (KeyCode.Q)) { // <---------------- CHANGE
 				SwapCamera ();

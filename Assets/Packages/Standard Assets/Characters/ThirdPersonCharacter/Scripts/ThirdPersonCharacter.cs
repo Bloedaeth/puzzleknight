@@ -29,6 +29,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
+		Vector3 lastMoveVector;
+
+		float moveDamp = 0f;
 
 		void Start()
 		{
@@ -69,6 +72,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			}
 
 			// send input and other state parameters to the animator
+			lastMoveVector = move;
 			UpdateAnimator(move, jump);
 		}
 
@@ -79,7 +83,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		void UpdateAnimator(Vector3 move, bool jump) // UNFINISHED UNFINISHED UNFINISHED
 		{
 			// update the animator parameters
-			m_Animator.SetFloat("Speed", m_ForwardAmount, 0.1f, Time.deltaTime); //<------------------- CHANGE
+			m_Animator.SetFloat("Speed", m_ForwardAmount, moveDamp, Time.deltaTime); //<------------------- CHANGE
 
 			Debug.DrawLine (transform.position, transform.position + transform.forward);
 			Debug.DrawLine (transform.position, transform.position + move, Color.red);
@@ -158,7 +162,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// this allows us to modify the positional speed before it's applied.
 			if (/*m_IsGrounded &&*/ Time.deltaTime > 0) //<----------- Change
 			{
-				Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
+				Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime; // <------------- THIS IS WHERE FORWARD MOTION IS DETERMINED, It uses the actual feet transform for forward motions.
 
 				// we preserve the existing y part of the current velocity.
 				v.y = m_Rigidbody.velocity.y;
