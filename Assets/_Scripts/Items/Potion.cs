@@ -5,8 +5,8 @@
     public PotionType Type;
 
     private int healthPotionHealAmount = 25;
-    private int damagePotionDamageBoost = 10;
-    private int speedPotionSpeedBoost = 10;
+    //private int damagePotionDamageBoost = 10;
+    //private int speedPotionSpeedBoost = 10;
 
     /// <summary>Uses the item on the given entity.</summary>
     /// <param name="self">The entity using the item.</param>

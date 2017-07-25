@@ -7,10 +7,19 @@ public abstract class Item : MonoBehaviour
     public AudioClip PickupSound;
     public AudioClip UseSound;
 
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     /// <summary>Plays the use sound of the item.</summary>
     public void PlayUseSound()
     {
-        AudioSource.PlayClipAtPoint(UseSound, transform.position);
+        audioSource.clip = UseSound;
+        audioSource.Play();
+        //AudioSource.PlayClipAtPoint(UseSound, transform.position);
     }
 
     /// <summary>Uses the item on the given entity.</summary>
@@ -26,8 +35,10 @@ public abstract class Item : MonoBehaviour
         Inventory inv = other.gameObject.GetComponent<Inventory>();
         if(inv == null)
             return;
-        
-        AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+
+        audioSource.clip = PickupSound;
+        audioSource.Play();
+        //AudioSource.PlayClipAtPoint(PickupSound, transform.position);
         inv.AddItem(this);
     }
 }
