@@ -101,6 +101,13 @@ namespace UnityStandardAssets.Cameras
 
 		public void UpdateCameraPositions(Vector3[] transforms) { //<---------------- CHANGE
 
+            //FIXME
+            //temp fix to the constant errors in the console haha
+            // - Sean
+            if(pivotCameraTransforms.Length < 1)
+                return;
+            //endfixme
+
 			if (transforms [0] != pivotCameraTransforms [0] || transforms [1] != pivotCameraTransforms [1]) {
 				pivotCameraTransforms = transforms;
 			}
