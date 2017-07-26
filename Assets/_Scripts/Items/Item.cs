@@ -11,7 +11,7 @@ public abstract class Item : MonoBehaviour
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = FindObjectOfType<Player>().GetComponent<AudioSource>();
     }
 
     /// <summary>Plays the use sound of the item.</summary>
