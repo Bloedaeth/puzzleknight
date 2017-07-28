@@ -96,4 +96,12 @@ public class Inventory : MonoBehaviour
         Money += value;
         MoneyText.text = Money.ToString();
     }
+
+    /// <summary>Decreases the amount of money the player has.</summary>
+    /// <param name="value">The amount of money to take from the player.</param>
+    public void RemoveMoney(int value)
+    {
+        Money -= value;
+        MoneyText.text = Money.ToString();
+    }
 }

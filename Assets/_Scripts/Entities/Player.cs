@@ -12,6 +12,12 @@ public class Player : Entity
     public MeleeWeapon sword;
     public Shield shield;
 
+    /// <summary>Is Morpheus in range of a shop.</summary>
+    public bool InShopRange;
+
+    /// <summary>Is Morpheus in the shop GUI.</summary>
+    public bool Shopping;
+
     /// <summary>The clip to be played after running for too long.</summary>
     public AudioClip SoMuchRunning;
     //Timer to make above clip play after running for set period of time
@@ -69,22 +75,15 @@ public class Player : Entity
             return;
         }
 
-		if (Input.GetKeyDown (KeyCode.E)) {
-			inventory.ToggleGuiInventory ();
-			//stop camera from moving around while inventory is open
-			freeLookCam.orbitActive = !freeLookCam.orbitActive;
-			//stop the player from moving while the inventory is open
-			animator.SetFloat ("Speed", 0);
-			thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
-			freeLookCam.hideCursor = false;
-		}
+        if(!InShopRange && Input.GetKeyDown(KeyCode.E))
+                ToggleInventory();
 
-		if (Input.GetKeyDown (KeyCode.R))
+        if (Input.GetKeyDown (KeyCode.R))
 			transform.position = SpawnPoint.position;
 
         //CombatSwitcher ();
 
-        if (inventory.IsOpen)
+        if (inventory.IsOpen || Shopping)
 			return;
 
         if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl))
@@ -123,7 +122,18 @@ public class Player : Entity
 		//	ThrowEquippedItem ();
 		
 	}
-    
+
+    private void ToggleInventory()
+    {
+        inventory.ToggleGuiInventory();
+        //stop camera from moving around while inventory is open
+        freeLookCam.orbitActive = !freeLookCam.orbitActive;
+        //stop the player from moving while the inventory is open
+        animator.SetFloat("Speed", 0);
+        thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+        freeLookCam.hideCursor = false;
+    }
+
     private void SetBlocking(bool value)
     {
 		shield.IsBlocking = value;

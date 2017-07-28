@@ -2,6 +2,9 @@
 
 public abstract class Item : MonoBehaviour
 {
+    /// <summary>The cost of the item when sold in the shop.</summary>
+    public int ShopCost = 50;
+
     public Sprite Icon;
     public Sprite BlankIcon;
     public AudioClip PickupSound;
