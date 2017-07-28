@@ -8,7 +8,7 @@ public class Player : Entity
     public GameObject tutorial;
 
     public Transform SpawnPoint;
-
+    
     public MeleeWeapon sword;
     public Shield shield;
 
@@ -29,6 +29,8 @@ public class Player : Entity
     private new AudioSource audio;
     private AudioClip[] idleSounds;
 
+    private TimeFreeze timeFreeze;
+
     //private float combatRadius = 4;
 
     private int attackStateHash;
@@ -40,7 +42,8 @@ public class Player : Entity
 		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
         thirdPersonUserControl.enabled = false;
         animator = GetComponent<Animator>();
-        
+        timeFreeze = GetComponent<TimeFreeze>();
+
         attackStateHash = Animator.StringToHash("Base Layer.Attack");
 
         audio = GetComponent<AudioSource>();
@@ -86,6 +89,12 @@ public class Player : Entity
 
         if (inventory.IsOpen)
 			return;
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            //5 sec 30m radius
+            timeFreeze.FreezeTime(5f, 30f);
+        }
 
         if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl))
         {
