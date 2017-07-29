@@ -18,10 +18,11 @@ public class Shop : MonoBehaviour
 
     private Inventory playerInventory;
 
-    private bool playerInRange = false;
+    private Player player;
 
     private void Awake()
     {
+        player = FindObjectOfType<Player>();
         playerInventory = FindObjectOfType<Player>().GetComponent<Inventory>();
         shopInventory = GetComponentsInChildren<Item>(true).ToList();
 
@@ -36,12 +37,18 @@ public class Shop : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.GetComponent<Player>())
-            playerInRange = true;
+            player.InShopRange = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.GetComponent<Player>())
+            player.InShopRange = false;
     }
 
     private void Update()
     {
-        if(!playerInRange)
+        if(!player.InShopRange)
             return;
 
         if(Input.GetKeyDown(KeyCode.E))
@@ -53,6 +60,8 @@ public class Shop : MonoBehaviour
     {
         IsOpen = !GuiShop.gameObject.activeInHierarchy;
         GuiShop.gameObject.SetActive(IsOpen);
+        player.Shopping = !player.Shopping;
+        player.StopMovement();
     }
 
     /// <summary>Purchases the selected item, if the player can afford it.</summary>
@@ -73,11 +82,12 @@ public class Shop : MonoBehaviour
     public void RemoveItem(Item item)
     {
         shopInventory.Remove(item);
-        for(int i = 1; i < GuiShop.childCount; ++i)
+        for(int i = 0; i < GuiShop.childCount - 1; ++i)
         {
-            Transform child = GuiShop.GetChild(i);
-            child.GetComponent<Image>().sprite = i - 1 < shopInventory.Count ? shopInventory[i - 1].Icon : item.BlankIcon;
-            child.GetComponentInChildren<Text>().text = "";
+            Transform child = GuiShop.GetChild(i + 1);
+            bool inRange = i < shopInventory.Count;
+            child.GetComponent<Image>().sprite = inRange ? shopInventory[i].Icon : item.BlankIcon;
+            child.GetComponentInChildren<Text>().text = inRange ? "COST: " + shopInventory[i].ShopCost : "";
         }
     }
 
@@ -90,11 +100,5 @@ public class Shop : MonoBehaviour
             return shopInventory[index];
 
         return null;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.GetComponent<Player>())
-            playerInRange = false;
     }
 }

@@ -10,11 +10,17 @@ public abstract class Item : MonoBehaviour
     public AudioClip PickupSound;
     public AudioClip UseSound;
 
-    private AudioSource audioSource;
-
-    private void Awake()
+    //Shop items are never active so Awake() wasn't called to assign audioSource
+    //This method solves that problem so all items (shop/collect) work properly
+    private AudioSource _audioSource;
+    private AudioSource audioSource
     {
-        audioSource = FindObjectOfType<Player>().GetComponent<AudioSource>();
+        get
+        {
+            if(_audioSource == null)
+                _audioSource = FindObjectOfType<Player>().GetComponent<AudioSource>();
+            return _audioSource;
+        }
     }
 
     /// <summary>Plays the use sound of the item.</summary>

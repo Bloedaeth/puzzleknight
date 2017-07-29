@@ -13,10 +13,10 @@ public class Player : Entity
     public Shield shield;
 
     /// <summary>Is Morpheus in range of a shop.</summary>
-    public bool InShopRange;
+    public bool InShopRange = false;
 
     /// <summary>Is Morpheus in the shop GUI.</summary>
-    public bool Shopping;
+    public bool Shopping = false;
 
     /// <summary>The clip to be played after running for too long.</summary>
     public AudioClip SoMuchRunning;
@@ -126,12 +126,17 @@ public class Player : Entity
     private void ToggleInventory()
     {
         inventory.ToggleGuiInventory();
+        StopMovement();
+    }
+
+    public void StopMovement()
+    {
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !freeLookCam.orbitActive;
         //stop the player from moving while the inventory is open
         animator.SetFloat("Speed", 0);
         thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
-        freeLookCam.hideCursor = false;
+        freeLookCam.hideCursor = !freeLookCam.hideCursor;
     }
 
     private void SetBlocking(bool value)
