@@ -9,6 +9,9 @@ public class TimeFreeze : MonoBehaviour
     /// <summary>The game object that determines where time should freeze.</summary>
     public SphereCollider FreezeRadiusCollider;
 
+    /// <summary>The game object that displays how much time is left before time unfreezes.</summary>
+    public TimeFreezeCountdown Countdown;
+
     /// <summary>Freezes/Slows time in a set radius around the casting point for a set time.</summary>
     /// <param name="time">How long the effect will last.</param>
     /// <param name="radius">How far the effect will spread.</param>
@@ -22,6 +25,9 @@ public class TimeFreeze : MonoBehaviour
         FreezeRadiusCollider.transform.position = transform.position + transform.forward + new Vector3(0, 1, 0);
         FreezeRadiusCollider.radius = radius;
         FreezeRadiusCollider.gameObject.SetActive(true);
+
+        Countdown.TimerStart = time;
+        Countdown.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(time);
 
