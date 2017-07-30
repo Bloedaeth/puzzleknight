@@ -14,6 +14,7 @@ public class RespawnColliderScript : MonoBehaviour
         if(IsPressurePlateRespawn)
             crystal = FindObjectOfType<Crystal>().gameObject;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
