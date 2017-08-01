@@ -10,9 +10,14 @@ public class PointStore : MonoBehaviour {
 	void Start () {
 		points = GetComponentsInChildren<Transform> ();
 	}
-	
-	// Update is called once per frame
-	Transform[] GetPoints () {
+
+	public Transform[] GetPoints () {
 		return points;
+	}
+
+	public Transform GetRandomPoint() {
+		if (points == null)
+			return null;
+		return points[Random.Range (1, points.Length)];
 	}
 }
