@@ -24,6 +24,17 @@ public class GruntEnemy : Enemy
 
     private void Update()
     {
+        if(SlowedTime)
+        {
+            animator.speed = TimeFreeze.FROZEN_TIME_SCALE;
+            agent.speed = TimeFreeze.FROZEN_TIME_SCALE;
+        }
+        else
+        {
+            animator.speed = 1f;
+            agent.speed = 1f;
+        }
+
         if(ai.target == null && Mathf.Abs(Vector3.Distance(transform.position, player.position)) < 10f)
             ai.SetTarget(player);
 
