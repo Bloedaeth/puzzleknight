@@ -93,9 +93,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         // Fixed update is called in sync with physics
         private void FixedUpdate()
         {
-			//if (!movementActive) {   // <----------------- CHANGE
-				//return;
-			//}
+            if(!movementActive)
+            {   // <----------------- CHANGE
+                return;
+            }
             // read inputs
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");

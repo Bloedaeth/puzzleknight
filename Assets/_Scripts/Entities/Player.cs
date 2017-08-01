@@ -8,9 +8,15 @@ public class Player : Entity
     public GameObject tutorial;
 
     public Transform SpawnPoint;
-
+    
     public MeleeWeapon sword;
     public Shield shield;
+
+    /// <summary>Is Morpheus in range of a shop.</summary>
+    public bool InShopRange = false;
+
+    /// <summary>Is Morpheus in the shop GUI.</summary>
+    public bool Shopping = false;
 
     /// <summary>The clip to be played after running for too long.</summary>
     public AudioClip SoMuchRunning;
@@ -29,6 +35,8 @@ public class Player : Entity
     private new AudioSource audio;
     private AudioClip[] idleSounds;
 
+    private TimeFreeze timeFreeze;
+
     //private float combatRadius = 4;
 
     private int attackStateHash;
@@ -40,7 +48,8 @@ public class Player : Entity
 		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
         thirdPersonUserControl.enabled = false;
         animator = GetComponent<Animator>();
-        
+        timeFreeze = GetComponent<TimeFreeze>();
+
         attackStateHash = Animator.StringToHash("Base Layer.Attack");
 
         audio = GetComponent<AudioSource>();
@@ -69,23 +78,22 @@ public class Player : Entity
             return;
         }
 
-		if (Input.GetKeyDown (KeyCode.E)) {
-			inventory.ToggleGuiInventory ();
-			//stop camera from moving around while inventory is open
-			freeLookCam.orbitActive = !freeLookCam.orbitActive;
-			//stop the player from moving while the inventory is open
-			animator.SetFloat ("Speed", 0);
-			thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
-			freeLookCam.hideCursor = false;
-		}
+        if(!InShopRange && Input.GetKeyDown(KeyCode.E))
+                ToggleInventory();
 
-		if (Input.GetKeyDown (KeyCode.R))
+        if (Input.GetKeyDown (KeyCode.R))
 			transform.position = SpawnPoint.position;
 
         //CombatSwitcher ();
 
-        if (inventory.IsOpen)
+        if (inventory.IsOpen || Shopping)
 			return;
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            //5 sec 30m radius
+            timeFreeze.FreezeTime(5f, 30f);
+        }
 
         if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl))
         {
@@ -123,7 +131,23 @@ public class Player : Entity
 		//	ThrowEquippedItem ();
 		
 	}
-    
+
+    private void ToggleInventory()
+    {
+        inventory.ToggleGuiInventory();
+        StopMovement();
+    }
+
+    public void StopMovement()
+    {
+        //stop camera from moving around while inventory is open
+        freeLookCam.orbitActive = !freeLookCam.orbitActive;
+        //stop the player from moving while the inventory is open
+        animator.SetFloat("Speed", 0);
+        thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+        freeLookCam.hideCursor = !freeLookCam.hideCursor;
+    }
+
     private void SetBlocking(bool value)
     {
 		shield.IsBlocking = value;
