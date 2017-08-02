@@ -12,6 +12,7 @@ public class Shield : MonoBehaviour
     public bool BlockSuccessful()
     {
         //80% chance to block an attack
-        return Random.Range(0, 100) < 80;
+        //return Random.Range(0, 100) < 80;
+        return true;
     }
 }

@@ -38,13 +38,13 @@ public class Health : MonoBehaviour
         audio.clip = damageSounds[Random.Range(0, damageSounds.Length)];
         audio.Play();
 
-        if(HealthRemaining <= 0)
+        if (HealthRemaining <= 0)
         {
             gameObject.AddComponent<DeathAnimation>();
             this.enabled = false;
         }
 
-        if(HealthText)
+        if (HealthText)
             HealthText.Value = HealthRemaining / InitialAndMaxHealth;
     }
 
@@ -53,10 +53,10 @@ public class Health : MonoBehaviour
     public void RecoverHealth(int amount)
     {
         HealthRemaining += amount;
-        if(HealthRemaining > InitialAndMaxHealth)
+        if (HealthRemaining > InitialAndMaxHealth)
             HealthRemaining = InitialAndMaxHealth;
 
-        if(HealthText)
+        if (HealthText)
             HealthText.Value = HealthRemaining / InitialAndMaxHealth;
     }
 }

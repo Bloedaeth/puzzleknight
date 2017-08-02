@@ -106,9 +106,9 @@ public class Player : Entity
 		freeLookCam.hideCursor = true;
 
 		if (Input.GetKeyDown (KeyCode.Mouse1))
-			SetBlocking (true);
+			SetBlocking(true);
 		else if (Input.GetKeyUp (KeyCode.Mouse1))
-			SetBlocking (false);
+			SetBlocking(false);
 
         if(Input.GetKeyDown(KeyCode.Mouse0) &&
             animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
@@ -127,8 +127,8 @@ public class Player : Entity
     private void SetBlocking(bool value)
     {
 		shield.IsBlocking = value;
-		thirdPersonUserControl.isAiming = value;
-        animator.SetBool("Blocking", value);
+		//thirdPersonUserControl.isAiming = value;
+        animator.SetBool("Block", value);
     }
 
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
@@ -163,19 +163,4 @@ public class Player : Entity
         equippedItem.Throw();
         inventory.RemoveItem(inventory.EquippedItem);
     }
-
-    //private void CombatSwitcher()
-    //{
-    //    Vector3 aiPosition = transform.position;
-
-    //    Collider[] hitColliders = Physics.OverlapSphere(aiPosition, combatRadius);
-
-    //    foreach (Collider hit in hitColliders)
-    //    {
-    //        if (hit.tag == "Enemy")
-    //        {
-    //            hit.GetComponent<GruntAI>().CombatMyself();
-    //        }
-    //    }
-    //}
 }
