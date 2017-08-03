@@ -12,6 +12,12 @@ public class Player : Entity
     public MeleeWeapon sword;
     public Shield shield;
 
+    /// <summary>Is Morpheus in range of a shop.</summary>
+    public bool InShopRange = false;
+
+    /// <summary>Is Morpheus in the shop GUI.</summary>
+    public bool Shopping = false;
+
     /// <summary>The clip to be played after running for too long.</summary>
     public AudioClip SoMuchRunning;
 
@@ -57,7 +63,7 @@ public class Player : Entity
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
 
-        Invoke("PlayMorpheusSounds", Random.Range(20, 30));
+        //Invoke("PlayMorpheusSounds", Random.Range(20, 30));
     }
     
     private void PlayMorpheusSounds()
@@ -65,7 +71,7 @@ public class Player : Entity
         audio.clip = idleSounds[Random.Range(0, idleSounds.Length)];
         audio.Play();
 
-        //Invoke("PlayMorpheusSounds", Random.Range(20, 30));
+        Invoke("PlayMorpheusSounds", Random.Range(20, 30));
     }
 
     private void Update()
@@ -80,33 +86,32 @@ public class Player : Entity
             return;
         }
 
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            inventory.ToggleGuiInventory();
-            //stop camera from moving around while inventory is open
-            freeLookCam.orbitActive = !freeLookCam.orbitActive;
-            //stop the player from moving while the inventory is open
-            animator.SetFloat("Speed", 0);
-            thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
-            freeLookCam.hideCursor = false;
-        }
+        if(!InShopRange && Input.GetKeyDown(KeyCode.E))
+            ToggleInventory();
 
         if(Input.GetKeyDown(KeyCode.R))
             transform.position = SpawnPoint.position;
 
         //CombatSwitcher ();
 
-        if(inventory.IsOpen)
+        if(inventory.IsOpen || Shopping)
             return;
 
         if(Input.GetKeyDown(KeyCode.Z))
-        {
-            //5 sec 30m radius
             timeFreeze.FreezeTime(5f, 30f);
-        }
-
+        
         MoveObjects();
 
+        CheckRunning();
+
+        CheckBlocking();
+        CheckAttacking();
+
+        CheckUseItem();
+    }
+
+    private void CheckRunning()
+    {
         if(Input.GetKey(KeyCode.LeftShift))
         {
             runTimer += Time.deltaTime;
@@ -122,26 +127,54 @@ public class Player : Entity
             runTimer = 0;
             canPlayRunSound = true;
         }
+    }
 
-        freeLookCam.hideCursor = true;
-
-        if(Input.GetKeyDown(KeyCode.Mouse1))
-            SetBlocking(true);
-        else if(Input.GetKeyUp(KeyCode.Mouse1))
-            SetBlocking(false);
-
-        if(Input.GetKeyDown(KeyCode.Mouse0) &&
-            animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
-        {
-            animator.SetTrigger("Attack");
-            sword.PlaySound();
-        }
-
+    private void CheckUseItem()
+    {
         if(Input.GetKeyDown(KeyCode.F))
             UseEquippedItem();
         //else if (Input.GetKeyDown (KeyCode.Alpha2))
         //	ThrowEquippedItem ();
+    }
 
+    private void CheckAttacking()
+    {
+        if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
+        {
+            animator.SetTrigger("Attack");
+            sword.PlaySound();
+        }
+    }
+
+    private void CheckBlocking()
+    {
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+            SetBlocking(true);
+        else if(Input.GetKeyUp(KeyCode.Mouse1))
+            SetBlocking(false);
+    }
+
+    private void SetBlocking(bool value)
+    {
+        shield.IsBlocking = value;
+        thirdPersonUserControl.isAiming = value;
+        animator.SetBool("Blocking", value);
+    }
+
+    private void ToggleInventory()
+    {
+        inventory.ToggleGuiInventory();
+        StopMovement();
+    }
+
+    public void StopMovement()
+    {
+        //stop camera from moving around while inventory is open
+        freeLookCam.orbitActive = !freeLookCam.orbitActive;
+        //stop the player from moving while the inventory is open
+        animator.SetFloat("Speed", 0);
+        thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+        freeLookCam.hideCursor = !freeLookCam.hideCursor;
     }
 
     private void MoveObjects()
@@ -184,13 +217,6 @@ public class Player : Entity
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
             movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
         }
-    }
-
-    private void SetBlocking(bool value)
-    {
-		shield.IsBlocking = value;
-		thirdPersonUserControl.isAiming = value;
-        animator.SetBool("Blocking", value);
     }
 
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
