@@ -44,36 +44,47 @@ public class MeleeWeapon : MonoBehaviour
             return;
 
         Entity target = collision.gameObject.GetComponent<Entity>();
-        Debug.Log(target);
+        Debug.Log(target.transform.tag);
         if (target)
         {
-            Debug.Log("Weappon Hit");
+            //Debug.Log("Weappon Hit");
             if (target.GetComponent<DeathAnimation>())
                 return;
 
             Self.Attack(target, Damage);
         }
 
-        Shield shield = target.GetComponent<Shield>();
+        Shield shield = null;
+
+        if (target.transform.tag == "Player")
+        {
+            shield = target.GetComponent<Player>().shield;
+        }
+        else if (target.transform.tag == "Enemy")
+        {
+            shield = target.GetComponent<GruntEnemy>().shield;
+        }
+
+        //Shield shield = target.GetComponent<Shield>();
         //Shield shield = collision.gameObject.GetComponent<Shield>();
-        Debug.Log(shield);
+        //Debug.Log(shield.Self);
         if (shield)
         {
-            Debug.Log("Shield == true");
+            //Debug.Log("Shield == true");
             if(shield.IsBlocking)
             {
-                Debug.Log("Shield.IsBloking == true");
-                if (!shield.BlockSuccessful())
+                //Debug.Log("Shield.IsBloking == true");
+                if (shield.BlockSuccessful())
                 {
-                    Self.Attack(shield.Self, Damage);
-                    Debug.Log("!shield.BlockSuccessful");
+                    Self.Attack(target, 5);
+                    Debug.Log("shield.BlockSuccessful");
                 }
                     
             }
             else
             {
-                Self.Attack(shield.Self, Damage / 2);
-                Debug.Log("else");
+                Self.Attack(shield.Self, Damage);
+                //Debug.Log("else");
             }
                 
         }
