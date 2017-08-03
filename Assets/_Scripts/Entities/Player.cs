@@ -14,12 +14,20 @@ public class Player : Entity
 
     /// <summary>The clip to be played after running for too long.</summary>
     public AudioClip SoMuchRunning;
+
+    /// <summary>The physics layer mask for movable boxes.</summary>
+    public LayerMask BoxMask;
+
+    private GameObject movingObject;
+
     //Timer to make above clip play after running for set period of time
     private float runTimer = 0;
     //Stop run sound from being played repeatedly while running
     private bool canPlayRunSound;
     //The amount of time you can run before the above sound is played
     private const float PUFFED_RUN_TIME = 7f;
+    //The max distance to check for movable objects
+    private const float MAX_RAYCAST_DISTANCE = 1f;
 
     private Inventory inventory;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
@@ -61,7 +69,7 @@ public class Player : Entity
     }
 
     private void Update()
-	{
+    {
         if(tutorial.activeInHierarchy)
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
@@ -72,23 +80,24 @@ public class Player : Entity
             return;
         }
 
-		if (Input.GetKeyDown (KeyCode.E)) {
-			inventory.ToggleGuiInventory ();
-			//stop camera from moving around while inventory is open
-			freeLookCam.orbitActive = !freeLookCam.orbitActive;
-			//stop the player from moving while the inventory is open
-			animator.SetFloat ("Speed", 0);
-			thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
-			freeLookCam.hideCursor = false;
-		}
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            inventory.ToggleGuiInventory();
+            //stop camera from moving around while inventory is open
+            freeLookCam.orbitActive = !freeLookCam.orbitActive;
+            //stop the player from moving while the inventory is open
+            animator.SetFloat("Speed", 0);
+            thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+            freeLookCam.hideCursor = false;
+        }
 
-		if (Input.GetKeyDown (KeyCode.R))
-			transform.position = SpawnPoint.position;
+        if(Input.GetKeyDown(KeyCode.R))
+            transform.position = SpawnPoint.position;
 
         //CombatSwitcher ();
 
-        if (inventory.IsOpen)
-			return;
+        if(inventory.IsOpen)
+            return;
 
         if(Input.GetKeyDown(KeyCode.Z))
         {
@@ -96,7 +105,9 @@ public class Player : Entity
             timeFreeze.FreezeTime(5f, 30f);
         }
 
-        if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl))
+        MoveObjects();
+
+        if(Input.GetKey(KeyCode.LeftShift))
         {
             runTimer += Time.deltaTime;
             if(runTimer > PUFFED_RUN_TIME && canPlayRunSound)
@@ -112,12 +123,12 @@ public class Player : Entity
             canPlayRunSound = true;
         }
 
-		freeLookCam.hideCursor = true;
+        freeLookCam.hideCursor = true;
 
-		if (Input.GetKeyDown (KeyCode.Mouse1))
-			SetBlocking (true);
-		else if (Input.GetKeyUp (KeyCode.Mouse1))
-			SetBlocking (false);
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+            SetBlocking(true);
+        else if(Input.GetKeyUp(KeyCode.Mouse1))
+            SetBlocking(false);
 
         if(Input.GetKeyDown(KeyCode.Mouse0) &&
             animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
@@ -126,13 +137,55 @@ public class Player : Entity
             sword.PlaySound();
         }
 
-		if (Input.GetKeyDown (KeyCode.F))
-			UseEquippedItem ();
-		//else if (Input.GetKeyDown (KeyCode.Alpha2))
-		//	ThrowEquippedItem ();
-		
-	}
-    
+        if(Input.GetKeyDown(KeyCode.F))
+            UseEquippedItem();
+        //else if (Input.GetKeyDown (KeyCode.Alpha2))
+        //	ThrowEquippedItem ();
+
+    }
+
+    private void MoveObjects()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            RaycastHit hit;
+            Physics.Raycast(transform.position, transform.forward, out hit, MAX_RAYCAST_DISTANCE, BoxMask);
+            if(hit.transform != null)
+            {
+                movingObject = hit.transform.gameObject;
+
+                ConstrainMovement();
+
+                movingObject.GetComponent<MovableObject>().BeingMoved = true;
+                movingObject.GetComponent<Rigidbody>().isKinematic = false;
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftControl) && movingObject != null)
+        {
+            movingObject.GetComponent<MovableObject>().BeingMoved = false;
+            
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+            movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+
+            movingObject = null;
+        }
+    }
+
+    private void ConstrainMovement()
+    {
+        Vector3 fwd = transform.forward;
+        if(Mathf.Abs(fwd.x) > Mathf.Abs(fwd.z))
+        {
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionY;
+            movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+        }
+        else
+        {
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
+            movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
+        }
+    }
+
     private void SetBlocking(bool value)
     {
 		shield.IsBlocking = value;
