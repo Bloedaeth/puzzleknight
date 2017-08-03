@@ -1,5 +1,9 @@
 ﻿public class Bomb : ThrowableItem
 {
+    public override int TypeId { get { return 2; } }
+
+    public override int ShopCost { get { return 100; } }
+
     public int Damage;
 
     /// <summary>Uses the item on the given entity.</summary>

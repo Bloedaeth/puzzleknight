@@ -2,8 +2,11 @@
 
 public abstract class Item : MonoBehaviour
 {
+    /// <summary>The unique ID for each item subclass (used in Inventory.cs).</summary>
+    public abstract int TypeId { get; }
+
     /// <summary>The cost of the item when sold in the shop.</summary>
-    public int ShopCost = 50;
+    public abstract int ShopCost { get; }
 
     public Sprite Icon;
     public Sprite BlankIcon;

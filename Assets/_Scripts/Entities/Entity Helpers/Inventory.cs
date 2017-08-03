@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,7 +54,7 @@ public class Inventory : MonoBehaviour
         inventory.Add(item);
         item.gameObject.SetActive(false);
 
-        GuiInventory.GetChild(inventory.Count).GetComponentInChildren<Image>().sprite = item.Icon;
+        Sort(item);
     }
 
     /// <summary>Removes an item from the player's inventory.</summary>
@@ -61,8 +62,8 @@ public class Inventory : MonoBehaviour
     public void RemoveItem(Item item)
     {
         inventory.Remove(item);
-        for(int i = 1; i < GuiInventory.childCount; ++i)
-            GuiInventory.GetChild(i).GetComponentInChildren<Image>().sprite = i-1 < inventory.Count ? inventory[i-1].Icon : item.BlankIcon;
+
+        Sort(item);
 
         if(item.CompareTag(EquippedItem.tag))
         {
@@ -87,6 +88,15 @@ public class Inventory : MonoBehaviour
     public void Clear()
     {
         inventory.Clear();
+    }
+
+    /// <summary>Sorts the player's inventory.</summary>
+    private void Sort(Item item)
+    {
+        inventory = inventory.OrderBy(i => i.TypeId).ToList();
+
+        for(int i = 0; i < GuiInventory.childCount - 1; ++i)
+            GuiInventory.GetChild(i + 1).GetComponentInChildren<Image>().sprite = i < inventory.Count ? inventory[i].Icon : item.BlankIcon;
     }
 
     /// <summary>Increases the amount of money the player has.</summary>

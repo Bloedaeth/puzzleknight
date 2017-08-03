@@ -90,16 +90,14 @@ public class Player : Entity
             return;
 
         if(Input.GetKeyDown(KeyCode.Z))
-        {
-            //5 sec 30m radius
             timeFreeze.FreezeTime(5f, 30f);
-        }
 
         CheckRunning();
 
         CheckBlocking();
         CheckAttacking();
 
+        CheckScrollItem();
         CheckUseItem();
     }
 
@@ -122,14 +120,6 @@ public class Player : Entity
         }
     }
 
-    private void CheckUseItem()
-    {
-        if(Input.GetKeyDown(KeyCode.F))
-            UseEquippedItem();
-        //else if (Input.GetKeyDown (KeyCode.Alpha2))
-        //	ThrowEquippedItem ();
-    }
-
     private void CheckAttacking()
     {
         if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
@@ -145,6 +135,55 @@ public class Player : Entity
             SetBlocking(true);
         else if(Input.GetKeyUp(KeyCode.Mouse1))
             SetBlocking(false);
+    }
+
+    private void CheckScrollItem()
+    {
+        float delta = Input.GetAxis("Mouse ScrollWheel");
+        if(delta > 0) //scroll up
+        {
+            Item item = inventory.EquippedItem;
+            if(item == null)
+                inventory.EquipItem(inventory.Count - 1);
+            else
+            {
+                bool switched = false;
+                for(int i = inventory.Count - 1; i >= 0; --i)
+                    if(inventory.GetItem(i).TypeId < item.TypeId)
+                    {
+                        switched = true;
+                        inventory.EquipItem(i);
+                    }
+                if(!switched)
+                    inventory.EquipItem(inventory.Count - 1);
+            }
+        }
+        else if(delta < 0) //scroll down
+        {
+            Item item = inventory.EquippedItem;
+            if(item == null)
+                inventory.EquipItem(0);
+            else
+            {
+                bool switched = false;
+                for(int i = 0; i < inventory.Count; ++i)
+                    if(inventory.GetItem(i).TypeId > item.TypeId)
+                    {
+                        switched = true;
+                        inventory.EquipItem(i);
+                    }
+                if(!switched)
+                    inventory.EquipItem(0);
+            }
+        }
+    }
+
+    private void CheckUseItem()
+    {
+        if(Input.GetKeyDown(KeyCode.F))
+            UseEquippedItem();
+        //else if (Input.GetKeyDown (KeyCode.Alpha2))
+        //	ThrowEquippedItem ();
     }
 
     private void ToggleInventory()

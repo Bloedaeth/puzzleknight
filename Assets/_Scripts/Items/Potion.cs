@@ -1,5 +1,9 @@
 ﻿public class Potion : ThrowableItem
 {
+    public override int TypeId { get { return 1; } }
+
+    public override int ShopCost { get { return 50; } }
+
     public enum PotionType { Health, Damage, Speed }
 
     public PotionType Type;
