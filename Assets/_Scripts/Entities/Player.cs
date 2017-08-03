@@ -55,7 +55,7 @@ public class Player : Entity
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
 
-        Invoke("PlayMorpheusSounds", Random.Range(20, 30));
+        //Invoke("PlayMorpheusSounds", Random.Range(20, 30));
     }
     
     private void PlayMorpheusSounds()
@@ -63,11 +63,11 @@ public class Player : Entity
         audio.clip = idleSounds[Random.Range(0, idleSounds.Length)];
         audio.Play();
 
-        //Invoke("PlayMorpheusSounds", Random.Range(20, 30));
+        Invoke("PlayMorpheusSounds", Random.Range(20, 30));
     }
 
     private void Update()
-	{
+    {
         if(tutorial.activeInHierarchy)
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
@@ -79,15 +79,15 @@ public class Player : Entity
         }
 
         if(!InShopRange && Input.GetKeyDown(KeyCode.E))
-                ToggleInventory();
+            ToggleInventory();
 
-        if (Input.GetKeyDown (KeyCode.R))
-			transform.position = SpawnPoint.position;
+        if(Input.GetKeyDown(KeyCode.R))
+            transform.position = SpawnPoint.position;
 
         //CombatSwitcher ();
 
-        if (inventory.IsOpen || Shopping)
-			return;
+        if(inventory.IsOpen || Shopping)
+            return;
 
         if(Input.GetKeyDown(KeyCode.Z))
         {
@@ -95,7 +95,17 @@ public class Player : Entity
             timeFreeze.FreezeTime(5f, 30f);
         }
 
-        if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl))
+        CheckRunning();
+
+        CheckBlocking();
+        CheckAttacking();
+
+        CheckUseItem();
+    }
+
+    private void CheckRunning()
+    {
+        if(Input.GetKey(KeyCode.LeftShift))
         {
             runTimer += Time.deltaTime;
             if(runTimer > PUFFED_RUN_TIME && canPlayRunSound)
@@ -110,27 +120,32 @@ public class Player : Entity
             runTimer = 0;
             canPlayRunSound = true;
         }
+    }
 
-		freeLookCam.hideCursor = true;
+    private void CheckUseItem()
+    {
+        if(Input.GetKeyDown(KeyCode.F))
+            UseEquippedItem();
+        //else if (Input.GetKeyDown (KeyCode.Alpha2))
+        //	ThrowEquippedItem ();
+    }
 
-		if (Input.GetKeyDown (KeyCode.Mouse1))
-			SetBlocking (true);
-		else if (Input.GetKeyUp (KeyCode.Mouse1))
-			SetBlocking (false);
-
-        if(Input.GetKeyDown(KeyCode.Mouse0) &&
-            animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
+    private void CheckAttacking()
+    {
+        if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
         {
             animator.SetTrigger("Attack");
             sword.PlaySound();
         }
+    }
 
-		if (Input.GetKeyDown (KeyCode.F))
-			UseEquippedItem ();
-		//else if (Input.GetKeyDown (KeyCode.Alpha2))
-		//	ThrowEquippedItem ();
-		
-	}
+    private void CheckBlocking()
+    {
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+            SetBlocking(true);
+        else if(Input.GetKeyUp(KeyCode.Mouse1))
+            SetBlocking(false);
+    }
 
     private void ToggleInventory()
     {
