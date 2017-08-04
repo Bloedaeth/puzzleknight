@@ -1,36 +1,23 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TimeFreezeCollider : MonoBehaviour
 {
-    private List<GameObject> frozenObjects = new List<GameObject>();
-
     private void OnTriggerEnter(Collider other)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if(enemy == null)
-            return;
-
-        enemy.SlowedTime = true;
-        frozenObjects.Add(enemy.gameObject);
+        FreezeObj(other, true);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if(enemy == null)
-            return;
-        
-        enemy.SlowedTime = false;
-        frozenObjects.Remove(enemy.gameObject);
+        FreezeObj(other, false);
     }
 
-    public void EndFreeze()
+    private void FreezeObj(Collider other, bool frozenState)
     {
-        for(int i = 0; i < frozenObjects.Count; ++i)
-            frozenObjects[i].GetComponent<Enemy>().SlowedTime = false;
+        IFreezable obj = other.GetComponent<IFreezable>();
+        if(obj == null)
+            return;
 
-        frozenObjects.Clear();
-        gameObject.SetActive(false);
+        obj.SlowedTime = frozenState;
     }
 }
