@@ -27,7 +27,7 @@ public class Player : Entity
     /// <summary>The physics layer mask for movable boxes.</summary>
     public LayerMask BoxMask;
 
-    private GameObject movingObject;
+    private Rigidbody movingObject;
 
     //Timer to make above clip play after running for set period of time
     private float runTimer = 0;
@@ -37,6 +37,8 @@ public class Player : Entity
     private const float PUFFED_RUN_TIME = 7f;
     //The max distance to check for movable objects
     private const float MAX_RAYCAST_DISTANCE = 1f;
+
+    private Rigidbody rigidBody;
 
     private Inventory inventory;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
@@ -60,6 +62,7 @@ public class Player : Entity
         thirdPersonUserControl.enabled = false;
         animator = GetComponent<Animator>();
         timeFreeze = GetComponent<TimeFreeze>();
+        rigidBody = GetComponent<Rigidbody>();
 
         attackStateHash = Animator.StringToHash("Base Layer.Attack");
 
@@ -188,21 +191,20 @@ public class Player : Entity
             Physics.Raycast(transform.position, transform.forward, out hit, MAX_RAYCAST_DISTANCE, BoxMask);
             if(hit.transform != null)
             {
-                movingObject = hit.transform.gameObject;
+                movingObject = hit.transform.GetComponent<Rigidbody>();
                 IsMovingObject = true;
 
                 ConstrainMovement();
 
                 movingObject.GetComponent<MovableObject>().BeingMoved = true;
-                movingObject.GetComponent<Rigidbody>().isKinematic = false;
             }
         }
         else if(Input.GetKeyUp(KeyCode.LeftControl) && movingObject != null)
         {
             movingObject.GetComponent<MovableObject>().BeingMoved = false;
             
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-            movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+            movingObject.constraints = RigidbodyConstraints.FreezeRotation;
 
             movingObject = null;
             IsMovingObject = false;
@@ -213,17 +215,16 @@ public class Player : Entity
     {
         Vector3 fwd = transform.forward;
         if(Mathf.Abs(fwd.x) > Mathf.Abs(fwd.z))
-        {
-            transform.forward = new Vector3(fwd.x > 0 ? 1 : -1, fwd.y, 0);
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionY;
-            movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
-        }
+            ConstrainAxis(new Vector3(fwd.x > 0 ? 1 : -1, fwd.y, 0), RigidbodyConstraints.FreezePositionZ);
         else
-        {
-            transform.forward = new Vector3(0, fwd.y, fwd.z > 0 ? 1 : -1);
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
-            movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
-        }
+            ConstrainAxis(new Vector3(0, fwd.y, fwd.z > 0 ? 1 : -1), RigidbodyConstraints.FreezePositionX);
+    }
+
+    private void ConstrainAxis(Vector3 fwd, RigidbodyConstraints axis)
+    {
+        transform.forward = fwd;
+        rigidBody.constraints |= axis;
+        movingObject.constraints |= axis;
     }
 
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
