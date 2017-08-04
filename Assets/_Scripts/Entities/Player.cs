@@ -12,6 +12,9 @@ public class Player : Entity
     public MeleeWeapon sword;
     public Shield shield;
 
+    /// <summary>Is Morpheus currently moving an object.</summary>
+    public bool IsMovingObject = false;
+
     /// <summary>Is Morpheus in range of a shop.</summary>
     public bool InShopRange = false;
 
@@ -100,7 +103,7 @@ public class Player : Entity
         if(Input.GetKeyDown(KeyCode.Z))
             timeFreeze.FreezeTime(5f, 30f);
         
-        MoveObjects();
+        MoveObject();
 
         CheckRunning();
 
@@ -177,7 +180,7 @@ public class Player : Entity
         freeLookCam.hideCursor = !freeLookCam.hideCursor;
     }
 
-    private void MoveObjects()
+    private void MoveObject()
     {
         if(Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -186,6 +189,7 @@ public class Player : Entity
             if(hit.transform != null)
             {
                 movingObject = hit.transform.gameObject;
+                IsMovingObject = true;
 
                 ConstrainMovement();
 
@@ -201,6 +205,7 @@ public class Player : Entity
             movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 
             movingObject = null;
+            IsMovingObject = false;
         }
     }
 
@@ -209,11 +214,13 @@ public class Player : Entity
         Vector3 fwd = transform.forward;
         if(Mathf.Abs(fwd.x) > Mathf.Abs(fwd.z))
         {
+            transform.forward = new Vector3(fwd.x > 0 ? 1 : -1, fwd.y, 0);
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionY;
             movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
         }
         else
         {
+            transform.forward = new Vector3(0, fwd.y, fwd.z > 0 ? 1 : -1);
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
             movingObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
         }

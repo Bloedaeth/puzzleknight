@@ -29,6 +29,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 
         private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
+        private Player m_Player;
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
         private Vector3 m_CamForward;             // The current forward direction of the camera
         public Vector3 m_Move;
@@ -61,6 +62,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
             // get the third person character ( this should never be null due to require component )
             m_Character = GetComponent<ThirdPersonCharacter>();
+
+            m_Player = GetComponent<Player>();
 
 			// Be sure the camera is set up correctly
 			freeLookCamera.UpdateTarget (this.transform); // <---------------- CHANGE
@@ -107,7 +110,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             {
                 // calculate camera relative direction to move:
                 m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
-                m_Move = v*m_CamForward + h*m_Cam.right;
+
+                if(m_Player.IsMovingObject)
+                    m_Move = v * m_Player.transform.forward;
+                else
+                    m_Move = v * m_CamForward + h * m_Cam.right;
             }
             else
             {
