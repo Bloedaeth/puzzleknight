@@ -10,7 +10,6 @@ public class LightStore : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		lights = GetComponentsInChildren<Light> ();
-		print (lights.Length.ToString());
 	}
 
 	public bool UpdateLights() {

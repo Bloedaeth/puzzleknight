@@ -55,7 +55,7 @@ public class Player : Entity
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
 
-        Invoke("PlayMorpheusSounds", Random.Range(20, 30));
+        //Invoke("PlayMorpheusSounds", Random.Range(20, 30)); Stahhhp
     }
     
     private void PlayMorpheusSounds()

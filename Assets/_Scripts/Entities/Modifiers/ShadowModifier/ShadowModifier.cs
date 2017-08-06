@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class ShadowModifier : MonoBehaviour {
 
-	public bool vulnerable;
+	public bool inlight;
 
 	public GameObject shadowChecker;
 
 	public LightStore ls;
-	private Light[] lights;
+	protected Light[] lights;
 
-	public MeshFilter mf;
-	public MeshRenderer mr;
-	public SkinnedMeshRenderer smr;
+	protected MeshFilter mf;
+	protected MeshRenderer mr;
+	protected SkinnedMeshRenderer smr;
 
-	private Mesh m;
-	private Vector3[] MeshVertices;
-	private Vector3[][] CheckVertices;
+	protected Mesh m;
+	protected Vector3[] MeshVertices;
+	protected Vector3[][] CheckVertices;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		if (smr == null) {
 			smr = this.gameObject.GetComponentInChildren<SkinnedMeshRenderer> ();
 		}
+
 		if (mr == null) {
 			mr = this.gameObject.GetComponentInChildren<MeshRenderer> ();
 		}
@@ -49,20 +50,25 @@ public class ShadowModifier : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
 
 		if (lights == null || ls.UpdateLights()) {
 			lights = ls.GetLights ();
 			return;
 		}
-		vulnerable = !InLight ();
+		inlight = InLight ();
 
-		if (vulnerable) {
+		UpdateModels (!inlight);
+	}
+
+	protected void UpdateModels(bool visible) {
+		if (visible) {
 			if (smr != null) {
 				smr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 			} else if (mr != null) {
 				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 			}
+
 		} else {
 			if (smr != null) {
 				smr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
@@ -74,7 +80,7 @@ public class ShadowModifier : MonoBehaviour {
 
 	// Calculate the vertices that are going to be checked, by calculating the average distance away from a light, and then returning an array of the vertex points that correspond to each light.
 
-	private Vector3[][] CalculateVertices(Vector3[] vertices) {
+	protected Vector3[][] CalculateVertices(Vector3[] vertices) {
 		Vector3[][] v = new Vector3[lights.Length][];
 	
 		for (int i = 0; i < lights.Length; i++) {
@@ -108,18 +114,21 @@ public class ShadowModifier : MonoBehaviour {
 		return v;
 	}
 
-	private float AverageMagnitude (Vector3 LtoO, Vector3[] vertices) {
+	protected float AverageMagnitude (Vector3 LtoO, Vector3[] vertices) {
 		float sumOfMags = 0;
 
-		for (int i = 0; i < vertices.Length; i++) {
-			sumOfMags += (LtoO + vertices [i]).magnitude;
+		if (vertices.Length < 50) {
+			for (int i = 0; i < vertices.Length; i++) {
+				sumOfMags += (LtoO + vertices [i]).magnitude;
+			}
+			sumOfMags /= (float)vertices.Length;
+		} else {
+			return float.MaxValue;
 		}
-		sumOfMags /= (float) vertices.Length;
-
-		return sumOfMags;
+		return float.MaxValue;//sumOfMags;
 	}
 
-	private bool InLight () {
+	protected virtual bool InLight () {
 		CheckVertices = CalculateVertices (MeshVertices);
 
 		for (int i = 0; i < lights.Length; i++) {
@@ -135,12 +144,7 @@ public class ShadowModifier : MonoBehaviour {
 					(lights [i].transform.position - transform.position) - (CheckVertices [i] [j]));
 
 				if (!Physics.Raycast (r, (r.origin - lights [i].transform.position).magnitude)) {
-					Debug.DrawRay (transform.position + (CheckVertices [i] [j]), 
-						(lights [i].transform.position - transform.position) - (CheckVertices [i] [j]), Color.green);
 					return true;
-				} else {
-					Debug.DrawRay (transform.position + (CheckVertices [i] [j]), 
-						(lights [i].transform.position - transform.position) - (CheckVertices [i] [j]), Color.red);
 				}
 			}
 		}

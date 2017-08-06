@@ -26,6 +26,7 @@ public class SphereScript : MonoBehaviour {
 	void Update () {
 		if (dest == null) {
 			dest = pnts.GetRandomPoint ();
+
 			return;
 		}
 		if (transform.position == dest.position) {
