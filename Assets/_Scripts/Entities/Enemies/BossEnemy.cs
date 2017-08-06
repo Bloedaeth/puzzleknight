@@ -1,5 +1,11 @@
-﻿public class BossEnemy : Enemy
+﻿using UnityEngine;
+using UnityEngine.AI;
+
+public class BossEnemy : Enemy
 {
+    /// <summary>The swarm to be unleashed when the boss is killed.</summary>
+    public GameObject swarm;
+
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
@@ -8,7 +14,13 @@
         base.Attack(target, damage);
     }
 
-    //
-    //Add extra boss behaviour
-    //
+    private void OnDisable()
+    {
+        swarm.SetActive(true);
+        foreach(Transform child in swarm.transform)
+        {
+            child.GetComponent<NavMeshAgent>().speed = 2;
+            child.GetComponent<Animator>().speed = 2;
+        }
+    }
 }

@@ -11,12 +11,17 @@ public class GruntEnemy : Enemy
 
     private int attackHash;
 
+    private float initialAgentSpeed;
+    private float initialAnimatorSpeed;
+
     private void Awake()
     {
         ai = GetComponent<AICharacterControl>();
         agent = GetComponent<NavMeshAgent>();
+        initialAgentSpeed = agent.speed;
         player = FindObjectOfType<Player>().transform;
         animator = GetComponent<Animator>();
+        initialAnimatorSpeed = animator.speed;
         attackHash = Animator.StringToHash("Base Layer.Attack");
 
         agent.stoppingDistance = 1.5f;
@@ -31,8 +36,8 @@ public class GruntEnemy : Enemy
         }
         else
         {
-            animator.speed = 1f;
-            agent.speed = 1f;
+            animator.speed = initialAnimatorSpeed;
+            agent.speed = initialAgentSpeed;
         }
 
         if(ai.target == null && Mathf.Abs(Vector3.Distance(transform.position, player.position)) < 10f)
