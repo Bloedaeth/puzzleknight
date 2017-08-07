@@ -187,12 +187,12 @@ public class Player : Entity
     {
         if(Input.GetKeyDown(KeyCode.LeftControl))
         {
-            animator.SetBool("Pushing", true);
-
             RaycastHit hit;
             Physics.Raycast(transform.position, transform.forward, out hit, MAX_RAYCAST_DISTANCE, BoxMask);
             if(hit.transform != null)
             {
+                animator.SetBool("Pushing", true);
+
                 movingObject = hit.transform.GetComponent<Rigidbody>();
                 IsMovingObject = true;
 
