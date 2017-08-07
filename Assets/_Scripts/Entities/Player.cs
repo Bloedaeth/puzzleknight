@@ -187,6 +187,8 @@ public class Player : Entity
     {
         if(Input.GetKeyDown(KeyCode.LeftControl))
         {
+            animator.SetBool("Pushing", true);
+
             RaycastHit hit;
             Physics.Raycast(transform.position, transform.forward, out hit, MAX_RAYCAST_DISTANCE, BoxMask);
             if(hit.transform != null)
@@ -201,6 +203,8 @@ public class Player : Entity
         }
         else if(Input.GetKeyUp(KeyCode.LeftControl) && movingObject != null)
         {
+            animator.SetBool("Pushing", false);
+
             movingObject.GetComponent<MovableObject>().BeingMoved = false;
             
             rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
