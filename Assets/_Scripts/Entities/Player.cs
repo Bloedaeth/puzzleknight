@@ -185,6 +185,9 @@ public class Player : Entity
 
     private void MoveObject()
     {
+        if(IsMovingObject)
+            animator.speed = Input.GetKey(KeyCode.W) ? 1 : 0;
+
         if(Input.GetKeyDown(KeyCode.LeftControl))
         {
             RaycastHit hit;
