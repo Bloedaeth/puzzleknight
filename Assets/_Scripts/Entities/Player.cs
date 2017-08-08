@@ -12,6 +12,9 @@ public class Player : Entity
     public MeleeWeapon sword;
     public Shield shield;
 
+    /// <summary>Is Morpheus currently moving an object.</summary>
+    public bool IsMovingObject = false;
+
     /// <summary>Is Morpheus in range of a shop.</summary>
     public bool InShopRange = false;
 
@@ -20,12 +23,22 @@ public class Player : Entity
 
     /// <summary>The clip to be played after running for too long.</summary>
     public AudioClip SoMuchRunning;
+
+    /// <summary>The physics layer mask for movable boxes.</summary>
+    public LayerMask BoxMask;
+
+    private Rigidbody movingObject;
+
     //Timer to make above clip play after running for set period of time
     private float runTimer = 0;
     //Stop run sound from being played repeatedly while running
     private bool canPlayRunSound;
     //The amount of time you can run before the above sound is played
     private const float PUFFED_RUN_TIME = 7f;
+    //The max distance to check for movable objects
+    private const float MAX_RAYCAST_DISTANCE = 2f;
+
+    private Rigidbody rigidBody;
 
     private Inventory inventory;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
@@ -49,6 +62,7 @@ public class Player : Entity
         thirdPersonUserControl.enabled = false;
         animator = GetComponent<Animator>();
         timeFreeze = GetComponent<TimeFreeze>();
+        rigidBody = GetComponent<Rigidbody>();
 
         attackStateHash = Animator.StringToHash("Base Layer.Attack");
 
@@ -90,7 +104,9 @@ public class Player : Entity
             return;
 
         if(Input.GetKeyDown(KeyCode.Z))
-            timeFreeze.FreezeTime(5f, 20f);
+            timeFreeze.FreezeTime(5f, 30f);
+        
+        MoveObject();
 
         CheckRunning();
 
@@ -136,7 +152,7 @@ public class Player : Entity
         else if(Input.GetKeyUp(KeyCode.Mouse1))
             SetBlocking(false);
     }
-
+    
     private void CheckScrollItem()
     {
         float delta = Input.GetAxis("Mouse ScrollWheel");
@@ -186,6 +202,13 @@ public class Player : Entity
         //	ThrowEquippedItem ();
     }
 
+    private void SetBlocking(bool value)
+    {
+        shield.IsBlocking = value;
+        thirdPersonUserControl.isAiming = value;
+        animator.SetBool("Blocking", value);
+    }
+
     private void ToggleInventory()
     {
         inventory.ToggleGuiInventory();
@@ -202,11 +225,55 @@ public class Player : Entity
         freeLookCam.hideCursor = !freeLookCam.hideCursor;
     }
 
-    private void SetBlocking(bool value)
+    private void MoveObject()
     {
-		shield.IsBlocking = value;
-		thirdPersonUserControl.isAiming = value;
-        animator.SetBool("Blocking", value);
+        if(IsMovingObject)
+            animator.speed = Input.GetKey(KeyCode.W) ? 1 : 0;
+
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            RaycastHit hit;
+            Physics.Raycast(transform.position, transform.forward, out hit, MAX_RAYCAST_DISTANCE, BoxMask);
+            if(hit.transform != null)
+            {
+                animator.SetBool("Pushing", true);
+
+                movingObject = hit.transform.GetComponent<Rigidbody>();
+                IsMovingObject = true;
+
+                ConstrainMovement();
+
+                movingObject.GetComponent<MovableObject>().BeingMoved = true;
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftControl) && movingObject != null)
+        {
+            animator.SetBool("Pushing", false);
+
+            movingObject.GetComponent<MovableObject>().BeingMoved = false;
+            
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+            movingObject.constraints = RigidbodyConstraints.FreezeRotation;
+
+            movingObject = null;
+            IsMovingObject = false;
+        }
+    }
+
+    private void ConstrainMovement()
+    {
+        Vector3 fwd = transform.forward;
+        if(Mathf.Abs(fwd.x) > Mathf.Abs(fwd.z))
+            ConstrainAxis(new Vector3(fwd.x > 0 ? 1 : -1, fwd.y, 0), RigidbodyConstraints.FreezePositionZ);
+        else
+            ConstrainAxis(new Vector3(0, fwd.y, fwd.z > 0 ? 1 : -1), RigidbodyConstraints.FreezePositionX);
+    }
+
+    private void ConstrainAxis(Vector3 fwd, RigidbodyConstraints axis)
+    {
+        transform.forward = fwd;
+        rigidBody.constraints |= axis;
+        movingObject.constraints |= axis;
     }
 
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
