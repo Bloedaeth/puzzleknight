@@ -115,6 +115,13 @@ public class Player : Entity
 
         CheckScrollItem();
         CheckUseItem();
+
+        if(Input.GetKeyDown(KeyCode.I))
+            transform.position = GameObject.Find("ShadowPuzzleSpawn").transform.position;
+        if(Input.GetKeyDown(KeyCode.O))
+            transform.position = GameObject.Find("JumpPuzzleSpawn").transform.position;
+        if(Input.GetKeyDown(KeyCode.P))
+            transform.position = GameObject.Find("PressurePlatePuzzleSpawn").transform.position;
     }
 
     private void CheckRunning()
