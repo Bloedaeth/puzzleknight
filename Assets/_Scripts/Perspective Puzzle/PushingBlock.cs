@@ -133,7 +133,7 @@ public class PushingBlock : MonoBehaviour {
 		transformCopy.transform.LookAt (player);
 		float ang = Vector3.Angle (transformCopy.transform.forward, player.forward);
 
-		Destroy (transformCopy);
+		GameObject.Destroy (transformCopy);
 
 		return ang > 135 && ang < 225;
 	}
