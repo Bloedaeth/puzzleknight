@@ -28,6 +28,9 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if(other.GetComponent<Entity>() == null && other.GetComponent<MovableObject>() == null)
+            return;
+
         triggered = true;
         if(!platform.PressurePlateActive)
             platform.PressurePlateActive = true;
