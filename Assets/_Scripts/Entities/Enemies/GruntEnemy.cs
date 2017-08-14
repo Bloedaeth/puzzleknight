@@ -39,7 +39,7 @@ public class GruntEnemy : Enemy
             ai.SetTarget(player);
 
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
-        if(dist < agent.stoppingDistance)
+        if(dist <= agent.stoppingDistance)
         {
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
             if(state.fullPathHash != attackHash)
