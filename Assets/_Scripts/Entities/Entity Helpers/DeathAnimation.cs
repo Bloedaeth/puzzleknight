@@ -9,7 +9,7 @@ public class DeathAnimation : MonoBehaviour
 
     private void Awake()
     {
-        AICharacterControl_2 ai = GetComponent<AICharacterControl_2>();
+        AICharacterControl ai = GetComponent<AICharacterControl>();
         if(ai)
             ai.enabled = false;
 
