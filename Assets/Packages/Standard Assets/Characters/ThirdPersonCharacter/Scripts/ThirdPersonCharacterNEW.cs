@@ -43,14 +43,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 		}
 
-        internal void Move(Vector3 zero, bool v1, bool v2, bool v3)
-        {
-            throw new NotImplementedException();
-        }
+        //internal void Move(Vector3 zero, bool v1, bool v2, bool v3)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void Move(Vector3 move, bool crouch, bool jump)
+        public void Move(Vector3 move, bool crouch, bool jump, bool unused)
 		{
-
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
 			// direction.

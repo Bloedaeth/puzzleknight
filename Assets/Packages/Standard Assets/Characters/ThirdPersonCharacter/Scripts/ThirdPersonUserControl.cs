@@ -111,9 +111,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 // calculate camera relative direction to move:
                 m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
 
-                if(m_Player.IsMovingObject)
-                    m_Move = v * m_Player.transform.forward;
-                else
+                //if(m_Player.IsMovingObject)
+                //    m_Move = v * m_Player.transform.forward;
+                //else
                     m_Move = v * m_CamForward + h * m_Cam.right;
             }
             else
