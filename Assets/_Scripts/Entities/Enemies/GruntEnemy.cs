@@ -4,7 +4,7 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 public class GruntEnemy : Enemy
 {
-    private AICharacterControl ai;
+    private AICharacterControl_2 ai;
     private NavMeshAgent agent;
     private Transform player;
     private Animator animator;
@@ -13,7 +13,7 @@ public class GruntEnemy : Enemy
 
     private void Awake()
     {
-        ai = GetComponent<AICharacterControl>();
+        ai = GetComponent<AICharacterControl_2>();
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>().transform;
         animator = GetComponent<Animator>();

@@ -7,7 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
-    [RequireComponent(typeof (ThirdPersonCharacter))]
+    [RequireComponent(typeof (ThirdPersonCharacter_2))]
     public class ThirdPersonUserControl : MonoBehaviour
     {
 		public bool isLooking; // <------------------ CHANGE
@@ -28,7 +28,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		private Vector3[] cameraAiming; // <---------------- CHANGE
 
 
-        private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
+        private ThirdPersonCharacter_2 m_Character; // A reference to the ThirdPersonCharacter on the object
         private Player m_Player;
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
         private Vector3 m_CamForward;             // The current forward direction of the camera
@@ -61,7 +61,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             }
 
             // get the third person character ( this should never be null due to require component )
-            m_Character = GetComponent<ThirdPersonCharacter>();
+            m_Character = GetComponent<ThirdPersonCharacter_2>();
 
             m_Player = GetComponent<Player>();
 
