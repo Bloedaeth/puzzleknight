@@ -8,17 +8,16 @@ public class RangedEnemy : Enemy
     private NavMeshAgent agent;
     private Transform player;
     private Animator animator;
-    private ObjectPooler objPooler;
 
     private int attackHash;
     private float launchCooldown = 2.5f;
+
     private void Awake()
     {
         ai = GetComponent<AICharacterControl>();
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>().transform;
         animator = GetComponent<Animator>();
-        objPooler = FindObjectOfType<ObjectPooler>();
 
         attackHash = Animator.StringToHash("Base Layer.Attack");
 
@@ -59,7 +58,7 @@ public class RangedEnemy : Enemy
     {
         if(launchCooldown <= 0)
         {
-            Projectile projectile = objPooler.GetPooledObject().GetComponent<Projectile>();
+            Projectile projectile = ObjectPooler.main.GetPooledObject().GetComponent<Projectile>();
             projectile.transform.position = transform.position + transform.forward + Vector3.up;
             projectile.transform.forward = transform.forward;
             projectile.Self = this;

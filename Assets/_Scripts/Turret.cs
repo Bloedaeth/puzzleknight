@@ -9,7 +9,6 @@ public class Turret : Enemy
 
     private Transform myTransform;
     private Transform player;
-    private ObjectPooler objPooler;
 
     private float fireTime;
     
@@ -18,7 +17,6 @@ public class Turret : Enemy
     {
         myTransform = transform;
         player = FindObjectOfType<Player>().GetComponent<Transform>();
-        objPooler = FindObjectOfType<ObjectPooler>();
     }
 
     // Update is called once per frame
@@ -26,7 +24,7 @@ public class Turret : Enemy
     {
         if(Time.time > fireTime && Vector3.Distance(myTransform.position, player.position) < range)
         {
-            Projectile projectile = objPooler.GetPooledObject().GetComponent<Projectile>();
+            Projectile projectile = ObjectPooler.main.GetPooledObject().GetComponent<Projectile>();
             projectile.transform.position = turretMuzzle.position;
             projectile.transform.rotation = turretMuzzle.rotation;
             projectile.Self = this;
