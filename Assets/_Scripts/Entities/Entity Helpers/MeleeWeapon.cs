@@ -21,7 +21,7 @@ public class MeleeWeapon : MonoBehaviour
         attackStateTwoHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 2");
         attackStateThreeHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 3");
 
-        audio = GetComponent<AudioSource>();
+        audio = Self.GetComponent<AudioSource>();
         attackSounds = Self.GetComponent<EntitySoundsCommon>().attackSounds;
     }
 
