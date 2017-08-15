@@ -29,6 +29,8 @@ public class Player : Entity
     private new AudioSource audio;
     private AudioClip[] idleSounds;
 
+    public GameObject[] enemylist;
+
     //private float combatRadius = 4;
 
     private int attackStateHash;
@@ -59,7 +61,9 @@ public class Player : Entity
 
     private void Update()
 	{
-        if(tutorial.activeInHierarchy)
+        enemylist = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (tutorial.activeInHierarchy)
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -105,10 +109,22 @@ public class Player : Entity
 
 		freeLookCam.hideCursor = true;
 
-		if (Input.GetKeyDown (KeyCode.Mouse1))
-			SetBlocking(true);
-		else if (Input.GetKeyUp (KeyCode.Mouse1))
-			SetBlocking(false);
+		if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
+            animator.SetFloat("Speed", 0);
+            thirdPersonUserControl.movementActive = false;
+            SetBlocking(true);
+        }
+			
+		else if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
+            animator.SetFloat("Speed", 0);
+            thirdPersonUserControl.movementActive = true;
+            SetBlocking(false);
+        }
+			
 
         if(Input.GetKeyDown(KeyCode.Mouse0) &&
             animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)

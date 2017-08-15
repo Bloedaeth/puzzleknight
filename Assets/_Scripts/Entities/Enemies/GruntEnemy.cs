@@ -13,7 +13,8 @@ public class GruntEnemy : Enemy
     private float wanderTimer = 5;
     private float timer;
 
-    private float fieldOfView = 80.0f;
+    private float attackTimer = 2.5f;
+    private float timer2;
 
     private int attackHash;
     private int blockHash;
@@ -21,6 +22,8 @@ public class GruntEnemy : Enemy
     private Vector3 gruntOrigin;
 
     public Shield shield;
+
+    Rigidbody rb;
 
     private void Awake()
     {
@@ -34,9 +37,6 @@ public class GruntEnemy : Enemy
         agent.stoppingDistance = 1.5f;
         gruntOrigin = transform.position;
     }
-
-    //Mathf.Abs(Vector3.Distance(transform.position, player.position)) < 10f
-    //PlayerDetection() == true
 
     private void Update()
     {
@@ -69,7 +69,6 @@ public class GruntEnemy : Enemy
             Vector3 aiPosition = transform.position;
             RaycastHit raycastHit;
             Vector3 rayDirection = ai.target.transform.position - aiPosition;
-            Debug.DrawRay(aiPosition, rayDirection);
 
             if (Physics.Raycast(aiPosition, rayDirection, out raycastHit))
             {
@@ -82,10 +81,16 @@ public class GruntEnemy : Enemy
         if(dist < agent.stoppingDistance)
         {
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-            if(state.fullPathHash != attackHash)
+            if (state.fullPathHash != attackHash)
             {
-                transform.LookAt(player); //AI tends to attack at air because wrong rotation
-                animator.SetTrigger("Attack");
+                timer2 += Time.deltaTime;
+
+                if (timer2 >= attackTimer)
+                {
+                    transform.LookAt(player); //AI tends to attack at air because wrong rotation
+                    animator.SetTrigger("Attack");
+                    timer2 = 0;
+                }
             }
             if (shield.IsBlocking == false && state.fullPathHash != blockHash && this.GetComponent<Health>().WasAttackedRecently == true)
             {
@@ -96,15 +101,7 @@ public class GruntEnemy : Enemy
             {
                 SetBlocking(false);
             }
-
-            /*
-            else if (this.GetComponent <Health>().WasAttackedRecently == false)
-            {
-                SetBlocking(false);
-            }
-            */
         }
-
         AlertOthers();
     }
 
@@ -122,39 +119,6 @@ public class GruntEnemy : Enemy
                 }
             }
         }
-    }
-
-    private bool PlayerDetection()
-    {
-        RaycastHit hit;
-        Vector3 rayDirection = ai.target.transform.position - transform.position;
-
-        float distanceToPlayer = Vector3.Distance(transform.position, ai.target.transform.position);
-
-        if (Physics.Raycast(transform.position, rayDirection, out hit))
-        {
-
-            if ((hit.transform.tag == ai.target.tag) && (distanceToPlayer <= 10f))
-            {
-                return true;
-            }
-        }
-
-        if ((Vector3.Angle(rayDirection, transform.forward)) <= fieldOfView)
-        {
-            if (Physics.Raycast(transform.position, rayDirection, out hit))
-            {
-                if (hit.transform.tag == ai.target.tag)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        return false;
     }
 
     private void SetBlocking(bool value)

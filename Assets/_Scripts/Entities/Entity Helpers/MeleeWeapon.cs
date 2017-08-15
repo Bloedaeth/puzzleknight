@@ -4,6 +4,7 @@
 public class MeleeWeapon : MonoBehaviour
 {
     public Entity Self;
+    Shield shield;
     public int Damage;
 
     private Animator anim;
@@ -44,17 +45,7 @@ public class MeleeWeapon : MonoBehaviour
             return;
 
         Entity target = collision.gameObject.GetComponent<Entity>();
-        Debug.Log(target.transform.tag);
-        if (target)
-        {
-            //Debug.Log("Weappon Hit");
-            if (target.GetComponent<DeathAnimation>())
-                return;
-
-            Self.Attack(target, Damage);
-        }
-
-        Shield shield = null;
+        Debug.DrawRay(Self.transform.position, Self.transform.forward);
 
         if (target.transform.tag == "Player")
         {
@@ -65,28 +56,22 @@ public class MeleeWeapon : MonoBehaviour
             shield = target.GetComponent<GruntEnemy>().shield;
         }
 
-        //Shield shield = target.GetComponent<Shield>();
-        //Shield shield = collision.gameObject.GetComponent<Shield>();
-        //Debug.Log(shield.Self);
-        if (shield)
+        if (shield.IsBlocking == true)
         {
-            //Debug.Log("Shield == true");
-            if(shield.IsBlocking)
-            {
-                //Debug.Log("Shield.IsBloking == true");
-                if (shield.BlockSuccessful())
-                {
-                    Self.Attack(target, 5);
-                    Debug.Log("shield.BlockSuccessful");
-                }
-                    
-            }
+            Vector3 targetDir = target.transform.position - Self.transform.position;
+            float angle = Vector3.Angle(-(target.transform.forward), targetDir);
+
+            if ((angle < 90.0f) && shield.BlockSuccessful())
+                Self.Attack(target, 5);
             else
-            {
-                Self.Attack(shield.Self, Damage);
-                //Debug.Log("else");
-            }
-                
+                Self.Attack(target, Damage);
+        }
+        else
+        {
+            if (target.GetComponent<DeathAnimation>())
+                return;
+
+            Self.Attack(target, Damage);
         }
     }
 }
