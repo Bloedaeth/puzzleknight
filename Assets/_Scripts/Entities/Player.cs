@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(TimeFreeze))]
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
 public class Player : Entity
@@ -227,7 +228,8 @@ public class Player : Entity
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !freeLookCam.orbitActive;
         //stop the player from moving while the inventory is open
-        animator.SetFloat("Speed", 0);
+        animator.SetFloat("Forward", 0);
+        animator.SetFloat("Turn", 0);
         thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
         freeLookCam.hideCursor = !freeLookCam.hideCursor;
     }
