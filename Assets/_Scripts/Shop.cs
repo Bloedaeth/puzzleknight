@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Shop : MonoBehaviour
 {
     /// <summary>The GUI for the shop.</summary>
