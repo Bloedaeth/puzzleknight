@@ -7,6 +7,8 @@ public class TimeFreeze : MonoBehaviour
     public static float FROZEN_TIME_SCALE { get { return 0.1f; } }
 
     private const float EXPANSION_RATE = 0.3f;
+    private const float EMISSION_RATE = 50000f;
+    private const float GAME_SCALE = 6f;
 
     /// <summary>The game object that determines where time should freeze.</summary>
     public new SphereCollider collider;
@@ -14,7 +16,14 @@ public class TimeFreeze : MonoBehaviour
 
     private void Awake()
     {
-        particleShape = collider.GetComponent<ParticleSystem>().shape;
+        ParticleSystem ps = collider.GetComponent<ParticleSystem>();
+        ParticleSystem.MainModule main = ps.main;
+        main.maxParticles = main.maxParticles * (int)GAME_SCALE;
+
+        ParticleSystem.EmissionModule emit = ps.emission;
+        emit.rateOverTimeMultiplier = EMISSION_RATE  * GAME_SCALE;
+
+        particleShape = ps.shape;
     }
 
     /// <summary>Freezes/Slows time in a set radius around the casting point for a set time.</summary>
@@ -30,7 +39,7 @@ public class TimeFreeze : MonoBehaviour
 
     private IEnumerator ExpandFreezeRadius(float time, float radius)
     {
-        for(float i = 0.1f; i <= radius; i += EXPANSION_RATE)
+        for(float i = collider.radius; i <= radius * GAME_SCALE; i += EXPANSION_RATE * GAME_SCALE)
         {
             collider.radius = i;
             particleShape.radius = i;
@@ -39,7 +48,7 @@ public class TimeFreeze : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
-        for(float i = radius; i >= 0.1f; i -= EXPANSION_RATE)
+        for(float i = collider.radius; i >= 0.1f; i -= EXPANSION_RATE * GAME_SCALE)
         {
             collider.radius = i;
             particleShape.radius = i;
