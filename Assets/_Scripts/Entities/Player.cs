@@ -148,7 +148,7 @@ public class Player : Entity
     {
         if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
         {
-            animator.SetTrigger("Attack");
+            animator.SetTrigger("LightAttack");
             sword.PlaySound();
         }
     }
