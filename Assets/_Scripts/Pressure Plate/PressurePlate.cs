@@ -4,12 +4,12 @@ public class PressurePlate : MonoBehaviour
 {
     private int numEntitiesOnPlate;
 
-    private RaisePlatform platform;
+    private LowerPlatform platform;
     private bool triggered = false;
 
     private void Awake()
     {
-        platform = FindObjectOfType<RaisePlatform>();
+        platform = FindObjectOfType<LowerPlatform>();
     }
 
     private void Update()
