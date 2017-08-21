@@ -9,6 +9,7 @@ public class GruntEnemy : Enemy
     private Transform player;
     private Animator animator;
 
+    private const float SCALE_MULT = 10f;
     private int attackHash;
 
     private void Awake()
@@ -35,11 +36,11 @@ public class GruntEnemy : Enemy
             agent.speed = 1f;
         }
 
-        if(ai.target == null && Mathf.Abs(Vector3.Distance(transform.position, player.position)) < 10f)
+        if(ai.target == null && Mathf.Abs(Vector3.Distance(transform.position, player.position)) < 10f * SCALE_MULT)
             ai.SetTarget(player);
 
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
-        if(dist <= agent.stoppingDistance)
+        if(dist <= agent.stoppingDistance * SCALE_MULT)
         {
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
             if(state.fullPathHash != attackHash)
