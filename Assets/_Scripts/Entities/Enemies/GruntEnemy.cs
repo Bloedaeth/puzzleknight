@@ -20,7 +20,7 @@ public class GruntEnemy : Enemy
         animator = GetComponent<Animator>();
         attackHash = Animator.StringToHash("Base Layer.Attack");
 
-        agent.stoppingDistance = 1.5f;
+        agent.stoppingDistance = 1.5f * SCALE_MULT;
     }
 
     private void Update()
@@ -40,7 +40,7 @@ public class GruntEnemy : Enemy
             ai.SetTarget(player);
 
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
-        if(dist <= agent.stoppingDistance * SCALE_MULT)
+        if(dist <= agent.stoppingDistance)
         {
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
             if(state.fullPathHash != attackHash)

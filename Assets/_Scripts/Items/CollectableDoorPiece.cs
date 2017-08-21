@@ -2,7 +2,9 @@
 
 public class CollectableDoorPiece : MonoBehaviour
 {
-    protected void OnTriggerEnter(Collider other)
+    public int DoorPieceID;
+
+    private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
