@@ -60,8 +60,8 @@ namespace UnityStandardAssets.Cameras
 
             // initial check to see if start of spherecast intersects anything
             var cols = Physics.OverlapSphere(m_Ray.origin, sphereCastRadius);
-            foreach(var c in cols)
-                Debug.Log(c);
+            //foreach(var c in cols)
+                //Debug.Log(c);
             bool initialIntersect = false;
             bool hitSomething = false;
 
@@ -106,8 +106,8 @@ namespace UnityStandardAssets.Cameras
                 // if there was no collision do a sphere cast to see if there were any other collisions
                 m_Hits = Physics.SphereCastAll(m_Ray, sphereCastRadius, m_OriginalDist + sphereCastRadius);
             }
-            foreach(var c in m_Hits)
-                Debug.Log(c.transform.name);
+            //foreach(var c in m_Hits)
+                //Debug.Log(c.transform.name);
 
             // sort the collisions by distance
             Array.Sort(m_Hits, m_RayHitComparer);

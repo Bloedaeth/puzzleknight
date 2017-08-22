@@ -6,12 +6,6 @@ public class PerspectivePuzzle : Puzzle {
 
 	private PerspectivePuzzleStore ps;
 
-	public GameObject leftDoor;
-	public GameObject rightDoor;
-
-	private Quaternion leftDoorOpen;
-	private Quaternion rightDoorOpen;
-
 	private Camera cam;
 
     // Use this for initialization
@@ -20,9 +14,6 @@ public class PerspectivePuzzle : Puzzle {
 
 		solved = false;
 		done = false;
-
-		leftDoorOpen = Quaternion.Euler (leftDoor.transform.rotation.eulerAngles + new Vector3(0f, -90f, 0f));
-		rightDoorOpen = Quaternion.Euler (rightDoor.transform.rotation.eulerAngles + new Vector3(0f, 90f, 0f));
 
 		cam = Camera.main;
 	}
@@ -34,15 +25,10 @@ public class PerspectivePuzzle : Puzzle {
 			if (ps.checkPuzzle) {
 				CheckFinalizePuzzle ();
 			}
-
 			if (solved) {
 				ps.FinalizePuzzle ();
 				done = true;
 			}
-		} else {
-			leftDoor.transform.rotation = Quaternion.Slerp (leftDoor.transform.rotation, leftDoorOpen, doorMoveSpeed * Time.deltaTime);
-			rightDoor.transform.rotation = Quaternion.Slerp (rightDoor.transform.rotation, rightDoorOpen, doorMoveSpeed * Time.deltaTime);
-
 		}
 	}
     
