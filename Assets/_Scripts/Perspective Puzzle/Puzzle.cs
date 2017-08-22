@@ -5,8 +5,11 @@ using UnityEngine;
 /// <summary>Contains the abstract code required for each puzzle.</summary>
 public abstract class Puzzle : MonoBehaviour {
 
-	public bool solved;
-	public bool done;
+	/// <summary>
+	/// The variables to test if the puzzle has been solved as of yet.
+	/// </summary>
+	protected bool solved;
+	protected bool done;
 
 	public float doorMoveSpeed = 0.02f;
 
