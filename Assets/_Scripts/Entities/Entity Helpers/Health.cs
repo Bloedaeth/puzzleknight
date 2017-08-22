@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
     public float HealthRemaining;
 
     public bool WasAttackedRecently { get { return timeSinceDamageTaken < 0.5f; } }
-    private float timeSinceDamageTaken;
+    public float timeSinceDamageTaken;
 
     private new AudioSource audio;
     private AudioClip[] damageSounds;

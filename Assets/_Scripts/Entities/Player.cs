@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
@@ -30,10 +31,14 @@ public class Player : Entity
     private AudioClip[] idleSounds;
 
     public GameObject[] enemylist;
+    public GameObject[] attackerList; 
 
     //private float combatRadius = 4;
 
     private int attackStateHash;
+    private int attackStateOneHash;
+    private int attackStateTwoHash;
+    private int attackStateThreeHash;
 
     private void Awake()
     {
@@ -42,8 +47,13 @@ public class Player : Entity
 		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
         thirdPersonUserControl.enabled = false;
         animator = GetComponent<Animator>();
+
+        attackerList = new GameObject[2];
         
         attackStateHash = Animator.StringToHash("Base Layer.Attack");
+        attackStateOneHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 1");
+        attackStateTwoHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 2");
+        attackStateThreeHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 3");
 
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
@@ -124,13 +134,11 @@ public class Player : Entity
             thirdPersonUserControl.movementActive = true;
             SetBlocking(false);
         }
-			
-
-        if(Input.GetKeyDown(KeyCode.Mouse0) &&
-            animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
+        
+        if (Input.GetKeyDown(KeyCode.Mouse0) &&
+            animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateThreeHash)
         {
             animator.SetTrigger("Attack");
-            sword.PlaySound();
         }
 
 		if (Input.GetKeyDown (KeyCode.F))
@@ -139,6 +147,11 @@ public class Player : Entity
 		//	ThrowEquippedItem ();
 		
 	}
+
+    public void AttackPlaySound()
+    {
+        sword.PlaySound();
+    }
     
     private void SetBlocking(bool value)
     {

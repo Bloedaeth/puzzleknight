@@ -8,12 +8,16 @@ public class GruntEnemy : Enemy
     private NavMeshAgent agent;
     private Transform player;
     private Animator animator;
+    AnimatorStateInfo state;
 
     private float wanderRadius = 15;
     private float wanderTimer = 5;
     private float timer;
 
-    private float attackTimer = 2.5f;
+    private int testNumber;
+    private float testStopDistance = 3.5f;
+
+    private float attackTimer = 1.5f;
     private float timer2;
 
     private int attackHash;
@@ -40,7 +44,8 @@ public class GruntEnemy : Enemy
 
     private void Update()
     {
-        if(ai.target == null && Mathf.Abs(Vector3.Distance(transform.position, player.position)) < 10f)
+        float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
+        if (ai.target == null && dist < 10f)
             ai.SetTarget(player);
 
         /*
@@ -77,10 +82,27 @@ public class GruntEnemy : Enemy
             }
         }
 
-        float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
-        if(dist < agent.stoppingDistance)
+        state = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (dist < agent.stoppingDistance + 0.5)
         {
-            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2);
+
+            foreach (Collider hit in hitColliders)
+            {
+                if (hit.transform.tag == "Enemy")
+                {
+                    if (Vector3.Distance(hit.transform.position, transform.position) < 5)
+                    {
+                        float step = (float)-0.1;
+                        transform.position = Vector3.MoveTowards(transform.position, hit.transform.position, step);
+                    }
+                }
+
+            }                
+            
+
+            state = animator.GetCurrentAnimatorStateInfo(0);
             if (state.fullPathHash != attackHash)
             {
                 timer2 += Time.deltaTime;
@@ -92,16 +114,19 @@ public class GruntEnemy : Enemy
                     timer2 = 0;
                 }
             }
-            if (shield.IsBlocking == false && state.fullPathHash != blockHash && this.GetComponent<Health>().WasAttackedRecently == true)
-            {
-                transform.LookAt(player);
-                SetBlocking(true);
-            }
-            else if (shield.IsBlocking == true && this.GetComponent<Health>().WasAttackedRecently == true)
-            {
-                SetBlocking(false);
-            }
         }
+
+        state = animator.GetCurrentAnimatorStateInfo(0);
+        if (shield.IsBlocking == false && state.fullPathHash != blockHash && this.GetComponent<Health>().timeSinceDamageTaken < 1)
+        {
+            transform.LookAt(player);
+            SetBlocking(true);
+        }
+        else if (shield.IsBlocking == true && this.GetComponent<Health>().timeSinceDamageTaken > 1)
+        {
+            SetBlocking(false);
+        }
+
         AlertOthers();
     }
 
@@ -147,4 +172,51 @@ public class GruntEnemy : Enemy
     {
         base.Attack(target, damage);
     }
+    /*
+ *         if (dist < agent.stoppingDistance)
+        {
+            if (GetComponent<Player>().attackerList.Length == 2 && Random.Range(0, 100) < 50)
+            {
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2);
+
+                foreach (Collider hit in hitColliders)
+                {
+                    for (int i = 0; i < GetComponent<Player>().attackerList.Length; i++)
+                    {
+                        if (hit.gameObject == GetComponent<Player>().attackerList[i])
+                        {
+                            if (Vector3.Distance(hit.transform.position, transform.position) < 5)
+                            {
+                                rb.AddForce(transform.right);
+                            }
+                        }
+                    }
+                }                
+            }
+            else if (GetComponent<Player>().attackerList.Length == 2 && Random.Range(0, 100) > 51)
+            {
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2);
+
+                foreach (Collider hit in hitColliders)
+                {
+                    for (int i = 0; i < GetComponent<Player>().attackerList.Length; i++)
+                    {
+                        if (hit.gameObject == GetComponent<Player>().attackerList[i])
+                        {
+                            if (Vector3.Distance(hit.transform.position, transform.position) < 5)
+                            {
+                                rb.AddForce(-(transform.right));
+                            }
+                        }
+                    }
+                }  
+            }
+            else if (GetComponent<Player>().attackerList.Length < 2)
+            {
+                GetComponent<Player>().attackerList[GetComponent<Player>().attackerList.Length] = this.gameObject;
+            }
+ */
 }
+
+
+
