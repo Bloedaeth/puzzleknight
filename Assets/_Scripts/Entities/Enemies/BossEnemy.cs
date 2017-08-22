@@ -119,6 +119,6 @@ public class BossEnemy : ShieldedEnemy
     /// <param name="damage">The damage to deal to the entity.</param>
     public override void Attack(Entity target, int damage)
     {
-        base.Attack(target, damage);
+        base.Attack(target, damage + 5 * (int)(bossScaleMult - 1));
     }
 }
