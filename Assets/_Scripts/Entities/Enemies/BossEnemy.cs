@@ -98,11 +98,19 @@ public class BossEnemy : ShieldedEnemy
     {
         Vector3 newScale = originalScale * bossScaleMult;
         float step = 0.05f;
-        while(transform.localScale.x < newScale.x)
-        {
-            transform.localScale += new Vector3(step, step, step);
-            yield return new WaitForFixedUpdate();
-        }
+
+        if(newScale.x > transform.localScale.x)
+            while(transform.localScale.x < newScale.x)
+            {
+                transform.localScale += new Vector3(step, step, step);
+                yield return new WaitForFixedUpdate();
+            }
+        else
+            while(transform.localScale.x > newScale.x)
+            {
+                transform.localScale -= new Vector3(step, step, step);
+                yield return new WaitForFixedUpdate();
+            }
         yield return null;
     }
     
