@@ -17,7 +17,7 @@ public class Player : Entity
     public bool IsMovingObject = false;
 
     /// <summary>Is Morpheus in range of a shop.</summary>
-    public bool InShopRange = false;
+    public bool NearInteractableObject = false;
 
     /// <summary>Is Morpheus in the shop GUI.</summary>
     public bool Shopping = false;
@@ -106,7 +106,7 @@ public class Player : Entity
             return;
         }
 
-        if(!InShopRange && Input.GetKeyDown(KeyCode.E))
+        if(!NearInteractableObject && Input.GetKeyDown(KeyCode.E))
             ToggleInventory();
 
         if(Input.GetKeyDown(KeyCode.R))

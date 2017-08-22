@@ -1,22 +1,55 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-public class BossEnemy : Enemy
+public class BossEnemy : ShieldedEnemy
 {
+    private int stage = 0;
+    public int Stage
+    {
+        get { return stage; }
+        set
+        {
+            stage = value;
+            animator.SetInteger("Stage", stage);
+            pylons[stage - 1].SetPylonActive(true);
+        }
+    }
+
+    private float bossScaleMult = 1f;
+    public float BossScaleMult
+    {
+        get { return bossScaleMult; }
+        set
+        {
+            bossScaleMult = value;
+            StartCoroutine(SmoothScale());
+        }
+    }
+
+    private List<Pylon> pylons;
+
     private Health hp;
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
     private Animator animator;
 
-    private const float SCALE_MULT = 10f;
+    private Vector3 originalScale;
+
+    private const float GAME_SCALE_MULT = 10f;
     private int attackHashStage1;
     private int attackHashStage2;
-    private int stage = 1;
 
     private void Awake()
     {
+        pylons = FindObjectsOfType<Pylon>().OrderBy(p => p.ID).ToList();
+
+        originalScale = transform.localScale;
+
         hp = GetComponent<Health>();
         ai = GetComponent<AICharacterControl>();
         agent = GetComponent<NavMeshAgent>();
@@ -25,17 +58,18 @@ public class BossEnemy : Enemy
         attackHashStage1 = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
-        agent.stoppingDistance = 1.5f * SCALE_MULT;
-        animator.SetInteger("Stage", 1);
+        agent.stoppingDistance = 1.5f * GAME_SCALE_MULT;
     }
 
     private void Update()
     {
-        if(hp.HealthRemaining <= hp.InitialAndMaxHealth / 2f && stage != 2)
-        {
-            stage = 2;
-            animator.SetInteger("Stage", 2);
-        }
+        if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x)
+            hp.IsInvulnerable = true;
+        else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x)
+            hp.IsInvulnerable = false;
+
+        if(hp.HealthRemaining <= hp.InitialAndMaxHealth / 2f && Stage != 2)
+            Stage = 2;
 
         if(SlowedTime)
         {
@@ -59,11 +93,32 @@ public class BossEnemy : Enemy
             }
         }
     }
+
+    private IEnumerator SmoothScale()
+    {
+        Vector3 newScale = originalScale * bossScaleMult;
+        float step = 0.05f;
+
+        if(newScale.x > transform.localScale.x)
+            while(transform.localScale.x < newScale.x)
+            {
+                transform.localScale += new Vector3(step, step, step);
+                yield return new WaitForFixedUpdate();
+            }
+        else
+            while(transform.localScale.x > newScale.x)
+            {
+                transform.localScale -= new Vector3(step, step, step);
+                yield return new WaitForFixedUpdate();
+            }
+        yield return null;
+    }
+    
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
     public override void Attack(Entity target, int damage)
     {
-        base.Attack(target, damage);
+        base.Attack(target, damage + 5 * Mathf.RoundToInt(bossScaleMult));
     }
 }

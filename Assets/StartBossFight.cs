@@ -11,7 +11,7 @@ public class StartBossFight : MonoBehaviour
             return;
 
         boss.GetComponent<AICharacterControl>().SetTarget(col.gameObject.transform);
-
+        boss.GetComponent<BossEnemy>().Stage = 1;
         gameObject.SetActive(false);
     }
 }

@@ -14,6 +14,8 @@ public class MeleeWeapon : MonoBehaviour
     private int attackStateOneHash;
     private int attackStateTwoHash;
     private int attackStateThreeHash;
+    private int attackBossOneHash;
+    private int attackBossTwoHash;
     private int attackHash;
 
     private void Awake()
@@ -22,6 +24,8 @@ public class MeleeWeapon : MonoBehaviour
         attackStateOneHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 1");
         attackStateTwoHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 2");
         attackStateThreeHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 3");
+        attackBossOneHash = Animator.StringToHash("Base Layer.Attack Stage 1");
+        attackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
         attackHash = Animator.StringToHash("Base Layer.Attack");
 
         audio = Self.GetComponent<AudioSource>();
@@ -41,6 +45,8 @@ public class MeleeWeapon : MonoBehaviour
         if(state.fullPathHash != attackStateOneHash &&
            state.fullPathHash != attackStateTwoHash &&
            state.fullPathHash != attackStateThreeHash &&
+           state.fullPathHash != attackBossOneHash &&
+           state.fullPathHash != attackBossTwoHash &&
            state.fullPathHash != attackHash)
             return;
 
@@ -48,14 +54,10 @@ public class MeleeWeapon : MonoBehaviour
         Debug.DrawRay(Self.transform.position, Self.transform.forward);
 
         if (target.transform.tag == "Player")
-        {
             shield = target.GetComponent<Player>().shield;
-        }
         else if (target.transform.tag == "Enemy")
-        {
-            shield = target.GetComponent<GruntEnemy>().shield;
-        }
-
+            shield = target.GetComponent<ShieldedEnemy>().Shield;
+        
         if (shield.IsBlocking == true)
         {
             Vector3 targetDir = target.transform.position - Self.transform.position;

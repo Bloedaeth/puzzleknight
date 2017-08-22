@@ -10,6 +10,8 @@ public class Health : MonoBehaviour
     public bool WasAttackedRecently { get { return timeSinceDamageTaken < 0.5f; } }
     public float timeSinceDamageTaken;
 
+    public bool IsInvulnerable;
+
     private new AudioSource audio;
     private AudioClip[] damageSounds;
 
