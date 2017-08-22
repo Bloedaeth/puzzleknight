@@ -38,22 +38,19 @@ public class Shop : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.GetComponent<Player>())
-            player.InShopRange = true;
+            player.NearInteractableObject = true;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(Input.GetKeyDown(KeyCode.E))
+            ToggleGuiShop();
     }
 
     private void OnTriggerExit(Collider other)
     {
         if(other.GetComponent<Player>())
-            player.InShopRange = false;
-    }
-
-    private void Update()
-    {
-        if(!player.InShopRange)
-            return;
-
-        if(Input.GetKeyDown(KeyCode.E))
-            ToggleGuiShop();
+            player.NearInteractableObject = false;
     }
 
     /// <summary>Toggles the visibility of the GUI Shop.</summary>

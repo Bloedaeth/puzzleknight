@@ -13,7 +13,7 @@ public abstract class Entity : MonoBehaviour
     {
         Health targetHp = target.GetComponent<Health>();
         
-        if(targetHp.WasAttackedRecently)
+        if(targetHp.WasAttackedRecently || targetHp.IsInvulnerable)
             return;
 
         targetHp.TakeDamage(damage);
