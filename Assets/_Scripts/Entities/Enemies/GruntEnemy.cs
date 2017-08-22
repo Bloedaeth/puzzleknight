@@ -20,6 +20,7 @@ public class GruntEnemy : Enemy
     private float attackTimer = 1.5f;
     private float timer2;
 
+    private const float SCALE_MULT = 10f;
     private int attackHash;
     private int blockHash;
 
@@ -38,7 +39,7 @@ public class GruntEnemy : Enemy
         attackHash = Animator.StringToHash("Base Layer.Attack");
         blockHash = Animator.StringToHash("Base Layer.Block");
 
-        agent.stoppingDistance = 1.5f;
+        agent.stoppingDistance = 1.5f * SCALE_MULT;
         gruntOrigin = transform.position;
     }
 
@@ -54,9 +55,9 @@ public class GruntEnemy : Enemy
             animator.speed = 1f;
             agent.speed = 1f;
         }
-
+        
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
-        if (ai.target == null && dist < 10f)
+        if (ai.target == null && dist < 10f * SCALE_MULT)
             ai.SetTarget(player);
 
         /*

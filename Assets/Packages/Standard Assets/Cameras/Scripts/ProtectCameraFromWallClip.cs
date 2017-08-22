@@ -30,7 +30,7 @@ namespace UnityStandardAssets.Cameras
         private float m_OriginalDist;             // the original distance to the camera before any modification are made
         private float m_MoveVelocity;             // the velocity at which the camera moved
         private float m_CurrentDist;              // the current distance from the camera to the target
-        private Ray m_Ray = new Ray();                        // the ray used in the lateupdate for casting between the camera and the target
+        private Ray m_Ray = new Ray();            // the ray used in the lateupdate for casting between the camera and the target
         private RaycastHit[] m_Hits;              // the hits between the camera and the target
         private RayHitComparer m_RayHitComparer;  // variable to compare raycast hit distances
 
@@ -60,14 +60,15 @@ namespace UnityStandardAssets.Cameras
 
             // initial check to see if start of spherecast intersects anything
             var cols = Physics.OverlapSphere(m_Ray.origin, sphereCastRadius);
-
+            foreach(var c in cols)
+                Debug.Log(c);
             bool initialIntersect = false;
             bool hitSomething = false;
 
             // loop through all the collisions to check if something we care about
             for (int i = 0; i < cols.Length; i++)
             {
-                if ((!cols[i].isTrigger) && cols[i].attachedRigidbody != null)
+                if ((!cols[i].isTrigger))// && cols[i].attachedRigidbody != null)
                    // !(cols[i].attachedRigidbody != null && cols[i].attachedRigidbody.CompareTag(dontClipTag)))
                 {
                     //
@@ -76,7 +77,7 @@ namespace UnityStandardAssets.Cameras
                     bool cont = false;
                     for(int j = 0; j < dontClipTags.Length; ++j)
                     {
-                        if(cols[i].attachedRigidbody.CompareTag(dontClipTags[i]))
+                        if(cols[i].transform.CompareTag(dontClipTags[i]))
                         {
                             cont = true;
                             break;
@@ -105,6 +106,8 @@ namespace UnityStandardAssets.Cameras
                 // if there was no collision do a sphere cast to see if there were any other collisions
                 m_Hits = Physics.SphereCastAll(m_Ray, sphereCastRadius, m_OriginalDist + sphereCastRadius);
             }
+            foreach(var c in m_Hits)
+                Debug.Log(c.transform.name);
 
             // sort the collisions by distance
             Array.Sort(m_Hits, m_RayHitComparer);
@@ -116,7 +119,7 @@ namespace UnityStandardAssets.Cameras
             for (int i = 0; i < m_Hits.Length; i++)
             {
                 // only deal with the collision if it was closer than the previous one, not a trigger, and not attached to a rigidbody tagged with the dontClipTag
-                if (m_Hits[i].distance < nearest && (!m_Hits[i].collider.isTrigger) && m_Hits[i].collider.attachedRigidbody != null)
+                if (m_Hits[i].distance < nearest && (!m_Hits[i].collider.isTrigger))// && m_Hits[i].collider.attachedRigidbody != null)
                     //!(m_Hits[i].collider.attachedRigidbody != null &&
                     //  m_Hits[i].collider.attachedRigidbody.CompareTag(dontClipTag)))
                 {
@@ -126,7 +129,7 @@ namespace UnityStandardAssets.Cameras
                     bool cont = false;
                     for(int tag = 0; tag < dontClipTags.Length; ++tag)
                     {
-                        if(m_Hits[i].collider.attachedRigidbody.CompareTag(dontClipTags[tag]))
+                        if(m_Hits[i].collider.transform.CompareTag(dontClipTags[tag]))
                         {
                             cont = true;
                             break;
