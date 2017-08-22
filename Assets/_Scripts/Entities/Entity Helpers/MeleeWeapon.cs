@@ -41,14 +41,15 @@ public class MeleeWeapon : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("ATTACKING " + collision.gameObject.name);
         AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
         if(state.fullPathHash != attackStateOneHash &&
            state.fullPathHash != attackStateTwoHash &&
            state.fullPathHash != attackStateThreeHash &&
+           state.fullPathHash != attackBossOneHash &&
+           state.fullPathHash != attackBossTwoHash &&
            state.fullPathHash != attackHash)
             return;
-        Debug.Log("IN ATTACK STATE");
+
         Entity target = collision.gameObject.GetComponent<Entity>();
         Debug.DrawRay(Self.transform.position, Self.transform.forward);
 

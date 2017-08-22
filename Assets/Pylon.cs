@@ -17,6 +17,8 @@ public class Pylon : MonoBehaviour, IFreezable
     private float MIN_HEIGHT = 470f;
     private float MAX_HEIGHT = 490f;
 
+    private float BOSS_SCALE_MULT = 0.8f;
+
     private void Start()
     {
         lever = GetComponentInChildren<Lever>();
@@ -38,7 +40,7 @@ public class Pylon : MonoBehaviour, IFreezable
             {
                 scaledBoss = true;
                 lever.SetLeverActive(true);
-                boss.BossScaleMult += 1f;
+                boss.BossScaleMult += BOSS_SCALE_MULT;
             }
         }
         else
@@ -49,7 +51,7 @@ public class Pylon : MonoBehaviour, IFreezable
             {
                 scaledBoss = false;
                 lever.SetLeverActive(false);
-                boss.BossScaleMult -= 1f;
+                boss.BossScaleMult -= BOSS_SCALE_MULT;
 
                 Invoke("AutoActivate", numPylonsActive > 0 ? 0.5f : 3f);
             }
