@@ -9,6 +9,9 @@ public class Inventory : MonoBehaviour
     public Image GuiEquippedItem;
     public Text MoneyText;
 
+	// Boolean array to store the collected pieces, length of three, the index refers to the piece number
+	public bool[] doorPieces;
+
     public bool IsOpen { get; private set; }
 
     public int Count { get { return inventory.Count; } }
@@ -23,6 +26,9 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+		//Set the door piece booleans to false, the player hasn't collected them yet.
+		doorPieces = new bool[3] {false};
+
         inventoryLimit = GuiInventory.childCount;
     }
 
