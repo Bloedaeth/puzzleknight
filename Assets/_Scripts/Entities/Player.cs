@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
@@ -47,12 +48,18 @@ public class Player : Entity
 
     private new AudioSource audio;
     private AudioClip[] idleSounds;
-
+    
     private TimeFreeze timeFreeze;
+
+    public GameObject[] enemylist;
+    public GameObject[] attackerList; 
 
     //private float combatRadius = 4;
 
-    private int attackStateHash;
+    //private int attackStateHash;
+    private int attackStateOneHash;
+    private int attackStateTwoHash;
+    private int attackStateThreeHash;
 
     private void Awake()
     {
@@ -64,7 +71,12 @@ public class Player : Entity
         timeFreeze = GetComponent<TimeFreeze>();
         rigidBody = GetComponent<Rigidbody>();
 
-        attackStateHash = Animator.StringToHash("Base Layer.Attack");
+        attackerList = new GameObject[2];
+        
+        //attackStateHash = Animator.StringToHash("Base Layer.Attack");
+        attackStateOneHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 1");
+        attackStateTwoHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 2");
+        attackStateThreeHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 3");
 
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
@@ -82,6 +94,8 @@ public class Player : Entity
 
     private void Update()
     {
+        enemylist = GameObject.FindGameObjectsWithTag("Enemy");
+
         if(tutorial.activeInHierarchy)
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
@@ -142,22 +156,34 @@ public class Player : Entity
             canPlayRunSound = true;
         }
     }
-
-    private void CheckAttacking()
-    {
-        if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateHash)
-        {
-            animator.SetTrigger("Attack");
-            sword.PlaySound();
-        }
-    }
-
+    
     private void CheckBlocking()
     {
         if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
+            animator.SetFloat("Speed", 0);
+            thirdPersonUserControl.movementActive = false;
             SetBlocking(true);
+        }
         else if(Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
+            animator.SetFloat("Speed", 0);
+            thirdPersonUserControl.movementActive = true;
             SetBlocking(false);
+        }
+    }
+
+    private void CheckAttacking()
+    {        
+        if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateThreeHash)
+            animator.SetTrigger("Attack");
+    }
+
+    public void AttackPlaySound()
+    {
+        sword.PlaySound();
     }
     
     private void CheckScrollItem()
@@ -211,9 +237,9 @@ public class Player : Entity
 
     private void SetBlocking(bool value)
     {
-        shield.IsBlocking = value;
-        thirdPersonUserControl.isAiming = value;
-        animator.SetBool("Blocking", value);
+		shield.IsBlocking = value;
+		//thirdPersonUserControl.isAiming = value;
+        animator.SetBool("Block", value);
     }
 
     private void ToggleInventory()
@@ -315,19 +341,4 @@ public class Player : Entity
         equippedItem.Throw();
         inventory.RemoveItem(inventory.EquippedItem);
     }
-
-    //private void CombatSwitcher()
-    //{
-    //    Vector3 aiPosition = transform.position;
-
-    //    Collider[] hitColliders = Physics.OverlapSphere(aiPosition, combatRadius);
-
-    //    foreach (Collider hit in hitColliders)
-    //    {
-    //        if (hit.tag == "Enemy")
-    //        {
-    //            hit.GetComponent<GruntAI>().CombatMyself();
-    //        }
-    //    }
-    //}
 }
