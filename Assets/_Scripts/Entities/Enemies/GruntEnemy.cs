@@ -2,13 +2,13 @@
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-public class GruntEnemy : Enemy
+public class GruntEnemy : ShieldedEnemy
 {
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
     private Animator animator;
-    AnimatorStateInfo state;
+    private AnimatorStateInfo state;
 
     private float wanderRadius = 15;
     private float wanderTimer = 5;
@@ -25,10 +25,8 @@ public class GruntEnemy : Enemy
     private int blockHash;
 
     private Vector3 gruntOrigin;
-
-    public Shield shield;
-
-    Rigidbody rb;
+    
+    private Rigidbody rb;
 
     private void Awake()
     {
@@ -129,12 +127,12 @@ public class GruntEnemy : Enemy
         }
 
         state = animator.GetCurrentAnimatorStateInfo(0);
-        if (shield.IsBlocking == false && state.fullPathHash != blockHash && this.GetComponent<Health>().timeSinceDamageTaken < 1)
+        if (Shield.IsBlocking == false && state.fullPathHash != blockHash && this.GetComponent<Health>().timeSinceDamageTaken < 1)
         {
             transform.LookAt(player);
             SetBlocking(true);
         }
-        else if (shield.IsBlocking == true && this.GetComponent<Health>().timeSinceDamageTaken > 1)
+        else if (Shield.IsBlocking == true && this.GetComponent<Health>().timeSinceDamageTaken > 1)
         {
             SetBlocking(false);
         }
@@ -160,7 +158,7 @@ public class GruntEnemy : Enemy
 
     private void SetBlocking(bool value)
     {
-        shield.IsBlocking = value;
+        Shield.IsBlocking = value;
         animator.SetBool("Block", value);
     }
 

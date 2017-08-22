@@ -48,13 +48,9 @@ public class MeleeWeapon : MonoBehaviour
         Debug.DrawRay(Self.transform.position, Self.transform.forward);
 
         if (target.transform.tag == "Player")
-        {
             shield = target.GetComponent<Player>().shield;
-        }
         else if (target.transform.tag == "Enemy")
-        {
-            shield = target.GetComponent<GruntEnemy>().shield;
-        }
+            shield = target.GetComponent<ShieldedEnemy>().Shield;
 
         if (shield.IsBlocking == true)
         {
