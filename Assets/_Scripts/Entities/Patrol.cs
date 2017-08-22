@@ -9,11 +9,11 @@ using UnityStandardAssets.Characters.ThirdPerson;
 //
 
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(ThirdPersonCharacter))]
+[RequireComponent(typeof(ThirdPersonCharacterNEW))]
 public class Patrol : MonoBehaviour
 {
     private NavMeshAgent navAgent;
-    private ThirdPersonCharacter character;
+    private ThirdPersonCharacterNEW character;
     private Transform[] patrolPoints;
     private int curPoint = 0;
 
@@ -22,7 +22,7 @@ public class Patrol : MonoBehaviour
         patrolPoints = GameObject.Find("Patrol Points").GetComponentsInChildren<Transform>();
 
         navAgent = GetComponent<NavMeshAgent>();
-        character = GetComponent<ThirdPersonCharacter>();
+        character = GetComponent<ThirdPersonCharacterNEW>();
 
         GetNextPatrolPoint();
     }
