@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour
     private void Awake()
     {
 		//Set the door piece booleans to false, the player hasn't collected them yet.
-		doorPieces = new bool[3] {false};
+		doorPieces = new bool[3];
 
         inventoryLimit = GuiInventory.childCount;
     }
