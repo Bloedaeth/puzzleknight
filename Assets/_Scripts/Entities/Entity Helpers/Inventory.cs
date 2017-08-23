@@ -8,11 +8,12 @@ public class Inventory : MonoBehaviour
 public GameObject puzzleDoor;
 
     public Transform GuiInventory;
+    public Transform MissingDoorPieces;
+    public Transform CollectedDoorPieces;
+    public Sprite[] CollectedPieceImages;
+
     public Image GuiEquippedItem;
     public Text MoneyText;
-
-	// Boolean array to store the collected pieces, length of three, the index refers to the piece number
-	public bool[] doorPieces;
 
     public bool IsOpen { get; private set; }
 
@@ -23,25 +24,25 @@ public GameObject puzzleDoor;
     public Item EquippedItem { get; private set; }
 
     private List<Item> inventory = new List<Item>();
+    private Image[] guiInventorySlots;
 
     private int inventoryLimit;
 
     private void Awake()
     {
-		//Set the door piece booleans to false, the player hasn't collected them yet.
-		doorPieces = new bool[3];
-
         inventoryLimit = GuiInventory.childCount;
+        guiInventorySlots = GuiInventory.GetChild(1).GetComponentsInChildren<Image>();
     }
 
-private void Update()
-{
-foreach(bool door in doorPieces)
-if(!door)
-return;
+    private void Update()
+    {
+        foreach(Transform child in MissingDoorPieces)
+            if(child.gameObject.activeInHierarchy)
+                return;
 
-puzzleDoor.SetActive(false);
-}
+        puzzleDoor.SetActive(false);
+    }
+
     /// <summary>Toggles the visibility of the GUI Inventory.</summary>
     public void ToggleGuiInventory()
     {
@@ -111,8 +112,8 @@ puzzleDoor.SetActive(false);
     {
         inventory = inventory.OrderBy(i => i.TypeId).ToList();
 
-        for(int i = 0; i < GuiInventory.childCount - 1; ++i)
-            GuiInventory.GetChild(i + 1).GetComponentInChildren<Image>().sprite = i < inventory.Count ? inventory[i].Icon : item.BlankIcon;
+        for(int i = 0; i < guiInventorySlots.Length; ++i)
+            guiInventorySlots[i].sprite = i < inventory.Count ? inventory[i].Icon : item.BlankIcon;
     }
 
     /// <summary>Increases the amount of money the player has.</summary>
@@ -129,5 +130,26 @@ puzzleDoor.SetActive(false);
     {
         Money -= value;
         MoneyText.text = Money.ToString();
+    }
+
+    /// <summary>Sets the door piece as having been collected in the inventory.</summary>
+    /// <param name="piece">The piece that has been collected.</param>
+    public void AddDoorPiece(CollectableDoorPiece.DoorPiece piece)
+    {
+        switch(piece)
+        {
+            case CollectableDoorPiece.DoorPiece.Frame:
+                MissingDoorPieces.GetChild(0).gameObject.SetActive(false);
+                CollectedDoorPieces.GetChild(0).GetComponent<Image>().sprite = CollectedPieceImages[0];
+                break;
+            case CollectableDoorPiece.DoorPiece.Panel:
+                MissingDoorPieces.GetChild(1).gameObject.SetActive(false);
+                CollectedDoorPieces.GetChild(1).GetComponent<Image>().sprite = CollectedPieceImages[1];
+                break;
+            case CollectableDoorPiece.DoorPiece.Knob:
+                MissingDoorPieces.GetChild(2).gameObject.SetActive(false);
+                CollectedDoorPieces.GetChild(2).GetComponent<Image>().sprite = CollectedPieceImages[2];
+                break;
+        }
     }
 }

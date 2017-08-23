@@ -1,14 +1,26 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class CollectableDoorPiece : MonoBehaviour
 {
-    public int DoorPieceID;
+    public enum DoorPiece { Frame = 0, Panel = 1, Knob = 2 };
+
+    public DoorPiece PieceType;
+
+    private float speed = 2f;
+
+    private void Update()
+    {
+        transform.eulerAngles += Vector3.up * speed;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-	    other.GetComponent<Inventory>().doorPieces[DoorPieceID-1] = true;
+            GetComponent<AudioSource>().Play();
+            Inventory inventory = other.GetComponent<Inventory>();
+            inventory.AddDoorPiece(PieceType);
             gameObject.SetActive(false);
         }
     }
