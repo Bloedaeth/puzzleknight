@@ -105,7 +105,7 @@ public class Player : Entity
             }
             return;
         }
-
+        
         if(!NearInteractableObject && Input.GetKeyDown(KeyCode.E))
             ToggleInventory();
 

@@ -7,7 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
-    [RequireComponent(typeof (ThirdPersonCharacterNEW))]
+    [RequireComponent(typeof (ThirdPersonCharacter))]
     public class ThirdPersonUserControl : MonoBehaviour
     {
 		public bool isLooking; // <------------------ CHANGE
@@ -28,7 +28,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		private Vector3[] cameraAiming; // <---------------- CHANGE
 
 
-        private ThirdPersonCharacterNEW m_Character; // A reference to the ThirdPersonCharacter on the object
+        private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
         private Player m_Player;
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
         private Vector3 m_CamForward;             // The current forward direction of the camera
@@ -36,7 +36,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
 
 		private float runSpeed = 2f;
-        private float walkSpeed = 1f;//0.15f;
+		private float walkSpeed = 0.15f;
         
         private void Start()
         {
@@ -61,7 +61,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             }
 
             // get the third person character ( this should never be null due to require component )
-            m_Character = GetComponent<ThirdPersonCharacterNEW>();
+            m_Character = GetComponent<ThirdPersonCharacter>();
 
             m_Player = GetComponent<Player>();
 
@@ -111,9 +111,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 // calculate camera relative direction to move:
                 m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
 
-                //if(m_Player.IsMovingObject)
-                //    m_Move = v * m_Player.transform.forward;
-                //else
+                if(m_Player.IsMovingObject)
+                    m_Move = v * m_Player.transform.forward;
+                else
                     m_Move = v * m_CamForward + h * m_Cam.right;
             }
             else
