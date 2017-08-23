@@ -8,6 +8,7 @@ public class CollectableDoorPiece : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+	    other.GetComponent<Inventory>().doorPieces[DoorPieceID-1] = true;
             gameObject.SetActive(false);
         }
     }

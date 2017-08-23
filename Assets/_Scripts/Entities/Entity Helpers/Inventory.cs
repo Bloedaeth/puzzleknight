@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+public GameObject puzzleDoor;
+
     public Transform GuiInventory;
     public Image GuiEquippedItem;
     public Text MoneyText;
@@ -32,6 +34,14 @@ public class Inventory : MonoBehaviour
         inventoryLimit = GuiInventory.childCount;
     }
 
+private void Update()
+{
+foreach(bool door in doorPieces)
+if(!door)
+return;
+
+puzzleDoor.SetActive(false);
+}
     /// <summary>Toggles the visibility of the GUI Inventory.</summary>
     public void ToggleGuiInventory()
     {
