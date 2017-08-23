@@ -5,8 +5,8 @@ public class LowerPlatform : MonoBehaviour
     /// <summary>Is an entity on the pressure plate.</summary>
     public bool PressurePlateActive;
 
-    private const int MAX_HEIGHT = -3;
-    private const int MIN_HEIGHT = -8;
+    private const float MAX_HEIGHT = -5.6f;
+    private const float MIN_HEIGHT = -10.5f;
     private const int SPEED_MODIFIER = 1;
 
     private void Update()

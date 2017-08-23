@@ -43,7 +43,7 @@ public class Shop : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.E) || (IsOpen && Input.GetKeyDown(KeyCode.Escape)))
             ToggleGuiShop();
     }
 
