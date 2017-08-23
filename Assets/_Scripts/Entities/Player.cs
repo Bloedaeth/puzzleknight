@@ -106,7 +106,7 @@ public class Player : Entity
             return;
         }
 
-        if(!NearInteractableObject && Input.GetKeyDown(KeyCode.E))
+        if((!NearInteractableObject && Input.GetKeyDown(KeyCode.I)) || (inventory.IsOpen && Input.GetKeyDown(KeyCode.Escape)))
             ToggleInventory();
 
         if(Input.GetKeyDown(KeyCode.R))
@@ -130,12 +130,12 @@ public class Player : Entity
         CheckScrollItem();
         CheckUseItem();
 
-        if(Input.GetKeyDown(KeyCode.I))
-            transform.position = GameObject.Find("ShadowPuzzleSpawn").transform.position;
-        if(Input.GetKeyDown(KeyCode.O))
-            transform.position = GameObject.Find("JumpPuzzleSpawn").transform.position;
-        if(Input.GetKeyDown(KeyCode.P))
-            transform.position = GameObject.Find("PressurePlatePuzzleSpawn").transform.position;
+        //if(Input.GetKeyDown(KeyCode.I))
+        //    transform.position = GameObject.Find("ShadowPuzzleSpawn").transform.position;
+        //if(Input.GetKeyDown(KeyCode.O))
+        //    transform.position = GameObject.Find("JumpPuzzleSpawn").transform.position;
+        //if(Input.GetKeyDown(KeyCode.P))
+        //    transform.position = GameObject.Find("PressurePlatePuzzleSpawn").transform.position;
     }
 
     private void CheckRunning()
