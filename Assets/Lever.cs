@@ -1,19 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class Lever : MonoBehaviour
 {
-    public Material red;
-    public Material green;
+    //public Material red;
+    //public Material green;
     public Pylon pylon;
 
-    private new Renderer renderer;
+    //private new Renderer renderer;
+    private Animator animator;
     private bool active;
 
     private void Start()
     {
-        renderer = GetComponent<Renderer>();
+        //renderer = GetComponent<Renderer>();
+        animator = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -27,8 +28,9 @@ public class Lever : MonoBehaviour
     {
         if(active && Input.GetKeyDown(KeyCode.E))
         {
-            renderer.material = red;
+            //renderer.material = red;
             pylon.SetPylonActive(false);
+            SetLeverActive(false);
         }
     }
 
@@ -42,6 +44,9 @@ public class Lever : MonoBehaviour
     public void SetLeverActive(bool val)
     {
         active = val;
-        renderer.material = active ? green : red;
+        animator.Play("Flip Lever");
+        animator.speed *= -1;
+        //animation["Flip Lever"].speed *= -1;
+        //renderer.material = active ? green : red;
     }
 }

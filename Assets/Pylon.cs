@@ -40,9 +40,10 @@ public class Pylon : MonoBehaviour, IFreezable
                 transform.localPosition += transform.up * Time.deltaTime * SPEED_MODIFIER;
             else if(!scaledBoss)
             {
+                lever.SetLeverActive(true);
+
                 ps.Play();
                 scaledBoss = true;
-                lever.SetLeverActive(true);
                 boss.BossScaleMult += BOSS_SCALE_MULT;
             }
         }
@@ -54,7 +55,6 @@ public class Pylon : MonoBehaviour, IFreezable
             {
                 ps.Stop();
                 scaledBoss = false;
-                lever.SetLeverActive(false);
                 boss.BossScaleMult -= BOSS_SCALE_MULT;
 
                 Invoke("AutoActivate", numPylonsActive > 0 ? 0.5f : 3f);
