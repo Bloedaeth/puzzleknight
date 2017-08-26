@@ -37,6 +37,7 @@ public class BossEnemy : ShieldedEnemy
     private NavMeshAgent agent;
     private Transform player;
     private Animator animator;
+    private ParticleSystem ps;
 
     private Vector3 originalScale;
 
@@ -54,6 +55,7 @@ public class BossEnemy : ShieldedEnemy
         ai = GetComponent<AICharacterControl>();
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>().transform;
+        ps = GetComponentInChildren<ParticleSystem>();
         animator = GetComponent<Animator>();
         attackHashStage1 = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
@@ -64,9 +66,15 @@ public class BossEnemy : ShieldedEnemy
     private void Update()
     {
         if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x)
+        {
+            ps.Play();
             hp.IsInvulnerable = true;
+        }
         else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x)
+        {
+            ps.Stop();
             hp.IsInvulnerable = false;
+        }
 
         if(hp.HealthRemaining <= hp.InitialAndMaxHealth / 2f && Stage != 2)
             Stage = 2;
