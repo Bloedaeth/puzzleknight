@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class RespawnColliderScript : MonoBehaviour
+public class DeathCollider : MonoBehaviour
 {
-    public Transform SpawnPoint;
-
     private void OnTriggerEnter(Collider other)
     {
         Health hp = other.GetComponent<Health>();
