@@ -13,6 +13,9 @@ public class Player : Entity
     public MeleeWeapon sword;
     public Shield shield;
 
+    /// <summary>Is Morpheus currently in a boss fight.</summary>
+    public bool InBossFight = false;
+
     /// <summary>Is Morpheus currently moving an object.</summary>
     public bool IsMovingObject = false;
 

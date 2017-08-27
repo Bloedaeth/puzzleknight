@@ -42,6 +42,12 @@ public class DeathAnimation : MonoBehaviour
                 transform.position = player.SpawnPoint.position;
                 anim.SetTrigger("Respawn");
 
+                if(player.InBossFight)
+                {
+                    FindObjectOfType<BossEnemy>().ResetBoss();
+                    player.InBossFight = false;
+                }
+
                 Destroy(this);
             }
         }
