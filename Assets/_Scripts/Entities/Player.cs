@@ -341,4 +341,12 @@ public class Player : Entity
         equippedItem.Throw();
         inventory.RemoveItem(inventory.EquippedItem);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Checkpoint"))
+        {
+            SpawnPoint = other.transform;
+        }
+    }
 }
