@@ -4,8 +4,8 @@ public class Health : MonoBehaviour
 {
     public GUIBarScript HealthText;
 
-    public float InitialAndMaxHealth = 100f;
-    public float HealthRemaining;
+    public int InitialAndMaxHealth = 100;
+    public int HealthRemaining;
 
     public bool WasAttackedRecently { get { return timeSinceDamageTaken < 0.5f; } }
     public float timeSinceDamageTaken;

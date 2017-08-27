@@ -7,7 +7,8 @@ public class RespawnColliderScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
-            other.transform.position = SpawnPoint.position;
+        Health hp = other.GetComponent<Health>();
+        if(hp)
+            hp.TakeDamage(hp.InitialAndMaxHealth);
     }
 }
