@@ -4,7 +4,7 @@
 
     public override int ShopCost { get { return 100; } }
 
-    public int Damage;
+    public float Damage;
 
     /// <summary>Uses the item on the given entity.</summary>
     /// <param name="self">The entity using the item.</param>

@@ -15,7 +15,13 @@ public class BossEnemy : ShieldedEnemy
         {
             stage = value;
             animator.SetInteger("Stage", stage);
-            pylons[stage - 1].SetPylonActive(true);
+            if(value == 0)
+            {
+                for(int i = 0; i < pylons.Count; ++i)
+                    pylons[i].ResetPylon();
+            }
+            else
+                pylons[stage - 1].SetPylonActive(true);
         }
     }
 
@@ -37,8 +43,10 @@ public class BossEnemy : ShieldedEnemy
     private NavMeshAgent agent;
     private Transform player;
     private Animator animator;
+    private GameObject startCollider;
 
     private Vector3 originalScale;
+    private Vector3 originalPosition;
 
     private const float GAME_SCALE_MULT = 10f;
     private int attackHashStage1;
@@ -49,6 +57,7 @@ public class BossEnemy : ShieldedEnemy
         pylons = FindObjectsOfType<Pylon>().OrderBy(p => p.ID).ToList();
 
         originalScale = transform.localScale;
+        originalPosition = transform.position;
 
         hp = GetComponent<Health>();
         ai = GetComponent<AICharacterControl>();
@@ -59,6 +68,7 @@ public class BossEnemy : ShieldedEnemy
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
         agent.stoppingDistance = 1.5f * GAME_SCALE_MULT;
+        startCollider = FindObjectOfType<StartBossFight>().gameObject;
     }
 
     private void Update()
@@ -113,11 +123,21 @@ public class BossEnemy : ShieldedEnemy
             }
         yield return null;
     }
+
+    public void ResetBoss()
+    {
+        Stage = 0;
+        ai.target = null;
+        transform.position = originalPosition;
+        transform.localScale = originalScale;
+        hp.HealthRemaining = hp.InitialAndMaxHealth;
+        startCollider.SetActive(true);
+    }
     
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
-    public override void Attack(Entity target, int damage)
+    public override void Attack(Entity target, float damage)
     {
         base.Attack(target, damage + 5 * Mathf.RoundToInt(bossScaleMult));
     }

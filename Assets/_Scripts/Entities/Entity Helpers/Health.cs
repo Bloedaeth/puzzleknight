@@ -31,7 +31,7 @@ public class Health : MonoBehaviour
 
     /// <summary>Deals damage to the entity, reducing its health.</summary>
     /// <param name="amount">The amount of damage to deal to the entity.</param>
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         timeSinceDamageTaken = 0f;
 

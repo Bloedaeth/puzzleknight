@@ -63,6 +63,16 @@ public class Pylon : MonoBehaviour, IFreezable
         SetPylonActive(true);
     }
 
+    public void ResetPylon()
+    {
+        if(isActive)
+        {
+            isActive = false;
+            scaledBoss = false;
+            --numPylonsActive;
+        }
+    }
+
     public void SetPylonActive(bool val)
     {
         isActive = val;

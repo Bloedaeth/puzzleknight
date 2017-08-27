@@ -13,6 +13,9 @@ public class Player : Entity
     public MeleeWeapon sword;
     public Shield shield;
 
+    /// <summary>Is Morpheus currently in a boss fight.</summary>
+    public bool InBossFight = false;
+
     /// <summary>Is Morpheus currently moving an object.</summary>
     public bool IsMovingObject = false;
 
@@ -343,7 +346,7 @@ public class Player : Entity
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
-    public override void Attack(Entity target, int damage)
+    public override void Attack(Entity target, float damage)
     {
         if(!(target is Enemy))
             return;
@@ -372,10 +375,13 @@ public class Player : Entity
         equippedItem.Throw();
         inventory.RemoveItem(inventory.EquippedItem);
     }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag.ToLower() == "shop")
+            shop = other.GetComponent<Shop>();
 
-	void OnTriggerEnter(Collider o) {
-		if (o.gameObject.tag.ToLower () == "shop") {
-			shop = o.GetComponent<Shop> ();
-		}
-	}
+        if(other.CompareTag("Checkpoint"))
+            SpawnPoint = other.transform;
+    }
 }
