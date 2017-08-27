@@ -21,11 +21,15 @@ public class Shop : MonoBehaviour
 
     private Player player;
 
+	private float shopOpenTime;
+	private float shopOpenRate;
+
     private void Awake()
     {
         player = FindObjectOfType<Player>();
         playerInventory = FindObjectOfType<Player>().GetComponent<Inventory>();
         shopInventory = GetComponentsInChildren<Item>(true).ToList();
+		IsOpen = false;
 
         for(int i = 0; i < shopInventory.Count; ++i)
         {
@@ -37,30 +41,55 @@ public class Shop : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<Player>())
-            player.NearInteractableObject = true;
+		if (other.GetComponent<Player> ()) 
+			player.NearInteractableObject = true;
+		
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if(Input.GetKeyDown(KeyCode.E) || (IsOpen && Input.GetKeyDown(KeyCode.Escape)))
-            ToggleGuiShop();
+		if (other.GetComponent<Player> ()) {
+			if (!playerInventory.IsOpen && Input.GetKeyDown (KeyCode.E) && Time.time > shopOpenTime) {
+				ToggleGuiShop ();
+				shopOpenRate = Time.deltaTime;
+				shopOpenTime = Time.time + shopOpenRate;
+			}
+
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				ToggleGuiShop (false);
+			}
+		}
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.GetComponent<Player>())
-            player.NearInteractableObject = false;
+		if (other.GetComponent<Player> ()) {
+			player.NearInteractableObject = false;
+			// Sometimes the Shop inventory stays open after an E press, and if the character moves out of the trigger, pressing E won't close it
+			ToggleGuiShop (false);
+		}
     }
 
     /// <summary>Toggles the visibility of the GUI Shop.</summary>
     public void ToggleGuiShop()
     {
-        IsOpen = !GuiShop.gameObject.activeInHierarchy;
+        IsOpen = !IsOpen;
         GuiShop.gameObject.SetActive(IsOpen);
         player.Shopping = !player.Shopping;
         player.StopMovement();
+		print (IsOpen);
     }
+		
+	/// <summary>Sets the visibility of the GUI Shop.</summary>
+	/// <param name="state"> determines whether the UI is open (true) or closed (false).</param>
+	public void ToggleGuiShop(bool state)
+	{
+		IsOpen = state;
+		GuiShop.gameObject.SetActive(IsOpen);
+		player.Shopping = state;
+		player.StopMovement(state);
+	}
+		
 
     /// <summary>Purchases the selected item, if the player can afford it.</summary>
     /// <param name="index">The index of the item in the shop.</param>

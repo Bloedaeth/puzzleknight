@@ -42,6 +42,7 @@ public class Player : Entity
     private Rigidbody rigidBody;
 
     private Inventory inventory;
+	private Shop shop;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
 	private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl thirdPersonUserControl;
     private Animator animator;
@@ -106,9 +107,18 @@ public class Player : Entity
             return;
         }
 
-        if((!NearInteractableObject && Input.GetKeyDown(KeyCode.I)) || (inventory.IsOpen && Input.GetKeyDown(KeyCode.Escape)))
-            ToggleInventory();
+		if (!Shopping && Input.GetKeyDown (KeyCode.I)) {
+			ToggleInventory ();
+		}
 
+		//Turn all inventory menus off, regardless of states, this essentially resets the inventory state
+		if(Input.GetKeyDown(KeyCode.Escape)) {
+			ToggleInventory(false);
+			if (shop != null) {
+				shop.ToggleGuiShop (false);
+			}
+		}
+		
         if(Input.GetKeyDown(KeyCode.R))
             transform.position = SpawnPoint.position;
 
@@ -247,6 +257,13 @@ public class Player : Entity
         inventory.ToggleGuiInventory();
         StopMovement();
     }
+	
+	///<summary>Change of ToggleInventory() to allow code to set the state of the inventory, on (true) and off (false)</summary>
+	///<param name="state">determines the inventory presence, true = on, false = off.
+	private void ToggleInventory(bool state) {
+		inventory.ToggleGuiInventory(state);
+		StopMovement(state);
+	}
 
     public void StopMovement()
     {
@@ -256,6 +273,20 @@ public class Player : Entity
         animator.SetFloat("Speed", 0);
         thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
         freeLookCam.hideCursor = !freeLookCam.hideCursor;
+    }
+	
+	///<summary>Change of StopMovement(), allows the code to set a devinitive state as opposed to toggling between the states</summary>
+	///<param name="state"> controls whether to stop movement; on (true), or off (false).</param>
+	public void StopMovement(bool state) 
+    {
+		
+        //stop camera from moving around while inventory is open
+        freeLookCam.orbitActive = !state;
+        //stop the player from moving while the inventory is open
+        if (!state) animator.SetFloat("Speed", 0);
+		
+        thirdPersonUserControl.movementActive = !state;
+        freeLookCam.hideCursor = !state;
     }
 
     private void MoveObject()
@@ -341,4 +372,10 @@ public class Player : Entity
         equippedItem.Throw();
         inventory.RemoveItem(inventory.EquippedItem);
     }
+
+	void OnTriggerEnter(Collider o) {
+		if (o.gameObject.tag.ToLower () == "shop") {
+			shop = o.GetComponent<Shop> ();
+		}
+	}
 }

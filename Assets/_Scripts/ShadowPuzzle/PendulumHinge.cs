@@ -34,7 +34,7 @@ public class PendulumHinge : MonoBehaviour {
 
 		pen = hinge.GetComponentInChildren<Pendulum> ();
 
-		if (degreeSwing == null) {
+		if (degreeSwing == 0f) {
 			degreeSwing = 30f;
 		}
 

@@ -15,7 +15,7 @@ public GameObject puzzleDoor;
     public Image GuiEquippedItem;
     public Text MoneyText;
 
-    public bool IsOpen { get; private set; }
+	public bool IsOpen { get; private set; }
 
     public int Count { get { return inventory.Count; } }
 
@@ -32,6 +32,8 @@ public GameObject puzzleDoor;
     {
         inventoryLimit = GuiInventory.childCount;
         guiInventorySlots = GuiInventory.GetChild(1).GetComponentsInChildren<Image>();
+
+		ToggleGuiInventory(false);
     }
 
     private void Update()
@@ -47,6 +49,14 @@ public GameObject puzzleDoor;
     public void ToggleGuiInventory()
     {
         IsOpen = !GuiInventory.gameObject.activeInHierarchy;
+        GuiInventory.gameObject.SetActive(IsOpen);
+    }
+	
+	/// <summary>Sets the visibility of the GUI Inventory.</summary>
+	/// <param name="state">controls the state of the inventory, on (true) and off (false)</param>
+    public void ToggleGuiInventory(bool state)
+    {
+        IsOpen = state;
         GuiInventory.gameObject.SetActive(IsOpen);
     }
 
