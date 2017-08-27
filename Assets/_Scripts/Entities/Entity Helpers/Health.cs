@@ -4,8 +4,8 @@ public class Health : MonoBehaviour
 {
     public GUIBarScript HealthText;
 
-    public int InitialAndMaxHealth = 100;
-    public int HealthRemaining;
+    public float InitialAndMaxHealth = 100f;
+    public float HealthRemaining;
 
     public bool WasAttackedRecently { get { return timeSinceDamageTaken < 0.5f; } }
     public float timeSinceDamageTaken;
@@ -31,7 +31,7 @@ public class Health : MonoBehaviour
 
     /// <summary>Deals damage to the entity, reducing its health.</summary>
     /// <param name="amount">The amount of damage to deal to the entity.</param>
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         timeSinceDamageTaken = 0f;
 
