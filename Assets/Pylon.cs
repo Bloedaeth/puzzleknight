@@ -9,20 +9,22 @@ public class Pylon : MonoBehaviour, IFreezable
 
     private Lever lever;
     private BossEnemy boss;
+    private ParticleSystem ps;
 
     private bool isActive = false;
     private bool scaledBoss = false;
 
     private float SPEED_MODIFIER = 5f;
-    private float MIN_HEIGHT = 470f;
-    private float MAX_HEIGHT = 490f;
+    private float MIN_HEIGHT = 456f;
+    private float MAX_HEIGHT = 480.5f;
 
     private float BOSS_SCALE_MULT = 0.8f;
 
     private void Start()
     {
-        lever = GetComponentInChildren<Lever>();
+        lever = transform.parent.GetComponentInChildren<Lever>();
         boss = FindObjectOfType<BossEnemy>();
+        ps = GetComponentInChildren<ParticleSystem>();
     }
 
     private void Update()
@@ -38,8 +40,10 @@ public class Pylon : MonoBehaviour, IFreezable
                 transform.localPosition += transform.up * Time.deltaTime * SPEED_MODIFIER;
             else if(!scaledBoss)
             {
-                scaledBoss = true;
                 lever.SetLeverActive(true);
+
+                ps.Play();
+                scaledBoss = true;
                 boss.BossScaleMult += BOSS_SCALE_MULT;
             }
         }
@@ -49,8 +53,8 @@ public class Pylon : MonoBehaviour, IFreezable
                 transform.localPosition -= transform.up * Time.deltaTime * SPEED_MODIFIER;
             else if(scaledBoss)
             {
+                ps.Stop();
                 scaledBoss = false;
-                lever.SetLeverActive(false);
                 boss.BossScaleMult -= BOSS_SCALE_MULT;
 
                 Invoke("AutoActivate", numPylonsActive > 0 ? 0.5f : 3f);
