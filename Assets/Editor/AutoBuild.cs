@@ -5,7 +5,7 @@ public class AutoBuild
 {
 	static void BuildGame()
     {
-        string[] scenes = { "Assets/_Scenes/Testing Maze.unity" };
+        string[] scenes = { "Assets/_Scenes/Deliverable.unity" };
         BuildPipeline.BuildPlayer(scenes, "Builds/Windows/PuzzleKnight.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
     }
 
