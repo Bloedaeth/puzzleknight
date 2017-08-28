@@ -22,7 +22,7 @@ public class Pylon : MonoBehaviour, IFreezable
 
     private void Start()
     {
-        lever = GetComponentInChildren<Lever>();
+        lever = transform.parent.GetComponentInChildren<Lever>();
         boss = FindObjectOfType<BossEnemy>();
         ps = GetComponentInChildren<ParticleSystem>();
     }
