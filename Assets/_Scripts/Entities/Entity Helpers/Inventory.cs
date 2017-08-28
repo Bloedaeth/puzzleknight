@@ -8,9 +8,9 @@ public class Inventory : MonoBehaviour
 public GameObject puzzleDoor;
 
     public Transform GuiInventory;
-    public Transform MissingDoorPieces;
-    public Transform CollectedDoorPieces;
-    public Sprite[] CollectedPieceImages;
+    public Transform GuiMissingDoorPieces;
+    public Transform GuiCollectedDoorPieces;
+    public Sprite[] GuiCollectedPieceImages;
 
     public Image GuiEquippedItem;
     public Text MoneyText;
@@ -25,6 +25,7 @@ public GameObject puzzleDoor;
 
     private List<Item> inventory = new List<Item>();
     private Image[] guiInventorySlots;
+    private CollectableDoorPiece[] collectablePieces;
 
     private int inventoryLimit;
 
@@ -32,14 +33,14 @@ public GameObject puzzleDoor;
     {
         inventoryLimit = GuiInventory.childCount;
         guiInventorySlots = GuiInventory.GetChild(1).GetComponentsInChildren<Image>();
-
+        collectablePieces = FindObjectsOfType<CollectableDoorPiece>();
 		ToggleGuiInventory(false);
     }
 
     private void Update()
     {
-        foreach(Transform child in MissingDoorPieces)
-            if(child.gameObject.activeInHierarchy)
+        foreach(CollectableDoorPiece piece in collectablePieces)
+            if(piece.gameObject.activeInHierarchy)
                 return;
 
         puzzleDoor.SetActive(false);
@@ -149,16 +150,16 @@ public GameObject puzzleDoor;
         switch(piece)
         {
             case CollectableDoorPiece.DoorPiece.Frame:
-                MissingDoorPieces.GetChild(0).gameObject.SetActive(false);
-                CollectedDoorPieces.GetChild(0).GetComponent<Image>().sprite = CollectedPieceImages[0];
+                GuiMissingDoorPieces.GetChild(0).gameObject.SetActive(false);
+                GuiCollectedDoorPieces.GetChild(0).GetComponent<Image>().sprite = GuiCollectedPieceImages[0];
                 break;
             case CollectableDoorPiece.DoorPiece.Panel:
-                MissingDoorPieces.GetChild(1).gameObject.SetActive(false);
-                CollectedDoorPieces.GetChild(1).GetComponent<Image>().sprite = CollectedPieceImages[1];
+                GuiMissingDoorPieces.GetChild(1).gameObject.SetActive(false);
+                GuiCollectedDoorPieces.GetChild(1).GetComponent<Image>().sprite = GuiCollectedPieceImages[1];
                 break;
             case CollectableDoorPiece.DoorPiece.Knob:
-                MissingDoorPieces.GetChild(2).gameObject.SetActive(false);
-                CollectedDoorPieces.GetChild(2).GetComponent<Image>().sprite = CollectedPieceImages[2];
+                GuiMissingDoorPieces.GetChild(2).gameObject.SetActive(false);
+                GuiCollectedDoorPieces.GetChild(2).GetComponent<Image>().sprite = GuiCollectedPieceImages[2];
                 break;
         }
     }
