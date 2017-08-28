@@ -2,7 +2,6 @@
 using UnityEngine;
 
 public class FallingPlatform : MonoBehaviour {
-
     private Rigidbody rbody;
     public float fallDelay;
 
