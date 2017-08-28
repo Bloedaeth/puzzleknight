@@ -135,9 +135,12 @@ public class BossEnemy : ShieldedEnemy
     public void ResetBoss()
     {
         Stage = 0;
-        ai.target = null;
+        BossScaleMult = 1f;
+        
+        ai.SetTarget(null);
+        ai.agent.SetDestination(originalPosition);
+
         transform.position = originalPosition;
-        transform.localScale = originalScale;
         hp.HealthRemaining = hp.InitialAndMaxHealth;
         startCollider.SetActive(true);
     }

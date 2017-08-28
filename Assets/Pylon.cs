@@ -71,6 +71,7 @@ public class Pylon : MonoBehaviour, IFreezable
     {
         if(isActive)
         {
+            ps.Stop();
             isActive = false;
             scaledBoss = false;
             --numPylonsActive;
