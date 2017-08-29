@@ -85,7 +85,11 @@ public class ShadowModifier : MonoBehaviour {
 				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
 			}
 			if (!emitted) {
-				particle.Emit (5);
+				if (particle == null) {
+					ResetParticleSystem ();
+				} else {
+					particle.Play ();
+				}
 				emitted = true;
 			}
 
@@ -163,5 +167,13 @@ public class ShadowModifier : MonoBehaviour {
 			}
 		}
 		return false;
+	}
+
+	public void ResetParticleSystem() {
+		particle = GetComponentInChildren<ParticleSystem> ();
+	}
+
+	public bool hasParticleSystem() {
+		return particle != null;
 	}
 }

@@ -77,7 +77,6 @@ public class Shop : MonoBehaviour
         GuiShop.gameObject.SetActive(IsOpen);
         player.Shopping = !player.Shopping;
         player.StopMovement();
-		print (IsOpen);
     }
 		
 	/// <summary>Sets the visibility of the GUI Shop.</summary>
