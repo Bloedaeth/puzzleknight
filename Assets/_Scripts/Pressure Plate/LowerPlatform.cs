@@ -7,7 +7,7 @@ public class LowerPlatform : MonoBehaviour
 
     private const float MAX_HEIGHT = -5.6f;
     private const float MIN_HEIGHT = -10.5f;
-    private const int SPEED_MODIFIER = 1;
+    private const float SPEED_MODIFIER = 2f;
 
     private void Update()
     {
