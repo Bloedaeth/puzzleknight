@@ -106,7 +106,9 @@ public class BossEnemy : ShieldedEnemy
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
             if(state.fullPathHash != attackHashStage1 && state.fullPathHash != attackHashStage2)
             {
-                transform.LookAt(player); //AI tends to attack at air because wrong rotation
+                Vector3 look = player.position - transform.position;
+                look.y = 0;
+                transform.rotation = Quaternion.LookRotation(look);
                 animator.SetTrigger("Attack");
             }
         }

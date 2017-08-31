@@ -116,10 +116,11 @@ public class GruntEnemy : ShieldedEnemy
             if (state.fullPathHash != attackHash)
             {
                 timer2 += Time.deltaTime;
-
+                Vector3 look = player.position - transform.position;
+                look.y = 0;
+                transform.rotation = Quaternion.LookRotation(look);
                 if (timer2 >= attackTimer)
                 {
-                    transform.LookAt(player); //AI tends to attack at air because wrong rotation
                     animator.SetTrigger("Attack");
                     timer2 = 0;
                 }

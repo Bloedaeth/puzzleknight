@@ -14,6 +14,8 @@ public class TimeFreeze : MonoBehaviour
     public new SphereCollider collider;
     private ParticleSystem.ShapeModule particleShape;
 
+    public bool freezeUsed;
+
     private void Awake()
     {
         ParticleSystem ps = collider.GetComponent<ParticleSystem>();
@@ -39,22 +41,23 @@ public class TimeFreeze : MonoBehaviour
 
     private IEnumerator ExpandFreezeRadius(float time, float radius)
     {
-        for(float i = collider.radius; i <= radius * GAME_SCALE; i += EXPANSION_RATE * GAME_SCALE)
+        freezeUsed = true;
+        for (float i = collider.radius; i <= radius * GAME_SCALE; i += EXPANSION_RATE * GAME_SCALE)
         {
             collider.radius = i;
             particleShape.radius = i;
             yield return new WaitForFixedUpdate();
         }
-
+        
         yield return new WaitForSeconds(time);
-
+        
         for(float i = collider.radius; i >= 0.1f; i -= EXPANSION_RATE * GAME_SCALE)
         {
             collider.radius = i;
             particleShape.radius = i;
             yield return new WaitForFixedUpdate();
         }
-
+        freezeUsed = false;
         collider.gameObject.SetActive(false);
     }
 }

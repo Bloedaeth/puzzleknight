@@ -130,8 +130,11 @@ public class Player : Entity
         if(inventory.IsOpen || Shopping)
             return;
 
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) && timeFreeze.freezeUsed == false)
+        {
             timeFreeze.FreezeTime(5f, 30f);
+        }
+            
         
         MoveObject();
 
@@ -143,12 +146,59 @@ public class Player : Entity
         CheckScrollItem();
         CheckUseItem();
 
+        //CheckFalling();
+        if (Input.GetKeyDown(KeyCode.L))
+            Debug.Log(rigidBody.velocity.y);
+
         //if(Input.GetKeyDown(KeyCode.I))
         //    transform.position = GameObject.Find("ShadowPuzzleSpawn").transform.position;
         //if(Input.GetKeyDown(KeyCode.O))
         //    transform.position = GameObject.Find("JumpPuzzleSpawn").transform.position;
         //if(Input.GetKeyDown(KeyCode.P))
         //    transform.position = GameObject.Find("PressurePlatePuzzleSpawn").transform.position;
+    }
+
+    private void CheckFalling()
+    {
+        /*
+        Vector3 horizontalMove = rigidBody.velocity;
+        horizontalMove.y = 0;
+        float distance = horizontalMove.magnitude * Time.fixedDeltaTime;
+        horizontalMove.Normalize();
+        RaycastHit hit;
+
+        if (rigidBody.SweepTest(horizontalMove, out hit, distance))
+        {
+            rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
+        }
+
+    */
+        /*
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 0.01f * 10))
+        {
+            if (!Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10))
+            {
+                if (hit.transform.tag == "Decor")
+                {
+                    animator.SetFloat("Speed", 0);
+                    thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+                }
+            }
+            else
+            {
+                thirdPersonUserControl.movementActive = true;
+            }
+        }
+        */
+
+        if(Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10) && rigidBody.velocity.y < 0.003)
+        {
+            animator.SetFloat("Speed", 0);
+            thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+        }
+        else
+            thirdPersonUserControl.movementActive = true;
     }
 
     private void CheckRunning()
