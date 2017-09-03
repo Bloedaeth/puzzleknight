@@ -260,7 +260,13 @@ public class Player : Entity
             else
             {
                 bool switched = false;
-                for(int i = inventory.Count - 1; i >= 0; --i)
+                for(int i = item.TypeId; i > 0; --i)
+                {
+                    int itemIndex;
+                    bool found = inventory.GetItemIndexById(i, out itemIndex);
+                    if(found)
+                        inventory.EquipItem(itemIndex);
+                } for(int i = inventory.Count - 1; i >= 0; --i)
                     if(inventory.GetItem(i).TypeId < item.TypeId)
                     {
                         switched = true;

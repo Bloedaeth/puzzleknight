@@ -13,6 +13,8 @@ public GameObject puzzleDoor;
     public Sprite[] GuiCollectedPieceImages;
 
     public Image GuiEquippedItem;
+    public Image GuiNextEquippedItem;
+    public Image GuiPrevEquippedItem;
     public Text MoneyText;
 
 	public bool IsOpen { get; private set; }
@@ -23,18 +25,26 @@ public GameObject puzzleDoor;
 
     public Item EquippedItem { get; private set; }
 
+    private Item nextEquippedItem;
+    private Item prevEquippedItem;
+
     private List<Item> inventory = new List<Item>();
     private Image[] guiInventorySlots;
     private CollectableDoorPiece[] collectablePieces;
 
     private int inventoryLimit;
 
+    public Item[] initialItems;
     private void Awake()
     {
-        inventoryLimit = GuiInventory.childCount;
         guiInventorySlots = GuiInventory.GetChild(1).GetComponentsInChildren<Image>();
+        inventoryLimit = guiInventorySlots.Length;
         collectablePieces = FindObjectsOfType<CollectableDoorPiece>();
 		ToggleGuiInventory(false);
+
+
+        foreach(Item i in initialItems)
+            AddItem(i);
     }
 
     private void Update()
@@ -81,8 +91,56 @@ public GameObject puzzleDoor;
 
         inventory.Add(item);
         item.gameObject.SetActive(false);
+        
+        SetNextEquippables();
 
         Sort(item);
+    }
+
+    private void SetNextEquippables()
+    {
+        if(inventory.Count == 0)
+            return;
+
+        if(EquippedItem == null)
+        {
+            nextEquippedItem = inventory[0];
+            GuiNextEquippedItem.sprite = nextEquippedItem.Icon;
+
+            prevEquippedItem = inventory[inventory.Count - 1];
+            GuiPrevEquippedItem.sprite = prevEquippedItem.Icon;
+        }
+        else
+        {
+            int index;
+            bool found = GetItemIndexById(EquippedItem.TypeId + 1, out index);
+            if(found)
+            {
+                nextEquippedItem = inventory[index];
+                GuiNextEquippedItem.sprite = nextEquippedItem.Icon;
+            }
+
+            found = GetItemIndexById(EquippedItem.TypeId + 1, out index);
+            if(found)
+            {
+                prevEquippedItem = inventory[index];
+                GuiPrevEquippedItem.sprite = prevEquippedItem.Icon;
+            }
+        }
+    }
+
+    public bool GetItemIndexById(int id, out int index)
+    {
+        for(int i = 0; i < inventory.Count; ++i)
+        {
+            if(GetItem(i).TypeId < id)
+            {
+                index = i;
+                return true;
+            }
+        }
+        index = -1;
+        return false;
     }
 
     /// <summary>Removes an item from the player's inventory.</summary>
