@@ -25,7 +25,7 @@ public GameObject puzzleDoor;
 
     private List<Item> inventory = new List<Item>();
     private Image[] guiInventorySlots;
-    private CollectableDoorPiece[] collectablePieces;
+    private DoorPiece[] collectablePieces;
 
     private int inventoryLimit;
 
@@ -33,13 +33,13 @@ public GameObject puzzleDoor;
     {
         guiInventorySlots = GuiInventory.GetChild(1).GetComponentsInChildren<Image>();
         inventoryLimit = guiInventorySlots.Length;
-        collectablePieces = FindObjectsOfType<CollectableDoorPiece>();
+        collectablePieces = FindObjectsOfType<DoorPiece>();
 		ToggleGuiInventory(false);
     }
 
     private void Update()
     {
-        foreach(CollectableDoorPiece piece in collectablePieces)
+        foreach(DoorPiece piece in collectablePieces)
             if(piece.gameObject.activeInHierarchy)
                 return;
 
@@ -145,19 +145,19 @@ public GameObject puzzleDoor;
 
     /// <summary>Sets the door piece as having been collected in the inventory.</summary>
     /// <param name="piece">The piece that has been collected.</param>
-    public void AddDoorPiece(CollectableDoorPiece.DoorPiece piece)
+    public void AddDoorPiece(DoorPiece.PieceType piece)
     {
         switch(piece)
         {
-            case CollectableDoorPiece.DoorPiece.Frame:
+            case DoorPiece.PieceType.Frame:
                 GuiMissingDoorPieces.GetChild(0).gameObject.SetActive(false);
                 GuiCollectedDoorPieces.GetChild(0).GetComponent<Image>().sprite = GuiCollectedPieceImages[0];
                 break;
-            case CollectableDoorPiece.DoorPiece.Panel:
+            case DoorPiece.PieceType.Panel:
                 GuiMissingDoorPieces.GetChild(1).gameObject.SetActive(false);
                 GuiCollectedDoorPieces.GetChild(1).GetComponent<Image>().sprite = GuiCollectedPieceImages[1];
                 break;
-            case CollectableDoorPiece.DoorPiece.Knob:
+            case DoorPiece.PieceType.Knob:
                 GuiMissingDoorPieces.GetChild(2).gameObject.SetActive(false);
                 GuiCollectedDoorPieces.GetChild(2).GetComponent<Image>().sprite = GuiCollectedPieceImages[2];
                 break;
