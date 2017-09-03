@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+
+
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
 public class Player : Entity
@@ -74,6 +76,7 @@ public class Player : Entity
         animator = GetComponent<Animator>();
         timeFreeze = GetComponent<TimeFreeze>();
         rigidBody = GetComponent<Rigidbody>();
+        
 
         attackerList = new GameObject[2];
         
@@ -260,13 +263,7 @@ public class Player : Entity
             else
             {
                 bool switched = false;
-                for(int i = item.TypeId; i > 0; --i)
-                {
-                    int itemIndex;
-                    bool found = inventory.GetItemIndexById(i, out itemIndex);
-                    if(found)
-                        inventory.EquipItem(itemIndex);
-                } for(int i = inventory.Count - 1; i >= 0; --i)
+                for(int i = inventory.Count - 1; i >= 0; --i)
                     if(inventory.GetItem(i).TypeId < item.TypeId)
                     {
                         switched = true;
@@ -440,4 +437,5 @@ public class Player : Entity
         if(other.CompareTag("Checkpoint"))
             SpawnPoint = other.transform;
     }
-}
+
+    }
