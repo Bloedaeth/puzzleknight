@@ -302,7 +302,7 @@ public class Player : Entity
     {
 		shield.IsBlocking = value;
 		//thirdPersonUserControl.isAiming = value;
-        animator.SetBool("Block", value);
+        animator.SetBool("Blocking", value);
     }
 
     private void ToggleInventory()
@@ -323,7 +323,7 @@ public class Player : Entity
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !freeLookCam.orbitActive;
         //stop the player from moving while the inventory is open
-        animator.SetFloat("Speed", 0);
+        animator.SetFloat("Forward", 0);
         thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
         freeLookCam.hideCursor = !freeLookCam.hideCursor;
     }
@@ -336,7 +336,7 @@ public class Player : Entity
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !state;
         //stop the player from moving while the inventory is open
-        if (!state) animator.SetFloat("Speed", 0);
+        if (!state) animator.SetFloat("Forward", 0);
 		
         thirdPersonUserControl.movementActive = !state;
         freeLookCam.hideCursor = !state;

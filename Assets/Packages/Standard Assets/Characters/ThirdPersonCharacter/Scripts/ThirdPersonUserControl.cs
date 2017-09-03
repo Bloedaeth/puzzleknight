@@ -35,8 +35,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         public Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
 
-		private float runSpeed = 2f;
-		private float walkSpeed = 0.15f;
+		private float runSpeed = 1f;
+		private float walkSpeed = 0.6f;
         
         private void Start()
         {
