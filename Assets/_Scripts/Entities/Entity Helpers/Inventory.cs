@@ -31,8 +31,8 @@ public GameObject puzzleDoor;
 
     private void Awake()
     {
-        inventoryLimit = GuiInventory.childCount;
         guiInventorySlots = GuiInventory.GetChild(1).GetComponentsInChildren<Image>();
+        inventoryLimit = guiInventorySlots.Length;
         collectablePieces = FindObjectsOfType<CollectableDoorPiece>();
 		ToggleGuiInventory(false);
     }
