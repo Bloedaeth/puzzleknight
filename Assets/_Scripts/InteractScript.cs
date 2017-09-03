@@ -16,6 +16,12 @@ public class InteractScript : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(FindObjectOfType<Player>().Shopping)
+            customImage.enabled = false;
+    }
+
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
