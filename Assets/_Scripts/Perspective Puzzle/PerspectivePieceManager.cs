@@ -16,7 +16,9 @@ public class PerspectivePieceManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		SetupEmpty ();
+		if (emptyPiece == null) {
+			SetupEmpty ();
+		}
 		SetupPieces ();
 		SetupHolders ();
 
@@ -32,6 +34,10 @@ public class PerspectivePieceManager : MonoBehaviour {
 
 	void SetupPieces() {
 		PerspectivePiece[] pp = GetComponentsInChildren<PerspectivePiece> ();
+
+		if (pp.Length == 0) {
+			Debug.LogError ("pp.Length == 0, pp.Length should not = 0");
+		}
 
 		pieces = new GameObject[pp.Length];
 
@@ -61,6 +67,7 @@ public class PerspectivePieceManager : MonoBehaviour {
 		float scale = (pVec.magnitude / DoorToCam.magnitude);
 
 		p.transform.localScale = new Vector3(scale,scale,scale);
+		p.GetComponent<PerspectivePiece> ().ResizeParticle (scale);
 	}
 
 	public bool IndexesAllCorrect() {
