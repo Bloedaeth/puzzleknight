@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
@@ -102,25 +101,24 @@ public class Player : Entity
 
         if(tutorial.activeInHierarchy)
         {
-            if(Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                tutorial.SetActive(false);
-                thirdPersonUserControl.enabled = true;
-            }
+            if(Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Escape))
+                ToggleControls(false);
             return;
         }
 
-		if (!Shopping && Input.GetKeyDown (KeyCode.I)) {
+		if(!Shopping && Input.GetKeyDown (KeyCode.I))
 			ToggleInventory ();
-		}
 
-		//Turn all inventory menus off, regardless of states, this essentially resets the inventory state
-		if(Input.GetKeyDown(KeyCode.Escape)) {
-			ToggleInventory(false);
-			if (shop != null) {
-				shop.ToggleGuiShop (false);
-			}
-		}
+        //Turn all inventory menus off, regardless of states, this essentially resets the inventory state
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(inventory.IsOpen)
+                ToggleInventory(false);
+            else if(shop != null && shop.IsOpen)
+                shop.ToggleGuiShop(false);
+            else
+                ToggleControls(true);
+        }
 		
         if(Input.GetKeyDown(KeyCode.R))
             transform.position = SpawnPoint.position;
@@ -131,9 +129,7 @@ public class Player : Entity
             return;
 
         if (Input.GetKeyDown(KeyCode.Z) && timeFreeze.freezeUsed == false)
-        {
             timeFreeze.FreezeTime(5f, 30f);
-        }
             
         
         MoveObject();
@@ -156,6 +152,12 @@ public class Player : Entity
         //    transform.position = GameObject.Find("JumpPuzzleSpawn").transform.position;
         //if(Input.GetKeyDown(KeyCode.P))
         //    transform.position = GameObject.Find("PressurePlatePuzzleSpawn").transform.position;
+    }
+
+    private void ToggleControls(bool state)
+    {
+        tutorial.SetActive(state);
+        thirdPersonUserControl.enabled = !state;
     }
 
     private void CheckFalling()

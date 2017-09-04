@@ -54,10 +54,6 @@ public class Shop : MonoBehaviour
 				shopOpenRate = Time.deltaTime;
 				shopOpenTime = Time.time + shopOpenRate;
 			}
-
-			if (Input.GetKeyDown (KeyCode.Escape)) {
-				ToggleGuiShop (false);
-			}
 		}
     }
 
