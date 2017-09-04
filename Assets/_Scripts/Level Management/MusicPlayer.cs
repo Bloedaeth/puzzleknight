@@ -1,42 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(AudioSource))]
 public class MusicPlayer : MonoBehaviour
 {
     public AudioClip[] musicArray;
 
+    private Player player;
+    private new AudioSource audio;
+
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        GetComponent<AudioSource>().volume = PlayerPrefs.HasKey("Volume") ? PlayPrefs.Volume : 0.5f;
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+
+        audio = GetComponent<AudioSource>();
+        audio.volume = PlayPrefs.Volume;
+        audio.clip = musicArray[0];
+        audio.loop = true;
+        audio.Play();
     }
 
-    void OnLevelWasLoaded(int level)
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if(SceneManager.GetActiveScene().name.Contains("Level"))
+        player = FindObjectOfType<Player>();
+        string sceneName = scene.name;
+        if(audio.clip != musicArray[0] && (sceneName.Contains("Start") || sceneName.Contains("Options") || sceneName.Contains("Controls")))
+            PlayMusicAtIndex(0);
+        else if(player)
         {
-            GetComponent<AudioSource>().clip = musicArray[3];
-            GetComponent<AudioSource>().loop = true;
-            GetComponent<AudioSource>().Play();
+            if(audio.clip != musicArray[2] && player.InBossFight)
+                PlayMusicAtIndex(2);
+            else if(audio.clip != musicArray[1])
+                PlayMusicAtIndex(1);
         }
-        else if(GetComponent<AudioSource>().clip != musicArray[1] && (SceneManager.GetActiveScene().name.Contains("Start")
-                || SceneManager.GetActiveScene().name.Contains("Options") || SceneManager.GetActiveScene().name.Contains("Controls")))
-        {
-            GetComponent<AudioSource>().clip = musicArray[1];
-            GetComponent<AudioSource>().loop = true;
-            GetComponent<AudioSource>().Play();
-        }
-        else if(SceneManager.GetActiveScene().name.Contains("Win"))
-        {
-            GetComponent<AudioSource>().clip = musicArray[3];
-            GetComponent<AudioSource>().loop = true;
-            GetComponent<AudioSource>().Play();
-        }
-        else if(SceneManager.GetActiveScene().name.Contains("Lose"))
-        {
-            GetComponent<AudioSource>().clip = musicArray[2];
-            GetComponent<AudioSource>().loop = true;
-            GetComponent<AudioSource>().Play();
-        }
+    }
+
+    private void PlayMusicAtIndex(int index)
+    {
+        audio.clip = musicArray[index];
+        audio.loop = true;
+        audio.Play();
     }
 }
