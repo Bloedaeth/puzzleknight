@@ -129,18 +129,14 @@ public class Shop : MonoBehaviour
 
     public void ShowToolTip(int slot)
     {
-        Debug.Log("show shop " + slot + " " + shopInventory.Count);
         if(slot < shopInventory.Count)
             tooltip.Display(shopInventory[slot].ShopTooltip);
         else
             tooltip.Display(null);
-//        tooltip.SetActive(true);
     }
 
     public void HideToolTip()
     {
-        Debug.Log("hide shop");
         tooltip.Display(null);
-//        tooltip.SetActive(false);
     }
 }

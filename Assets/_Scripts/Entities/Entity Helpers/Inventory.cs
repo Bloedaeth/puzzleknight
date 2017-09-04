@@ -172,18 +172,14 @@ public GameObject puzzleDoor;
 
     public void ShowToolTip(int slot)
     {
-        Debug.Log("show inv" + slot);
         if(slot < inventory.Count)
             tooltip.Display(inventory[slot].InventoryTooltip);
         else
             tooltip.Display(null);
-//        tooltip.SetActive(true);
     }
 
     public void HideToolTip()
     {
-        Debug.Log("hide inv");
         tooltip.Display(null);
-//        tooltip.SetActive(false);
     }
 }
