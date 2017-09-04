@@ -241,7 +241,7 @@ public class Player : Entity
     private void CheckAttacking()
     {        
         if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateThreeHash)
-            animator.SetTrigger("Attack");
+            animator.SetTrigger("LightAttack");
     }
 
     public void AttackPlaySound()
