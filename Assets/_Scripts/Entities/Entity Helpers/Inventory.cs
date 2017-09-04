@@ -14,8 +14,8 @@ public GameObject puzzleDoor;
 
     public Image GuiEquippedItem;
     public Text MoneyText;
-    public GameObject tooltipobject;
-    private static GameObject tooltip;
+    public ToolTip tooltip;
+    //private static GameObject tooltip;
 
 	public bool IsOpen { get; private set; }
 
@@ -37,7 +37,7 @@ public GameObject puzzleDoor;
         inventoryLimit = guiInventorySlots.Length;
         collectablePieces = FindObjectsOfType<DoorPiece>();
 		ToggleGuiInventory(false);
-        tooltip = tooltipobject;
+        //tooltip = tooltipobject;
     }
 
     private void Update()
@@ -167,12 +167,18 @@ public GameObject puzzleDoor;
         }
     }
 
-    public void ShowToolTip(GameObject slot)
+    public void ShowToolTip(int slot)
     {
-        tooltip.SetActive(true);
+        if(slot < inventory.Count)
+            tooltip.Display(inventory[slot]);
+        else
+            tooltip.Display(null);
+//        tooltip.SetActive(true);
     }
+
     public void HideToolTip()
     {
-        tooltip.SetActive(false);
+        tooltip.Display(null);
+//        tooltip.SetActive(false);
     }
 }
