@@ -14,8 +14,8 @@ public GameObject puzzleDoor;
 
     public Image GuiEquippedItem;
     public Text MoneyText;
+
     public ToolTip tooltip;
-    //private static GameObject tooltip;
 
 	public bool IsOpen { get; private set; }
 
@@ -28,7 +28,7 @@ public GameObject puzzleDoor;
     private List<Item> inventory = new List<Item>();
     private Image[] guiInventorySlots;
     private DoorPiece[] collectablePieces;
-
+    
     private int inventoryLimit;
 
     private void Awake()
@@ -37,7 +37,6 @@ public GameObject puzzleDoor;
         inventoryLimit = guiInventorySlots.Length;
         collectablePieces = FindObjectsOfType<DoorPiece>();
 		ToggleGuiInventory(false);
-        //tooltip = tooltipobject;
     }
 
     private void Update()
@@ -54,6 +53,8 @@ public GameObject puzzleDoor;
     {
         IsOpen = !GuiInventory.gameObject.activeInHierarchy;
         GuiInventory.gameObject.SetActive(IsOpen);
+        if(!IsOpen)
+            HideToolTip();
     }
 	
 	/// <summary>Sets the visibility of the GUI Inventory.</summary>
@@ -62,6 +63,8 @@ public GameObject puzzleDoor;
     {
         IsOpen = state;
         GuiInventory.gameObject.SetActive(IsOpen);
+        if(!IsOpen)
+            HideToolTip();
     }
 
     /// <summary>Sets an item from the player's inventory as the currently equipped item.</summary>
@@ -169,8 +172,9 @@ public GameObject puzzleDoor;
 
     public void ShowToolTip(int slot)
     {
+        Debug.Log("show inv" + slot);
         if(slot < inventory.Count)
-            tooltip.Display(inventory[slot]);
+            tooltip.Display(inventory[slot].InventoryTooltip);
         else
             tooltip.Display(null);
 //        tooltip.SetActive(true);
@@ -178,6 +182,7 @@ public GameObject puzzleDoor;
 
     public void HideToolTip()
     {
+        Debug.Log("hide inv");
         tooltip.Display(null);
 //        tooltip.SetActive(false);
     }

@@ -8,6 +8,12 @@ public abstract class Item : MonoBehaviour
     /// <summary>The cost of the item when sold in the shop.</summary>
     public abstract int ShopCost { get; }
 
+    /// <summary>The tooltip to display when the pointer hovers over the item in the inventory.</summary>
+    public abstract Sprite InventoryTooltip { get; }
+    
+    /// <summary>The tooltip to display when the pointer hovers over the item in the shop.</summary>
+    public abstract Sprite ShopTooltip { get; }
+    
     public Sprite Icon;
     public Sprite BlankIcon;
     public AudioClip PickupSound;
