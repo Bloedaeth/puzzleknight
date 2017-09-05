@@ -131,9 +131,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			}
 #endif
 
-			if (Input.GetKeyDown (KeyCode.Q)) { // <---------------- CHANGE
-				SwapCamera ();
-			}
+			//if (Input.GetKeyDown (KeyCode.Q)) { // <---------------- CHANGE
+			//	SwapCamera ();
+			//}
 
 
             // pass all parameters to the character control script

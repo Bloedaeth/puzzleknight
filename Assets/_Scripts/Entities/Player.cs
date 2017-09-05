@@ -78,9 +78,9 @@ public class Player : Entity
         attackerList = new GameObject[2];
         
         //attackStateHash = Animator.StringToHash("Base Layer.Attack");
-        attackStateOneHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 1");
-        attackStateTwoHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 2");
-        attackStateThreeHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 3");
+        //attackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
+        //attackStateTwoHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 2");
+        attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
 
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
@@ -223,24 +223,17 @@ public class Player : Entity
     private void CheckBlocking()
     {
         if(Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
-            animator.SetFloat("Speed", 0);
-            thirdPersonUserControl.movementActive = false;
             SetBlocking(true);
-        }
         else if(Input.GetKeyUp(KeyCode.Mouse1))
-        {
-            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
-            animator.SetFloat("Speed", 0);
-            thirdPersonUserControl.movementActive = true;
             SetBlocking(false);
-        }
     }
 
     private void CheckAttacking()
-    {        
-        if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateThreeHash)
+    {
+        if(animator.GetCurrentAnimatorStateInfo(0).fullPathHash == attackStateThreeHash)
+            animator.ResetTrigger("LightAttack");
+
+        if(Input.GetKeyDown(KeyCode.Mouse0))
             animator.SetTrigger("LightAttack");
     }
 
