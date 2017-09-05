@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+
+
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
 public class Player : Entity
@@ -73,6 +75,7 @@ public class Player : Entity
         animator = GetComponent<Animator>();
         timeFreeze = GetComponent<TimeFreeze>();
         rigidBody = GetComponent<Rigidbody>();
+        
 
         attackerList = new GameObject[2];
         
@@ -436,4 +439,5 @@ public class Player : Entity
         if(other.CompareTag("Checkpoint"))
             SpawnPoint = other.transform;
     }
-}
+
+    }

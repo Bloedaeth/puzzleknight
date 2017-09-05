@@ -1,8 +1,14 @@
-﻿public class Bomb : ThrowableItem
+﻿using UnityEngine;
+
+public class Bomb : ThrowableItem
 {
     public override int TypeId { get { return 2; } }
 
     public override int ShopCost { get { return 100; } }
+
+    public override Sprite InventoryTooltip { get { throw new System.NotImplementedException(); } }
+
+    public override Sprite ShopTooltip { get { throw new System.NotImplementedException(); } }
 
     public float Damage;
 

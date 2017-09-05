@@ -9,6 +9,8 @@ public class Shop : MonoBehaviour
     /// <summary>The GUI for the shop.</summary>
     public Transform GuiShop;
 
+    public ToolTip tooltip;
+
     /// <summary>Is the shop GUI open.</summary>
     public bool IsOpen { get; private set; }
 
@@ -17,11 +19,9 @@ public class Shop : MonoBehaviour
 
     private List<Item> shopInventory = new List<Item>();
 
-    private Inventory playerInventory;
-
     private Player player;
-
-	private float shopOpenTime;
+    private Inventory playerInventory;
+    private float shopOpenTime;
 	private float shopOpenRate;
 
     private void Awake()
@@ -31,11 +31,11 @@ public class Shop : MonoBehaviour
         shopInventory = GetComponentsInChildren<Item>(true).ToList();
 		IsOpen = false;
 
+        Image[] guiSlots = GuiShop.GetChild(1).GetComponentsInChildren<Image>();
         for(int i = 0; i < shopInventory.Count; ++i)
         {
-            Transform child = GuiShop.GetChild(i + 1);
-            child.GetComponent<Image>().sprite = shopInventory[i].Icon;
-            child.GetComponentInChildren<Text>().text = "COST: " + shopInventory[i].ShopCost;
+            guiSlots[i].sprite = shopInventory[i].Icon;
+            //child.GetComponentInChildren<Text>().text = "COST: " + shopInventory[i].ShopCost;
         }
     }
 
@@ -43,7 +43,6 @@ public class Shop : MonoBehaviour
     {
 		if (other.GetComponent<Player> ()) 
 			player.NearInteractableObject = true;
-		
     }
 
     private void OnTriggerStay(Collider other)
@@ -122,5 +121,18 @@ public class Shop : MonoBehaviour
             return shopInventory[index];
 
         return null;
+    }
+
+    public void ShowToolTip(int slot)
+    {
+        if(slot < shopInventory.Count)
+            tooltip.Display(shopInventory[slot].ShopTooltip);
+        else
+            tooltip.Display(null);
+    }
+
+    public void HideToolTip()
+    {
+        tooltip.Display(null);
     }
 }

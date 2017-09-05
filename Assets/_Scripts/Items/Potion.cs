@@ -1,8 +1,16 @@
-﻿public class Potion : ThrowableItem
+﻿using UnityEngine;
+
+public class Potion : ThrowableItem
 {
     public override int TypeId { get { return 1; } }
 
     public override int ShopCost { get { return 50; } }
+
+    [SerializeField] private Sprite inventoryTooltip;
+    public override Sprite InventoryTooltip { get { return inventoryTooltip; } }
+
+    [SerializeField] private Sprite shopTooltip;
+    public override Sprite ShopTooltip { get { return shopTooltip; } }
 
     public enum PotionType { Health, Damage, Speed }
 
