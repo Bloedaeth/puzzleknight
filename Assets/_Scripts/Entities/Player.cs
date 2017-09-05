@@ -48,8 +48,7 @@ public class Player : Entity
 	private Shop shop;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
 	private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl thirdPersonUserControl;
-    private Animator animator;
-
+    
     private new AudioSource audio;
     private AudioClip[] idleSounds;
     

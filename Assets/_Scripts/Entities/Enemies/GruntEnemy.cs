@@ -7,7 +7,6 @@ public class GruntEnemy : ShieldedEnemy
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
-    private Animator animator;
     private AnimatorStateInfo state;
 
     private float wanderRadius = 15;

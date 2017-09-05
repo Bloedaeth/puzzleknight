@@ -7,8 +7,7 @@ public class RangedEnemy : Enemy
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
-    private Animator animator;
-
+    
     private int attackHash;
     private float launchCooldown = 2.5f;
 

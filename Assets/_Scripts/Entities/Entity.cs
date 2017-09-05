@@ -6,6 +6,13 @@
 [RequireComponent(typeof(EntitySoundsCommon))]
 public abstract class Entity : MonoBehaviour
 {
+    protected Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
@@ -17,5 +24,18 @@ public abstract class Entity : MonoBehaviour
             return;
 
         targetHp.TakeDamage(damage);
+    }
+
+    /// <summary>Triggers the stagger animation of the entity.</summary>
+    public virtual void Stagger()
+    {
+        SetBlock(false);
+        animator.SetTrigger("Stagger");
+        Invoke("SetBlock", animator.GetCurrentAnimatorStateInfo(0).length);
+    }
+
+    private void SetBlock(bool state = true)
+    {
+        GetComponent<Shield>().IsBlocking = state;
     }
 }

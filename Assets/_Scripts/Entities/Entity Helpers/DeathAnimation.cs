@@ -34,13 +34,14 @@ public class DeathAnimation : MonoBehaviour
                 gameObject.SetActive(false);
             else
             {
+                anim.SetTrigger("Respawn");
+
                 Health hp = GetComponent<Health>();
                 hp.enabled = true;
                 hp.HealthRemaining = hp.InitialAndMaxHealth;
                 hp.HealthText.Value = hp.InitialAndMaxHealth;
 
                 transform.position = player.SpawnPoint.position;
-                anim.SetTrigger("Respawn");
 
                 if(player.InBossFight)
                 {
