@@ -10,15 +10,15 @@ namespace UnityStandardAssets.Cameras
 {
     public class ProtectCameraFromWallClip : MonoBehaviour
     {
-		public bool disable; // <------------- CHANGE
+        public bool disable; // <------------- CHANGE
 
         public float clipMoveTime = 0.05f;              // time taken to move when avoiding cliping (low value = fast, which it should be)
         public float returnTime = 0.4f;                 // time taken to move back towards desired position, when not clipping (typically should be a higher value than clipMoveTime)
-        public float sphereCastRadius = 0.1f;           // the radius of the sphere used to test for object between camera and target
+        public float sphereCastRadius = 1;           // the radius of the sphere used to test for object between camera and target
         public bool visualiseInEditor;                  // toggle for visualising the algorithm through lines for the raycast in the editor
-        public float closestDistance = 0.5f;            // the closest distance the camera can be from the target
+        public float closestDistance = 1.5f;            // the closest distance the camera can be from the target
         public bool protecting { get; private set; }    // used for determining if there is an object between the target and the camera
-        
+
         //public string dontClipTag = "Player";           // don't clip against objects with this tag (useful for not clipping against the targeted object)
         //
         //CHANGE --Sean
@@ -40,127 +40,138 @@ namespace UnityStandardAssets.Cameras
             // find the camera in the object hierarchy
             m_Cam = GetComponentInChildren<Camera>().transform;
             m_Pivot = m_Cam.parent;
-			m_OriginalDist = 4f;
+            m_OriginalDist = 4f;
             m_CurrentDist = m_OriginalDist;
 
             // create a new RayHitComparer
             m_RayHitComparer = new RayHitComparer();
 
-			disable = false; // <------------- CHANGE
+            disable = false; // <------------- CHANGE
         }
 
 
-		private void LateUpdate() {
-			if (!disable) { // <------------- CHANGE
-            // initially set the target distance
-            float targetDist = m_OriginalDist;
+        private void LateUpdate()
+        {
+            if (!disable)
+            { // <------------- CHANGE
+              // initially set the target distance
+                float targetDist = m_OriginalDist;
 
-            m_Ray.origin = m_Pivot.position + m_Pivot.forward*sphereCastRadius;
-            m_Ray.direction = -m_Pivot.forward;
+                //m_Ray.origin = m_Pivot.position + -m_Pivot.forward * 35;
+                m_Ray.origin = m_Cam.position;  // <------------------ CHANGE ~Tama~
+                m_Ray.direction = -m_Pivot.forward;
 
-            // initial check to see if start of spherecast intersects anything
-            var cols = Physics.OverlapSphere(m_Ray.origin, sphereCastRadius);
-            //foreach(var c in cols)
+                // initial check to see if start of spherecast intersects anything
+                var cols = Physics.OverlapSphere(m_Ray.origin, sphereCastRadius);
+
+                //foreach(var c in cols)
                 //Debug.Log(c);
-            bool initialIntersect = false;
-            bool hitSomething = false;
+                bool initialIntersect = false;
+                bool hitSomething = false;
 
-            // loop through all the collisions to check if something we care about
-            for (int i = 0; i < cols.Length; i++)
-            {
-                if ((!cols[i].isTrigger))// && cols[i].attachedRigidbody != null)
-                   // !(cols[i].attachedRigidbody != null && cols[i].attachedRigidbody.CompareTag(dontClipTag)))
+                // loop through all the collisions to check if something we care about
+                for (int i = 0; i < cols.Length; i++)
                 {
-                    //
-                    //CHANGED -- SEAN
-                    //
-                    bool cont = false;
-                    for(int j = 0; j < dontClipTags.Length; ++j)
+                    if ((!cols[i].isTrigger))// && cols[i].attachedRigidbody != null)
+                                             // !(cols[i].attachedRigidbody != null && cols[i].attachedRigidbody.CompareTag(dontClipTag)))
                     {
-                        if(cols[i].transform.CompareTag(dontClipTags[i]))
+                        //
+                        //CHANGED -- SEAN
+                        //
+                        bool cont = false;
+                        for (int j = 0; j < dontClipTags.Length; ++j)
                         {
-                            cont = true;
-                            break;
+                            if (cols[i].transform.CompareTag(dontClipTags[i]))
+                            {
+                                cont = true;
+                                break;
+                            }
                         }
+                        if (cont)
+                            continue;
+
+                        //END CHANGE
+
+                        initialIntersect = true;
+                        break;
                     }
-                    if(cont)
-                        continue;
-                    
-                    //END CHANGE
-
-                    initialIntersect = true;
-                    break;
                 }
-            }
 
-            // if there is a collision
-            if (initialIntersect)
-            {
-                m_Ray.origin += m_Pivot.forward*sphereCastRadius;
+                // if there is a collision
+                if (initialIntersect)
+                {
+                    //m_Ray.origin += m_Pivot.forward*sphereCastRadius;
 
-                // do a raycast and gather all the intersections
-                m_Hits = Physics.RaycastAll(m_Ray, m_OriginalDist - sphereCastRadius);
-            }
-            else
-            {
-                // if there was no collision do a sphere cast to see if there were any other collisions
-                m_Hits = Physics.SphereCastAll(m_Ray, sphereCastRadius, m_OriginalDist + sphereCastRadius);
-            }
-            //foreach(var c in m_Hits)
+                    // do a raycast and gather all the intersections
+                    m_Hits = Physics.RaycastAll(m_Ray, m_OriginalDist - sphereCastRadius);
+                }
+                else
+                {
+                    // if there was no collision do a sphere cast to see if there were any other collisions
+                    m_Hits = Physics.SphereCastAll(m_Ray, sphereCastRadius, m_OriginalDist + sphereCastRadius);
+                }
+                //foreach(var c in m_Hits)
                 //Debug.Log(c.transform.name);
 
-            // sort the collisions by distance
-            Array.Sort(m_Hits, m_RayHitComparer);
+                // sort the collisions by distance
+                Array.Sort(m_Hits, m_RayHitComparer);
 
-            // set the variable used for storing the closest to be as far as possible
-            float nearest = Mathf.Infinity;
+                // set the variable used for storing the closest to be as far as possible
+                float nearest = Mathf.Infinity;
 
-            // loop through all the collisions
-            for (int i = 0; i < m_Hits.Length; i++)
-            {
-                // only deal with the collision if it was closer than the previous one, not a trigger, and not attached to a rigidbody tagged with the dontClipTag
-                if (m_Hits[i].distance < nearest && (!m_Hits[i].collider.isTrigger))// && m_Hits[i].collider.attachedRigidbody != null)
-                    //!(m_Hits[i].collider.attachedRigidbody != null &&
-                    //  m_Hits[i].collider.attachedRigidbody.CompareTag(dontClipTag)))
+                // loop through all the collisions
+                for (int i = 0; i < m_Hits.Length; i++)
                 {
-                    //
-                    //CHANGED -- SEAN
-                    //
-                    bool cont = false;
-                    for(int tag = 0; tag < dontClipTags.Length; ++tag)
+                    // only deal with the collision if it was closer than the previous one, not a trigger, and not attached to a rigidbody tagged with the dontClipTag
+                    if (m_Hits[i].distance < nearest && (!m_Hits[i].collider.isTrigger))// && m_Hits[i].collider.attachedRigidbody != null)
+                                                                                        //!(m_Hits[i].collider.attachedRigidbody != null &&
+                                                                                        //  m_Hits[i].collider.attachedRigidbody.CompareTag(dontClipTag)))
                     {
-                        if(m_Hits[i].collider.transform.CompareTag(dontClipTags[tag]))
+                        //
+                        //CHANGED -- SEAN
+                        //
+                        bool cont = false;
+                        for (int tag = 0; tag < dontClipTags.Length; ++tag)
                         {
-                            cont = true;
-                            break;
+                            if (m_Hits[i].collider.transform.CompareTag(dontClipTags[tag]))
+                            {
+                                cont = true;
+                                break;
+                            }
                         }
+                        if (cont)
+                            continue;
+
+                        //END CHANGE
+
+                        // change the nearest collision to latest
+                        nearest = m_Hits[i].distance;
+                        targetDist = m_Pivot.InverseTransformPoint(m_Hits[i].point).z; // <---------- CHANGED ~Tama~
+                        hitSomething = true;
                     }
-                    if(cont)
-                        continue;
-
-                    //END CHANGE
-
-                    // change the nearest collision to latest
-                    nearest = m_Hits[i].distance;
-                    targetDist = -m_Pivot.InverseTransformPoint(m_Hits[i].point).z;
-                    hitSomething = true;
                 }
-            }
 
-            // visualise the cam clip effect in the editor
-            if (hitSomething)
-            {
-                Debug.DrawRay(m_Ray.origin, -m_Pivot.forward*(targetDist + sphereCastRadius), Color.red);
-            }
+                // visualise the cam clip effect in the editor
+                if (hitSomething)
+                {
+                    Debug.DrawRay(m_Ray.origin, m_Pivot.forward * (targetDist + sphereCastRadius), Color.red);
+                }
 
-            // hit something so move the camera to a better position
-            protecting = hitSomething;
-            m_CurrentDist = Mathf.SmoothDamp(m_CurrentDist, targetDist, ref m_MoveVelocity,
-                                           m_CurrentDist > targetDist ? clipMoveTime : returnTime);
-            m_CurrentDist = Mathf.Clamp(m_CurrentDist, closestDistance, m_OriginalDist);
-            m_Cam.localPosition = -Vector3.forward*m_CurrentDist;
-			} // <------------- CHANGE
-		}
+                // hit something so move the camera to a better position
+                protecting = hitSomething;
+                m_CurrentDist = Mathf.SmoothDamp(m_CurrentDist, targetDist, ref m_MoveVelocity,
+                                               m_CurrentDist > targetDist ? clipMoveTime : returnTime);
+                m_CurrentDist = Mathf.Clamp(m_CurrentDist, closestDistance, m_OriginalDist);
+                m_Cam.localPosition = -Vector3.forward * m_CurrentDist;
+
+                /*
+                if (Vector3.Distance(m_Cam.position, m_Pivot.position) > m_CurrentDist)
+                    {
+                        m_Cam.localPosition = -Vector3.forward * 0.5f;
+                    }
+                */
+            } // <------------- CHANGE
+        }
 
 
         // comparer for check distances in ray cast hits
@@ -168,8 +179,14 @@ namespace UnityStandardAssets.Cameras
         {
             public int Compare(object x, object y)
             {
-                return ((RaycastHit) x).distance.CompareTo(((RaycastHit) y).distance);
+                return ((RaycastHit)x).distance.CompareTo(((RaycastHit)y).distance);
             }
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(m_Ray.origin, sphereCastRadius);
         }
     }
 }
