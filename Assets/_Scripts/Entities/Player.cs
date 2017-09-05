@@ -231,8 +231,7 @@ public class Player : Entity
     {
         if(animator.GetCurrentAnimatorStateInfo(0).fullPathHash == attackStateThreeHash)
             animator.ResetTrigger("LightAttack");
-
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        else if(Input.GetKeyDown(KeyCode.Mouse0))
             animator.SetTrigger("LightAttack");
     }
 
