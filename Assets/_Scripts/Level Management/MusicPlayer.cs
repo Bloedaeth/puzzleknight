@@ -9,6 +9,16 @@ public class MusicPlayer : MonoBehaviour
     private Player player;
     private new AudioSource audio;
 
+    private static MusicPlayer instance;
+
+    private void Awake()
+    {
+        if(instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
+
     void Start()
     {
         DontDestroyOnLoad(gameObject);
