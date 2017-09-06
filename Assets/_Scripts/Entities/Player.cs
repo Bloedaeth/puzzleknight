@@ -120,6 +120,7 @@ public class Player : Entity
 			if (shop != null) {
 				shop.ToggleGuiShop (false);
 			}
+			FindObjectOfType<PerspectivePieceUi> ().TogglePuzzlePieceUI (false);
 		}
 		
         if(Input.GetKeyDown(KeyCode.R))
@@ -190,7 +191,7 @@ public class Player : Entity
 
     private void CheckAttacking()
     {        
-        if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateThreeHash)
+		if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateThreeHash && thirdPersonUserControl.movementActive)
             animator.SetTrigger("Attack");
     }
 

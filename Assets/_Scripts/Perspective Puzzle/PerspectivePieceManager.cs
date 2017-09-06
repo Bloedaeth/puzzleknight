@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PerspectivePieceManager : MonoBehaviour {
 
-	PerspectivePieceHolder[] holders;
+	public PerspectivePieceHolder[] holders;
 
 	public Transform door;
 	public Transform cam;
@@ -13,16 +13,24 @@ public class PerspectivePieceManager : MonoBehaviour {
 	public Vector3 DoorToCam{ get { return -door.position + cam.position; } }
 
 	public GameObject emptyPiece;
+	public Vector3 hidePosition;
+
+	public bool isActive;
 
 	// Use this for initialization
 	void Start () {
+		isActive = false;
+
 		if (emptyPiece == null) {
 			SetupEmpty ();
 		}
+
 		SetupPieces ();
 		SetupHolders ();
-
 		RescalePieces ();
+		HidePieces ();
+
+		isActive = true;
 	}
 
 	void SetupEmpty() {
@@ -34,6 +42,8 @@ public class PerspectivePieceManager : MonoBehaviour {
 
 	void SetupPieces() {
 		PerspectivePiece[] pp = GetComponentsInChildren<PerspectivePiece> ();
+
+		hidePosition = emptyPiece.transform.position;
 
 		if (pp.Length == 0) {
 			Debug.LogError ("pp.Length == 0, pp.Length should not = 0");
@@ -47,11 +57,17 @@ public class PerspectivePieceManager : MonoBehaviour {
 
 	}
 
+	void HidePieces() {
+		for (int i = 1; i < holders.Length - 1; i++) {
+			holders [i].ChangePiece (-1);
+		}
+	}
+
 	void SetupHolders() {
 		holders = GetComponentsInChildren<PerspectivePieceHolder> ();
 
 		for (int i = 0; i < holders.Length; i++) {
-			holders [i].SetVariables ((i >= 1) && (i <= 3) ? -1 : i, i, this, door, cam);
+			holders [i].SetVariables (i, i, this, door, cam);
 		}
 	}
 
@@ -80,6 +96,10 @@ public class PerspectivePieceManager : MonoBehaviour {
 	}
 		
 	public int PieceAlreadySet(int caller, int piece) {
+
+		if (piece == -1)
+			return -1;
+
 		for (int i = 0; i < holders.Length; i++) {
 			if (i != caller && holders[i].GetCurrIndex() == piece) {
 				return i;

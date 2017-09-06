@@ -12,6 +12,8 @@ public class PerspectivePieceHolder : MonoBehaviour {
 	private Transform door;
 	private Transform cam;
 
+	private GameObject emptPiece;
+
 	/// <summary>
 	/// These are used to identify if the correct piece index is selected.
 	/// </summary>
@@ -62,13 +64,18 @@ public class PerspectivePieceHolder : MonoBehaviour {
 	}
 
 	private void SetupPiece() {
+		emptPiece = Instantiate (parent.emptyPiece);
+
 		ChangePiece (corrIndex);
 	}
 
 	private void ResetPiece() {
+		if (currPiece) {
+			currPiece.transform.position = parent.hidePosition;
+		}
 
 		if (currIndex == -1) {
-			currPiece = parent.emptyPiece;
+			currPiece = emptPiece;
 		} else {
 			currPiece = parent.pieces [currIndex];
 			currPiece.GetComponent<PerspectivePiece>().SimulateParticle ();
@@ -87,6 +94,7 @@ public class PerspectivePieceHolder : MonoBehaviour {
 
 		if (pas != -1) {
 			parent.swapIndexes (pas, corrIndex);
+			if (parent.isActive) parent.holders [pas].ResetPiece ();
 		} else {
 			currIndex = i;
 		}
