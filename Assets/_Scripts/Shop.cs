@@ -103,12 +103,15 @@ public class Shop : MonoBehaviour
     public void RemoveItem(Item item)
     {
         shopInventory.Remove(item);
-        for(int i = 0; i < GuiShop.childCount - 1; ++i)
+		Transform shopSlots = GuiShop.GetChild(1);
+        for(int i = 0; i < shopSlots.childCount - 1; ++i)
         {
-            Transform child = GuiShop.GetChild(i + 1);
-            bool inRange = i < shopInventory.Count;
+            Transform child = shopSlots.GetChild(i + 1);
+
+			Debug.Log (child.name);
+            bool inRange = i < shopInventory.Count - 1;
             child.GetComponent<Image>().sprite = inRange ? shopInventory[i].Icon : item.BlankIcon;
-            child.GetComponentInChildren<Text>().text = inRange ? "COST: " + shopInventory[i].ShopCost : "";
+            //child.GetComponentInChildren<Text>().text = inRange ? "COST: " + shopInventory[i].ShopCost : "";
         }
     }
 
