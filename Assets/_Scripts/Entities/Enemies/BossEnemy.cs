@@ -49,7 +49,7 @@ public class BossEnemy : ShieldedEnemy
     private Vector3 originalScale;
     private Vector3 originalPosition;
 
-    private const float GAME_SCALE_MULT = 10f;
+    //private const float GAME_SCALE_MULT = 10f;
     private int attackHashStage1;
     private int attackHashStage2;
 
@@ -69,7 +69,7 @@ public class BossEnemy : ShieldedEnemy
         attackHashStage1 = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
-        agent.stoppingDistance = 1.5f * GAME_SCALE_MULT;
+        agent.stoppingDistance = 1.5f;// * GAME_SCALE_MULT;
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
     }
 

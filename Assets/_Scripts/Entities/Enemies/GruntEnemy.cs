@@ -20,7 +20,8 @@ public class GruntEnemy : ShieldedEnemy
     private float attackTimer = 1.5f;
     private float timer2;
 
-    private const float SCALE_MULT = 10f;
+    //private const float SCALE_MULT = 10f;
+    private const float MIN_DIST = 10f;
     private int attackHash;
     private int blockHash;
 
@@ -37,7 +38,7 @@ public class GruntEnemy : ShieldedEnemy
         attackHash = Animator.StringToHash("Base Layer.Attack");
         blockHash = Animator.StringToHash("Base Layer.Block");
 
-        agent.stoppingDistance = 1.5f * SCALE_MULT;
+        agent.stoppingDistance = 1.5f;// * SCALE_MULT;
         gruntOrigin = transform.position;
     }
 
@@ -55,7 +56,7 @@ public class GruntEnemy : ShieldedEnemy
         }
         
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
-        if (ai.target == null && dist < 10f * SCALE_MULT)
+        if (ai.target == null && dist < MIN_DIST/* * SCALE_MULT*/)
             ai.SetTarget(player);
 
         /*

@@ -9,6 +9,8 @@ public class RangedEnemy : Enemy
     private Transform player;
     private Animator animator;
 
+    private const float MIN_DIST = 20f;
+
     private int attackHash;
     private float launchCooldown = 2.5f;
 
@@ -38,7 +40,7 @@ public class RangedEnemy : Enemy
             agent.speed = 1f;
         }
 
-        if(ai.target == null && Mathf.Abs(Vector3.Distance(transform.position, player.position)) < 20f)
+        if(ai.target == null && Mathf.Abs(Vector3.Distance(transform.position, player.position)) < MIN_DIST)
             ai.SetTarget(player);
 
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
