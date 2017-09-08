@@ -120,7 +120,7 @@ public class Player : Entity
 			if (shop != null) {
 				shop.ToggleGuiShop (false);
 			}
-			FindObjectOfType<PerspectivePieceUi> ().TogglePuzzlePieceUI (false);
+			FindObjectOfType<PerspectivePieceHolderUiInteractor> ().TogglePuzzlePieceUI (false);
 		}
 		
         if(Input.GetKeyDown(KeyCode.R))

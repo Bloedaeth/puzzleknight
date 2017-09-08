@@ -27,6 +27,8 @@ public GameObject puzzleDoor;
     private Image[] guiInventorySlots;
     private CollectableDoorPiece[] collectablePieces;
 
+	bool[] doorPieceCollected;
+
     private int inventoryLimit;
 
     private void Awake()
@@ -35,16 +37,18 @@ public GameObject puzzleDoor;
         guiInventorySlots = GuiInventory.GetChild(1).GetComponentsInChildren<Image>();
         collectablePieces = FindObjectsOfType<CollectableDoorPiece>();
 		ToggleGuiInventory(false);
+
+		doorPieceCollected = new bool[collectablePieces.Length]; 
     }
 
-    private void Update()
+    /*private void Update()
     {
         foreach(CollectableDoorPiece piece in collectablePieces)
             if(piece.gameObject.activeInHierarchy)
                 return;
 
         puzzleDoor.SetActive(false);
-    }
+    }*/
 
     /// <summary>Toggles the visibility of the GUI Inventory.</summary>
     public void ToggleGuiInventory()
@@ -147,20 +151,29 @@ public GameObject puzzleDoor;
     /// <param name="piece">The piece that has been collected.</param>
     public void AddDoorPiece(CollectableDoorPiece.DoorPiece piece)
     {
-        switch(piece)
-        {
-            case CollectableDoorPiece.DoorPiece.Frame:
-                GuiMissingDoorPieces.GetChild(0).gameObject.SetActive(false);
-                GuiCollectedDoorPieces.GetChild(0).GetComponent<Image>().sprite = GuiCollectedPieceImages[0];
-                break;
-            case CollectableDoorPiece.DoorPiece.Panel:
-                GuiMissingDoorPieces.GetChild(1).gameObject.SetActive(false);
-                GuiCollectedDoorPieces.GetChild(1).GetComponent<Image>().sprite = GuiCollectedPieceImages[1];
-                break;
-            case CollectableDoorPiece.DoorPiece.Knob:
-                GuiMissingDoorPieces.GetChild(2).gameObject.SetActive(false);
-                GuiCollectedDoorPieces.GetChild(2).GetComponent<Image>().sprite = GuiCollectedPieceImages[2];
-                break;
-        }
+		switch (piece) {
+		case CollectableDoorPiece.DoorPiece.Frame:
+			GuiMissingDoorPieces.GetChild (0).gameObject.SetActive (false);
+			GuiCollectedDoorPieces.GetChild (0).GetComponent<Image> ().sprite = GuiCollectedPieceImages [0];
+			doorPieceCollected [0] = true;
+			break;
+		case CollectableDoorPiece.DoorPiece.Panel:
+			GuiMissingDoorPieces.GetChild (1).gameObject.SetActive (false);
+			GuiCollectedDoorPieces.GetChild (1).GetComponent<Image> ().sprite = GuiCollectedPieceImages [1];
+			doorPieceCollected [1] = true;
+			break;
+		case CollectableDoorPiece.DoorPiece.Knob:
+			GuiMissingDoorPieces.GetChild (2).gameObject.SetActive (false);
+			GuiCollectedDoorPieces.GetChild (2).GetComponent<Image> ().sprite = GuiCollectedPieceImages [2];
+			doorPieceCollected [2] = true;
+			break;
+		}
     }
+
+	/// <summary>
+	/// Look at this faggot not understanding how getters and setters work.
+	/// </summary>
+	public bool[] GetDoorPieces() {
+		return doorPieceCollected;
+	}
 }

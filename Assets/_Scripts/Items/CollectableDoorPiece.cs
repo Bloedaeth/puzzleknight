@@ -18,7 +18,7 @@ public class CollectableDoorPiece : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            AudioSource.PlayClipAtPoint(CollectedClip, Camera.main.transform.position, 1f);
+            //AudioSource.PlayClipAtPoint(CollectedClip, Camera.main.transform.position, 1f);
             Inventory inventory = other.GetComponent<Inventory>();
             inventory.AddDoorPiece(PieceType);
             gameObject.SetActive(false);

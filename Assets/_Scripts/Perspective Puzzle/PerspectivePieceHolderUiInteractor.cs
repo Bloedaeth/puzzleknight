@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PerspectivePieceUi : MonoBehaviour {
+public class PerspectivePieceHolderUiInteractor : MonoBehaviour {
 
-	public Transform PuzzlePieceUi;
+	public PerspectivePieceUiButtonManager ButtonManager;
 	private bool IsOpen = false;
 
 	private PerspectivePieceHolder h;
@@ -13,9 +13,9 @@ public class PerspectivePieceUi : MonoBehaviour {
 	float uiOpenTime;
 
 	void Start() {
-		if (!PuzzlePieceUi) {
+		if (!ButtonManager) {
 			Debug.LogWarning ("PuzzlePieceChooser ui is not set for object " + gameObject.name +".\nUsing Generic Find command.");
-			PuzzlePieceUi = FindObjectOfType<PerspectiveButtonManager> ().transform;
+			ButtonManager = FindObjectOfType<PerspectivePieceUiButtonManager> ();
 		}
 
 		h = GetComponent<PerspectivePieceHolder> ();
@@ -27,7 +27,8 @@ public class PerspectivePieceUi : MonoBehaviour {
 		Player p = other.GetComponent<Player>();
 		if (p) {
 			p.NearInteractableObject = true;
-			PuzzlePieceUi.GetComponent<PerspectiveButtonManager> ().UpdateHolder (h);
+			ButtonManager.UpdateHolder (h);
+			ButtonManager.UpdatePieces(p.GetComponent<Inventory>().GetDoorPieces());
 		}
 		
 	}
@@ -57,7 +58,7 @@ public class PerspectivePieceUi : MonoBehaviour {
 
 	void TogglePuzzlePieceUI () {
 		IsOpen = !IsOpen;
-		PuzzlePieceUi.gameObject.SetActive (IsOpen);
+		ButtonManager.gameObject.SetActive (IsOpen);
 	}
 
 	public void TogglePuzzlePieceUI (bool state) {
