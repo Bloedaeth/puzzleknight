@@ -5,7 +5,6 @@ public class Turret : Enemy
     public Transform turretMuzzle;
 
     public float range = 100.0f;
-    public float fireRate = 20.0f;
 
     private Transform myTransform;
     private Transform player;
@@ -28,9 +27,10 @@ public class Turret : Enemy
             projectile.transform.position = turretMuzzle.position;
             projectile.transform.rotation = turretMuzzle.rotation;
             projectile.Self = this;
+            projectile.forward = turretMuzzle.forward;
             //projectile.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             projectile.gameObject.SetActive(true);
-            fireTime = Time.time + fireRate;
+            fireTime = Time.time + Random.Range(3, 7);
         }
     }
 

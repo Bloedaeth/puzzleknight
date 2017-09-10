@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     public float projectileSpeed = 40.0f;
     public int projectileDamage = 5;
     public float despawnTime = 5.0f;
+    public Vector3 forward;
 
     private Transform myTransform;
 
@@ -21,7 +22,7 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        myTransform.position += myTransform.forward;
+        myTransform.position = Vector3.Lerp(myTransform.position, myTransform.position + forward, Time.deltaTime * projectileSpeed);
 
         if(Time.time >= despawnTime)
             gameObject.SetActive(false);
