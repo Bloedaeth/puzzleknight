@@ -106,7 +106,8 @@ public class Player : Entity
             return;
         }
 
-		if(!Shopping && Input.GetKeyDown (KeyCode.I))
+        
+        if (!Shopping && Input.GetKeyDown (KeyCode.I))
 			ToggleInventory ();
 
         //Turn all inventory menus off, regardless of states, this essentially resets the inventory state
