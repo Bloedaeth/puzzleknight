@@ -54,7 +54,7 @@ public class MeleeWeapon : MonoBehaviour
 
         Shield shield = null;
         if(target.transform.CompareTag("Player"))
-            shield = target.GetComponent<Player>().shield;
+            shield = target.GetComponent<Player>().Shield;
         else if(target.transform.CompareTag("Enemy"))
             shield = target.GetComponent<ShieldedEnemy>().Shield;
         

@@ -11,7 +11,7 @@ public class Player : Entity
     public Transform SpawnPoint;
     
     public MeleeWeapon sword;
-    public Shield shield;
+    public Shield Shield;
 
     /// <summary>Is Morpheus currently in a boss fight.</summary>
     public bool InBossFight = false;
@@ -291,7 +291,7 @@ public class Player : Entity
 
     private void SetBlocking(bool value)
     {
-		shield.IsBlocking = value;
+		Shield.IsBlocking = value;
 		//thirdPersonUserControl.isAiming = value;
         animator.SetBool("Blocking", value);
     }
