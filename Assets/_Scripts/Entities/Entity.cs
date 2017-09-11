@@ -34,8 +34,13 @@ public abstract class Entity : MonoBehaviour
         Invoke("SetBlock", animator.GetCurrentAnimatorStateInfo(0).length);
     }
 
-    private void SetBlock(bool state = true)
+    private void SetBlock()
     {
-        GetComponent<Shield>().IsBlocking = state;
+        GetComponentInChildren<Shield>().IsBlocking = true;
+    }
+
+    private void SetBlock(bool state)
+    {
+        GetComponentInChildren<Shield>().IsBlocking = state;
     }
 }
