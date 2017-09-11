@@ -69,7 +69,7 @@ ModelImporter:
     400058: Spine_3
     400060: transform1
     400062: Grunt_Locator
-    7400000: Take 001
+    7400000: AngryGrunt
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -81,8 +81,7 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    rigImportErrors: "Copied Avatar Rig Configuration mis-match. Transform hierarchy
-      does not match:\n\tTransform 'Character1_Hips' for human bone 'Hips' not found\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -94,7 +93,99 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: AngryGrunt
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Grunt_Locator
+        weight: 1
+      - path: Grunt_Locator/transform1
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/L_Hip
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/L_Hip/L_Knee
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/L_Hip/L_Knee/L_Ankle
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/L_Hip/L_Knee/L_Ankle/L_Heel
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/L_Hip/L_Knee/L_Ankle/L_Heel/L_Toe
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/R_Hip
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/R_Hip/R_Knee
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/R_Hip/R_Knee/R_Ankle
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/R_Hip/R_Knee/R_Ankle/R_Heel
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/R_Hip/R_Knee/R_Ankle/R_Heel/R_Toe
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/L_Clavicle
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/L_Clavicle/L_Shoulder
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/L_Clavicle/L_Shoulder/L_Elbow
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/L_Clavicle/L_Shoulder/L_Elbow/L_Wrist
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/L_Clavicle/L_Shoulder/L_Elbow/L_Wrist/L_Palm
+        weight: 0
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/L_Clavicle/L_Shoulder/L_Elbow/L_Wrist/L_Palm/L_Finger
+        weight: 0
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/neck_base
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/neck_base/Head_Bottom
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/neck_base/Head_Bottom/Head_Top
+        weight: 0
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/R_Clavicle
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/R_Clavicle/R_Shoulder
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/R_Clavicle/R_Shoulder/R_Elbow
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/R_Clavicle/R_Shoulder/R_Elbow/R_Wrist
+        weight: 1
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/R_Clavicle/R_Shoulder/R_Elbow/R_Wrist/R_Palm
+        weight: 0
+      - path: Grunt_Locator/transform1/Pelvis/Spine_1/Spine_2/Spine_3/R_Clavicle/R_Shoulder/R_Elbow/R_Wrist/R_Palm/R_Finger
+        weight: 0
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
