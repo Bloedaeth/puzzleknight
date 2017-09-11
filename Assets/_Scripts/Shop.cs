@@ -104,15 +104,9 @@ public class Shop : MonoBehaviour
     {
         shopInventory.Remove(item);
 		Transform shopSlots = GuiShop.GetChild(1);
-        for(int i = 0; i < shopSlots.childCount - 1; ++i)
-        {
-            Transform child = shopSlots.GetChild(i + 1);
-
-			Debug.Log (child.name);
-            bool inRange = i < shopInventory.Count - 1;
-            child.GetComponent<Image>().sprite = inRange ? shopInventory[i].Icon : item.BlankIcon;
-            //child.GetComponentInChildren<Text>().text = inRange ? "COST: " + shopInventory[i].ShopCost : "";
-        }
+        for(int i = 0; i < shopSlots.childCount; ++i)
+            shopSlots.GetChild(i).GetComponent<Image>().sprite = 
+                i < shopInventory.Count ? shopInventory[i].Icon : item.BlankIcon;
     }
 
     /// <summary>Retrieves an item from the shop.</summary>

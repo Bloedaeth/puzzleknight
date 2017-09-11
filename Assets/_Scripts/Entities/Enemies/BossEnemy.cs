@@ -42,7 +42,6 @@ public class BossEnemy : ShieldedEnemy
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
-    private Animator animator;
     private ParticleSystem ps;
     private GameObject startCollider;
 

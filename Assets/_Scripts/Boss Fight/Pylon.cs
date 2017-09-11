@@ -14,11 +14,11 @@ public class Pylon : MonoBehaviour, IFreezable
     private bool isActive = false;
     private bool scaledBoss = false;
 
-    private float SPEED_MODIFIER = 5f;
-    private float MIN_HEIGHT = 456f;
-    private float MAX_HEIGHT = 480.5f;
+    private float speedModifier = 5f;
 
-    private float BOSS_SCALE_MULT = 0.8f;
+    private const float MIN_HEIGHT = 456f;
+    private const float MAX_HEIGHT = 480.5f;
+    private const float BOSS_SCALE_MULT = 0.8f;
 
     private void Start()
     {
@@ -30,14 +30,14 @@ public class Pylon : MonoBehaviour, IFreezable
     private void Update()
     {
         if(SlowedTime)
-            SPEED_MODIFIER = 0.5f;
+            speedModifier = 0.5f;
         else
-            SPEED_MODIFIER = 5f;
+            speedModifier = 5f;
 
         if(isActive)
         {
             if(transform.localPosition.y < MAX_HEIGHT)
-                transform.localPosition += transform.up * Time.deltaTime * SPEED_MODIFIER;
+                transform.localPosition += transform.up * Time.deltaTime * speedModifier;
             else if(!scaledBoss)
             {
                 lever.SetLeverActive(true);
@@ -50,7 +50,7 @@ public class Pylon : MonoBehaviour, IFreezable
         else
         {
             if(transform.localPosition.y > MIN_HEIGHT)
-                transform.localPosition -= transform.up * Time.deltaTime * SPEED_MODIFIER;
+                transform.localPosition -= transform.up * Time.deltaTime * speedModifier;
             else if(scaledBoss)
             {
                 ps.Stop();

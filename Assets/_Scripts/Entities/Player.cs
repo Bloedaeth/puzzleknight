@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-
-
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
 public class Player : Entity
@@ -58,11 +56,6 @@ public class Player : Entity
     public GameObject[] enemylist;
     public GameObject[] attackerList; 
 
-    //private float combatRadius = 4;
-
-    //private int attackStateHash;
-    private int attackStateOneHash;
-    private int attackStateTwoHash;
     private int attackStateThreeHash;
 
     private void Awake()
@@ -75,12 +68,8 @@ public class Player : Entity
         timeFreeze = GetComponent<TimeFreeze>();
         rigidBody = GetComponent<Rigidbody>();
         
-
         attackerList = new GameObject[2];
         
-        //attackStateHash = Animator.StringToHash("Base Layer.Attack");
-        //attackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
-        //attackStateTwoHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 2");
         attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
 
         audio = GetComponent<AudioSource>();
@@ -147,13 +136,6 @@ public class Player : Entity
         //CheckFalling();
         if (Input.GetKeyDown(KeyCode.L))
             Debug.Log(rigidBody.velocity.y);
-
-        //if(Input.GetKeyDown(KeyCode.I))
-        //    transform.position = GameObject.Find("ShadowPuzzleSpawn").transform.position;
-        //if(Input.GetKeyDown(KeyCode.O))
-        //    transform.position = GameObject.Find("JumpPuzzleSpawn").transform.position;
-        //if(Input.GetKeyDown(KeyCode.P))
-        //    transform.position = GameObject.Find("PressurePlatePuzzleSpawn").transform.position;
     }
 
     private void ToggleControls(bool state)
