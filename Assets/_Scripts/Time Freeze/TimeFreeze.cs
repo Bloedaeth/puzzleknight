@@ -8,7 +8,7 @@ public class TimeFreeze : MonoBehaviour
 
     private const float EXPANSION_RATE = 0.3f;
     private const float EMISSION_RATE = 50000f;
-    private const float GAME_SCALE = 6f;
+    //private const float GAME_SCALE = 6f;
 
     /// <summary>The game object that determines where time should freeze.</summary>
     public new SphereCollider collider;
@@ -20,10 +20,10 @@ public class TimeFreeze : MonoBehaviour
     {
         ParticleSystem ps = collider.GetComponent<ParticleSystem>();
         ParticleSystem.MainModule main = ps.main;
-        main.maxParticles = main.maxParticles * (int)GAME_SCALE;
+        main.maxParticles = main.maxParticles /* * (int)GAME_SCALE*/;
 
         ParticleSystem.EmissionModule emit = ps.emission;
-        emit.rateOverTimeMultiplier = EMISSION_RATE  * GAME_SCALE;
+        emit.rateOverTimeMultiplier = EMISSION_RATE /* * GAME_SCALE*/;
 
         particleShape = ps.shape;
     }
@@ -33,7 +33,7 @@ public class TimeFreeze : MonoBehaviour
     /// <param name="radius">How far the effect will spread.</param>
     public void FreezeTime(float time, float radius)
     {
-        collider.transform.position = transform.position + transform.forward + new Vector3(0, 1, 0);
+        collider.transform.position = transform.position;// + transform.forward + new Vector3(0, 1, 0);
         collider.gameObject.SetActive(true);
 
         StartCoroutine(ExpandFreezeRadius(time, radius));
@@ -42,7 +42,7 @@ public class TimeFreeze : MonoBehaviour
     private IEnumerator ExpandFreezeRadius(float time, float radius)
     {
         freezeUsed = true;
-        for (float i = collider.radius; i <= radius * GAME_SCALE; i += EXPANSION_RATE * GAME_SCALE)
+        for (float i = collider.radius; i <= radius /* * GAME_SCALE*/; i += EXPANSION_RATE /* * GAME_SCALE*/)
         {
             collider.radius = i;
             particleShape.radius = i;
@@ -51,7 +51,7 @@ public class TimeFreeze : MonoBehaviour
         
         yield return new WaitForSeconds(time);
         
-        for(float i = collider.radius; i >= 0.1f; i -= EXPANSION_RATE * GAME_SCALE)
+        for(float i = collider.radius; i >= 0.1f; i -= EXPANSION_RATE /* * GAME_SCALE*/)
         {
             collider.radius = i;
             particleShape.radius = i;

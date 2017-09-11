@@ -131,7 +131,7 @@ public class Player : Entity
             return;
 
         if (Input.GetKeyDown(KeyCode.Z) && timeFreeze.freezeUsed == false)
-            timeFreeze.FreezeTime(5f, 30f);
+            timeFreeze.FreezeTime(5f, 20f);
             
         
         MoveObject();
