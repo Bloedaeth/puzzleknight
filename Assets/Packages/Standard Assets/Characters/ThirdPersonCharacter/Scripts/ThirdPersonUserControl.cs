@@ -7,7 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
-    [RequireComponent(typeof (ThirdPersonCharacter))]
+    [RequireComponent(typeof (ThirdPersonCharacterNEW))]
     public class ThirdPersonUserControl : MonoBehaviour
     {
 		public bool isLooking; // <------------------ CHANGE
@@ -28,15 +28,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		private Vector3[] cameraAiming; // <---------------- CHANGE
 
 
-        private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
+        private ThirdPersonCharacterNEW m_Character; // A reference to the ThirdPersonCharacter on the object
         private Player m_Player;
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
         private Vector3 m_CamForward;             // The current forward direction of the camera
         public Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
 
-		private float runSpeed = 2f;
-		private float walkSpeed = 0.15f;
+		private float runSpeed = 1f;
+		private float walkSpeed = 0.6f;
         
         private void Start()
         {
@@ -61,7 +61,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             }
 
             // get the third person character ( this should never be null due to require component )
-            m_Character = GetComponent<ThirdPersonCharacter>();
+            m_Character = GetComponent<ThirdPersonCharacterNEW>();
 
             m_Player = GetComponent<Player>();
 
@@ -103,7 +103,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // read inputs
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
-            bool crouch = Input.GetKey(KeyCode.C);
+            bool crouch = false;// Input.GetKey(KeyCode.C);
 
             // calculate move direction to pass to character
             if (m_Cam != null)
@@ -131,9 +131,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			}
 #endif
 
-			if (Input.GetKeyDown (KeyCode.Q)) { // <---------------- CHANGE
-				SwapCamera ();
-			}
+			//if (Input.GetKeyDown (KeyCode.Q)) { // <---------------- CHANGE
+			//	SwapCamera ();
+			//}
 
 
             // pass all parameters to the character control script

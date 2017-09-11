@@ -12,7 +12,7 @@ public class Player : Entity
     public Transform SpawnPoint;
     
     public MeleeWeapon sword;
-    public Shield shield;
+    public Shield Shield;
 
     /// <summary>Is Morpheus currently in a boss fight.</summary>
     public bool InBossFight = false;
@@ -49,8 +49,7 @@ public class Player : Entity
 	private Shop shop;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
 	private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl thirdPersonUserControl;
-    private Animator animator;
-
+    
     private new AudioSource audio;
     private AudioClip[] idleSounds;
     
@@ -80,9 +79,9 @@ public class Player : Entity
         attackerList = new GameObject[2];
         
         //attackStateHash = Animator.StringToHash("Base Layer.Attack");
-        attackStateOneHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 1");
-        attackStateTwoHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 2");
-        attackStateThreeHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 3");
+        //attackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
+        //attackStateTwoHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 2");
+        attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
 
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
@@ -228,25 +227,17 @@ public class Player : Entity
     private void CheckBlocking()
     {
         if(Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
-            animator.SetFloat("Speed", 0);
-            thirdPersonUserControl.movementActive = false;
             SetBlocking(true);
-        }
         else if(Input.GetKeyUp(KeyCode.Mouse1))
-        {
-            //freeLookCam.orbitActive = !freeLookCam.orbitActive;
-            animator.SetFloat("Speed", 0);
-            thirdPersonUserControl.movementActive = true;
             SetBlocking(false);
-        }
     }
 
     private void CheckAttacking()
-    {        
-        if(Input.GetKeyDown(KeyCode.Mouse0) && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != attackStateThreeHash)
-            animator.SetTrigger("Attack");
+    {
+        if(animator.GetCurrentAnimatorStateInfo(0).fullPathHash == attackStateThreeHash)
+            animator.ResetTrigger("LightAttack");
+        else if(Input.GetKeyDown(KeyCode.Mouse0))
+            animator.SetTrigger("LightAttack");
     }
 
     public void AttackPlaySound()
@@ -305,9 +296,9 @@ public class Player : Entity
 
     private void SetBlocking(bool value)
     {
-		shield.IsBlocking = value;
+		Shield.IsBlocking = value;
 		//thirdPersonUserControl.isAiming = value;
-        animator.SetBool("Block", value);
+        animator.SetBool("Blocking", value);
     }
 
     private void ToggleInventory()
@@ -328,7 +319,7 @@ public class Player : Entity
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !freeLookCam.orbitActive;
         //stop the player from moving while the inventory is open
-        animator.SetFloat("Speed", 0);
+        animator.SetFloat("Forward", 0);
         thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
         freeLookCam.hideCursor = !freeLookCam.hideCursor;
     }
@@ -341,7 +332,7 @@ public class Player : Entity
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !state;
         //stop the player from moving while the inventory is open
-        if (!state) animator.SetFloat("Speed", 0);
+        if (!state) animator.SetFloat("Forward", 0);
 		
         thirdPersonUserControl.movementActive = !state;
         freeLookCam.hideCursor = !state;

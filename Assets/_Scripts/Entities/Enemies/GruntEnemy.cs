@@ -7,7 +7,6 @@ public class GruntEnemy : ShieldedEnemy
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
-    private Animator animator;
     private AnimatorStateInfo state;
 
     private float wanderRadius = 15;
@@ -19,9 +18,10 @@ public class GruntEnemy : ShieldedEnemy
 
     private float attackTimer = 1.5f;
     private float timer2;
-
+    
     //private const float SCALE_MULT = 10f;
     private const float MIN_DIST = 10f;
+
     private int attackHash;
     private int blockHash;
 
@@ -37,7 +37,7 @@ public class GruntEnemy : ShieldedEnemy
         animator = GetComponent<Animator>();
         attackHash = Animator.StringToHash("Base Layer.Attack");
         blockHash = Animator.StringToHash("Base Layer.Block");
-
+        
         agent.stoppingDistance = 1.5f;// * SCALE_MULT;
         gruntOrigin = transform.position;
     }

@@ -4,7 +4,6 @@
 public class MeleeWeapon : MonoBehaviour
 {
     public Entity Self;
-    Shield shield;
     public int Damage;
 
     private Animator anim;
@@ -21,9 +20,9 @@ public class MeleeWeapon : MonoBehaviour
     private void Awake()
     {
         anim = Self.GetComponent<Animator>();
-        attackStateOneHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 1");
-        attackStateTwoHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 2");
-        attackStateThreeHash = Animator.StringToHash("Base Layer.Attack.Attack Combo 3");
+        attackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
+        attackStateTwoHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 2");
+        attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
         attackBossOneHash = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
         attackHash = Animator.StringToHash("Base Layer.Attack");
@@ -53,24 +52,25 @@ public class MeleeWeapon : MonoBehaviour
         Entity target = collision.gameObject.GetComponent<Entity>();
         Debug.DrawRay(Self.transform.position, Self.transform.forward);
 
-        if (target.transform.tag == "Player")
-            shield = target.GetComponent<Player>().shield;
-        else if (target.transform.tag == "Enemy")
+        Shield shield = null;
+        if(target.transform.CompareTag("Player"))
+            shield = target.GetComponent<Player>().Shield;
+        else if(target.transform.CompareTag("Enemy"))
             shield = target.GetComponent<ShieldedEnemy>().Shield;
         
-        if (shield.IsBlocking == true)
+        if(shield != null && shield.IsBlocking)
         {
             Vector3 targetDir = target.transform.position - Self.transform.position;
             float angle = Vector3.Angle(-(target.transform.forward), targetDir);
 
-            if ((angle < 90.0f) && shield.BlockSuccessful())
-                Self.Attack(target, 5);
+            if(shield.BlockSuccessful(angle))
+                shield.Self.Stagger();
             else
                 Self.Attack(target, Damage);
         }
         else
         {
-            if (target.GetComponent<DeathAnimation>())
+            if(target.GetComponent<DeathAnimation>())
                 return;
 
             Self.Attack(target, Damage);
