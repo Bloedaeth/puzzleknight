@@ -96,7 +96,9 @@ public class Player : Entity
 
         if(tutorial.activeInHierarchy)
         {
-            if(Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Escape))
+            freeLookCam.hideCursor = false;
+            freeLookCam.orbitActive = false;
+            if(Input.GetKeyDown(KeyCode.Escape))
                 ToggleControls(false);
             return;
         }
@@ -144,10 +146,12 @@ public class Player : Entity
             Debug.Log(rigidBody.velocity.y);
     }
 
-    private void ToggleControls(bool state)
+    public void ToggleControls(bool state)
     {
         tutorial.SetActive(state);
         thirdPersonUserControl.enabled = !state;
+        freeLookCam.orbitActive = !state;
+        freeLookCam.hideCursor = !state;
     }
 
     private void CheckFalling()
