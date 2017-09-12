@@ -19,7 +19,7 @@ namespace UnityStandardAssets.Cameras
 		public Vector3[] pivotCameraTransforms; // <------------------- CHANGE
 		public GameObject camPivot; // <--------------------- CHANGE
 		public GameObject camObject; // <--------------------- CHANGE
-		private ProtectCameraFromWallClip freeLookCameraClipper;  // <--------------------- CHANGE
+		private ProtectCameraFromWallClipUnaltered freeLookCameraClipper;  // <--------------------- CHANGE
 
 		public bool aiming; // <------------------- CHANGE
 		public bool orbitActive; // <------------------- CHANGE
@@ -54,7 +54,7 @@ namespace UnityStandardAssets.Cameras
 	        m_PivotTargetRot = m_Pivot.transform.localRotation;
 			m_TransformTargetRot = transform.localRotation;
 
-			freeLookCameraClipper = GetComponent<ProtectCameraFromWallClip>();  // <--------------------- CHANGE
+			freeLookCameraClipper = GetComponent<ProtectCameraFromWallClipUnaltered>();  // <--------------------- CHANGE
         }
 
 
