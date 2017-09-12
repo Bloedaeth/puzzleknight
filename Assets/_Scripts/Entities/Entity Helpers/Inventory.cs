@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-public GameObject puzzleDoor;
+    public GameObject puzzleDoor;
 
     public Transform GuiInventory;
     public Transform GuiMissingDoorPieces;
@@ -134,7 +134,18 @@ public GameObject puzzleDoor;
         inventory = inventory.OrderBy(i => i.TypeId).ToList();
 
         for(int i = 0; i < guiInventorySlots.Length; ++i)
-            guiInventorySlots[i].sprite = i < inventory.Count ? inventory[i].Icon : item.BlankIcon;
+        {
+            if(i < inventory.Count)
+            {
+                guiInventorySlots[i].sprite = inventory[i].Icon;
+                guiInventorySlots[i].color = new Color(255, 255, 255, 255);
+            }
+            else
+            {
+                guiInventorySlots[i].sprite = null;
+                guiInventorySlots[i].color = new Color(255, 255, 255, 0);
+            }
+        }
     }
 
     /// <summary>Increases the amount of money the player has.</summary>
