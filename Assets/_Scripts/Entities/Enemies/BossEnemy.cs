@@ -15,7 +15,7 @@ public class BossEnemy : ShieldedEnemy
         {
             stage = value;
             animator.SetInteger("Stage", stage);
-            if(value == 0)
+            if(stage == 0)
             {
                 for(int i = 0; i < pylons.Count; ++i)
                     pylons[i].ResetPylon();
@@ -26,15 +26,6 @@ public class BossEnemy : ShieldedEnemy
     }
 
     private float bossScaleMult = 1f;
-    public float BossScaleMult
-    {
-        get { return bossScaleMult; }
-        set
-        {
-            bossScaleMult = value;
-            StartCoroutine(SmoothScale());
-        }
-    }
 
     private List<Pylon> pylons;
 
@@ -48,9 +39,10 @@ public class BossEnemy : ShieldedEnemy
     private Vector3 originalScale;
     private Vector3 originalPosition;
 
-    //private const float GAME_SCALE_MULT = 10f;
     private int attackHashStage1;
     private int attackHashStage2;
+
+    private bool scaling;
 
     private void Awake()
     {
@@ -68,7 +60,7 @@ public class BossEnemy : ShieldedEnemy
         attackHashStage1 = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
-        agent.stoppingDistance = 1.5f;// * GAME_SCALE_MULT;
+        agent.stoppingDistance = 1f;
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
     }
 
@@ -87,17 +79,6 @@ public class BossEnemy : ShieldedEnemy
 
         if(hp.HealthRemaining <= hp.InitialAndMaxHealth / 2f && Stage != 2)
             Stage = 2;
-
-        if(SlowedTime)
-        {
-            animator.speed = TimeFreeze.FROZEN_TIME_SCALE;
-            agent.speed = TimeFreeze.FROZEN_TIME_SCALE;
-        }
-        else
-        {
-            animator.speed = 1f;
-            agent.speed = 1f;
-        }
         
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
         if(dist <= agent.stoppingDistance)
@@ -113,31 +94,36 @@ public class BossEnemy : ShieldedEnemy
         }
     }
 
-    private IEnumerator SmoothScale()
+    private IEnumerator SmoothScale(Vector3 start, Vector3 end, Pylon pylon)
     {
-        Vector3 newScale = originalScale * bossScaleMult;
-        float step = 0.05f;
-
-        if(newScale.x > transform.localScale.x)
-            while(transform.localScale.x < newScale.x)
-            {
-                transform.localScale += new Vector3(step, step, step);
-                yield return new WaitForFixedUpdate();
-            }
-        else
-            while(transform.localScale.x > newScale.x)
-            {
-                transform.localScale -= new Vector3(step, step, step);
-                yield return new WaitForFixedUpdate();
-            }
+        float step = 0;
+        while(step < 1f)
+        {
+            step += 1 / pylon.RAISE_LOWER_TIME * Time.deltaTime;
+            transform.localScale = Vector3.Lerp(start, end, step);
+            yield return new WaitForFixedUpdate();
+        }
         yield return null;
     }
 
+    /// <summary>Scales the boss by a fixed amount over time.</summary>
+    /// <param name="scaleIncrease">The increase in the boss' scale.</param>
+    /// <param name="pylon">The pylon doing the scaling, determines the scale time.</param>
+    public void ScaleOverTime(float scaleIncrease, Pylon pylon)
+    {
+        Vector3 start = originalScale * bossScaleMult;
+        bossScaleMult += scaleIncrease;
+        Vector3 end = originalScale * bossScaleMult;
+        StartCoroutine(SmoothScale(start, end, pylon));
+    }
+
+    /// <summary>Resets the boss to its original state from before the boss fight started.</summary>
     public void ResetBoss()
     {
         Stage = 0;
-        BossScaleMult = 1f;
-        
+        bossScaleMult = 1f;
+        transform.localScale = originalScale;
+
         ai.SetTarget(null);
         ai.agent.SetDestination(originalPosition);
 
