@@ -28,10 +28,15 @@ public class Pylon : MonoBehaviour, IFreezable
     private const float MAX_HEIGHT = 480.5f;
     private const float BOSS_SCALE_INCREASE = 0.8f;
 
+	private float distToMin;
+	public float pylonScaleModifier;
+
     private void Start()
     {
         maxHeightPos = new Vector3(transform.localPosition.x, MAX_HEIGHT, transform.localPosition.z);
         minHeightPos = new Vector3(transform.localPosition.x, MIN_HEIGHT, transform.localPosition.z);
+
+		distToMin = 0;
 
         lever = transform.parent.GetComponentInChildren<Lever>();
         boss = FindObjectOfType<BossEnemy>();
@@ -44,7 +49,14 @@ public class Pylon : MonoBehaviour, IFreezable
             RAISE_LOWER_TIME = 25f;
         else
             RAISE_LOWER_TIME = 5f;
+
+		RecalculateScale ();
     }
+
+	void RecalculateScale() { // Here's another method I'm using.
+		distToMin = (-transform.localPosition + minHeightPos).magnitude;
+		pylonScaleModifier = BOSS_SCALE_INCREASE * (distToMin / (MAX_HEIGHT - MIN_HEIGHT));
+	}
 
     private IEnumerator RaiseLower(Vector3 endPos)
     {
@@ -90,14 +102,14 @@ public class Pylon : MonoBehaviour, IFreezable
         {
             ++numPylonsActive;
             StartCoroutine(RaiseLower(maxHeightPos));
-            boss.ScaleOverTime(BOSS_SCALE_INCREASE, this);
+			//boss.ScaleOverTime(BOSS_SCALE_INCREASE, this);  // Don't think we need this - Steve (GO TO LINE 96 in BossEnemy class)
             ps.Play();
         }
         else
         {
             --numPylonsActive;
             StartCoroutine(RaiseLower(minHeightPos));
-            boss.ScaleOverTime(-BOSS_SCALE_INCREASE, this);
+            //boss.ScaleOverTime(-BOSS_SCALE_INCREASE, this);//
             ps.Stop();
         }
     }

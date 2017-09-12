@@ -92,7 +92,24 @@ public class BossEnemy : ShieldedEnemy
                 animator.SetTrigger("Attack");
             }
         }
+
+		ScaleBoss (); // Use this instead ~ Steve
     }
+
+	private void ScaleBoss() { // Here is the method I'm using
+		bossScaleMult = 1f;
+
+		for (int i = 0; i < pylons.Count; i++) {
+			bossScaleMult += pylons [i].pylonScaleModifier;
+		}
+
+		transform.localScale = originalScale * bossScaleMult;
+	}
+
+
+
+
+
 
     private IEnumerator SmoothScale(Vector3 start, Vector3 end, Pylon pylon)
     {
