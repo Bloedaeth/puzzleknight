@@ -9,7 +9,7 @@ public class PerspectivePuzzleStore : MonoBehaviour {
 
 	private Vector3 doorToCam;
 
-	public Button button;
+	public PerspectiveButton button;
 
 
 	private Vector3 buttonStartLoc;

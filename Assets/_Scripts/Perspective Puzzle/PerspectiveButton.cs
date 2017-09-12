@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Button : MonoBehaviour {
+public class PerspectiveButton : MonoBehaviour {
 
 	public bool playerStanding;
 
@@ -13,12 +13,16 @@ public class Button : MonoBehaviour {
 
 	public GameObject cameraPoint;
 
+	private PerspectivePuzzle pp;
+
 	UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl tpuc;
 
 	// Use this for initialization
 	private void Start() {
 		isActive = true;
 		deactivateCalled = false;
+
+		pp = GetComponentInParent<PerspectivePuzzle> ();
 	}
 	
 	// Update is called once per frame
@@ -67,6 +71,8 @@ public class Button : MonoBehaviour {
 			tpuc.freeLookCamera.UpdateTarget (cameraPoint.transform);
 			tpuc.freeLookCamera.ToggleCamClip(true);
 		}
+
+		pp.CheckCamPosition ();
 	}
 		
 }

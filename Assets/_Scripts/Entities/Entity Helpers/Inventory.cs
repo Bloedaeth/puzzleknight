@@ -27,7 +27,9 @@ public GameObject puzzleDoor;
 
     private List<Item> inventory = new List<Item>();
     private Image[] guiInventorySlots;
+
     private DoorPiece[] collectablePieces;
+	private bool[] doorPieceCollected;
     
     private int inventoryLimit;
 
@@ -37,16 +39,18 @@ public GameObject puzzleDoor;
         inventoryLimit = guiInventorySlots.Length;
         collectablePieces = FindObjectsOfType<DoorPiece>();
 		ToggleGuiInventory(false);
+
+		doorPieceCollected = new bool[collectablePieces.Length]; 
     }
 
-    private void Update()
+    /*private void Update()
     {
         foreach(DoorPiece piece in collectablePieces)
             if(piece.gameObject.activeInHierarchy)
                 return;
 
         puzzleDoor.SetActive(false);
-    }
+    }*/
 
     /// <summary>Toggles the visibility of the GUI Inventory.</summary>
     public void ToggleGuiInventory()
@@ -158,16 +162,27 @@ public GameObject puzzleDoor;
             case DoorPiece.PieceType.Frame:
                 GuiMissingDoorPieces.GetChild(0).gameObject.SetActive(false);
                 GuiCollectedDoorPieces.GetChild(0).GetComponent<Image>().sprite = GuiCollectedPieceImages[0];
+                doorPieceCollected[0] = true;
                 break;
             case DoorPiece.PieceType.Panel:
                 GuiMissingDoorPieces.GetChild(1).gameObject.SetActive(false);
                 GuiCollectedDoorPieces.GetChild(1).GetComponent<Image>().sprite = GuiCollectedPieceImages[1];
+                doorPieceCollected[1] = true;
                 break;
             case DoorPiece.PieceType.Knob:
                 GuiMissingDoorPieces.GetChild(2).gameObject.SetActive(false);
                 GuiCollectedDoorPieces.GetChild(2).GetComponent<Image>().sprite = GuiCollectedPieceImages[2];
+                doorPieceCollected[2] = true;
                 break;
         }
+    }
+
+    /// <summary>
+    /// Who do you think you are using a fokin getter method. WE HAVE PROPERTIES!
+    /// </summary>
+    public bool[] GetDoorPieces()
+    {
+        return doorPieceCollected;
     }
 
     public void ShowToolTip(int slot)

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PerspectivePuzzle : Puzzle {
+public class PerspectivePuzzleOld : Puzzle {
 
 	private PerspectivePuzzleStore ps;
 
 	private Camera cam;
+
+	private bool done;
 
     // Use this for initialization
     private void Start() {

@@ -32,6 +32,8 @@ public class Player : Entity
 
     private Rigidbody movingObject;
 
+    private PerspectivePieceHolderUiInteractor perspPieceUI;
+
     //Timer to make above clip play after running for set period of time
     private float runTimer = 0;
     //Stop run sound from being played repeatedly while running
@@ -74,7 +76,9 @@ public class Player : Entity
 
         audio = GetComponent<AudioSource>();
         idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
-        
+
+        perspPieceUI = FindObjectOfType<PerspectivePieceHolderUiInteractor>();
+
         //Invoke("PlayMorpheusSounds", Random.Range(20, 30));
     }
     
@@ -107,6 +111,8 @@ public class Player : Entity
                 ToggleInventory(false);
             else if(shop != null && shop.IsOpen)
                 shop.ToggleGuiShop(false);
+            else if(perspPieceUI.IsOpen)
+                perspPieceUI.TogglePuzzlePieceUI(false);
             else
                 ToggleControls(true);
         }
@@ -218,7 +224,7 @@ public class Player : Entity
     {
         if(animator.GetCurrentAnimatorStateInfo(0).fullPathHash == attackStateThreeHash)
             animator.ResetTrigger("LightAttack");
-        else if(Input.GetKeyDown(KeyCode.Mouse0))
+        else if(Input.GetKeyDown(KeyCode.Mouse0) && thirdPersonUserControl.movementActive)
             animator.SetTrigger("LightAttack");
     }
 
