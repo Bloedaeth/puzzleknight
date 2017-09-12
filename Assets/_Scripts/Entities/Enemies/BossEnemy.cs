@@ -138,7 +138,6 @@ public class BossEnemy : ShieldedEnemy
     public void ResetBoss()
     {
         Stage = 0;
-        bossScaleMult = 1f;
         transform.localScale = originalScale;
 
         ai.SetTarget(null);

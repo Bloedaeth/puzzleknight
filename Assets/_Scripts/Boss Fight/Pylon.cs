@@ -86,12 +86,14 @@ public class Pylon : MonoBehaviour, IFreezable
     public void ResetPylon()
     {
         CancelInvoke();
+        StopAllCoroutines();
         if(isActive)
         {
             ps.Stop();
             isActive = false;
             --numPylonsActive;
         }
+        transform.localPosition = minHeightPos;
     }
 
     public void SetPylonActive(bool val)
