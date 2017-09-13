@@ -21,16 +21,23 @@ public class Teleporter : MonoBehaviour
 		}
 		else
 			Destroy(this);
+
+        FindTransforms();
 	}
 
 	private void OnLevelWasLoaded()
 	{
-		player = FindObjectOfType<Player>().transform;
-		pressurePlatePuzzle = GameObject.FindGameObjectWithTag("TPplate").transform;
-		jumpPuzzle = GameObject.FindGameObjectWithTag("TPjump").transform;
-		shadowPuzzle = GameObject.FindGameObjectWithTag("TPshadow").transform;
-		bossFight = GameObject.FindGameObjectWithTag("TPboss").transform;
+        FindTransforms();
 	}
+
+    private void FindTransforms()
+    {
+        player = FindObjectOfType<Player>().transform;
+        pressurePlatePuzzle = GameObject.FindGameObjectWithTag("TPplate").transform;
+        jumpPuzzle = GameObject.FindGameObjectWithTag("TPjump").transform;
+        shadowPuzzle = GameObject.FindGameObjectWithTag("TPshadow").transform;
+        bossFight = GameObject.FindGameObjectWithTag("TPboss").transform;
+    }
 
 	private void Update()
 	{
