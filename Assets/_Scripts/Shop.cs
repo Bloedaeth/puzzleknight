@@ -35,7 +35,7 @@ public class Shop : MonoBehaviour
         for(int i = 0; i < shopInventory.Count; ++i)
         {
             guiSlots[i].sprite = shopInventory[i].Icon;
-            //child.GetComponentInChildren<Text>().text = "COST: " + shopInventory[i].ShopCost;
+            guiSlots[i].color = new Color(255, 255, 255, 255);
         }
     }
 
@@ -103,10 +103,21 @@ public class Shop : MonoBehaviour
     public void RemoveItem(Item item)
     {
         shopInventory.Remove(item);
-		Transform shopSlots = GuiShop.GetChild(1);
+        Transform shopSlots = GuiShop.GetChild(1);
         for(int i = 0; i < shopSlots.childCount; ++i)
-            shopSlots.GetChild(i).GetComponent<Image>().sprite = 
-                i < shopInventory.Count ? shopInventory[i].Icon : item.BlankIcon;
+        {
+            Image slot = shopSlots.GetChild(i).GetComponent<Image>();
+            if(i < shopInventory.Count)
+            {
+                slot.sprite = shopInventory[i].Icon;
+                slot.color = new Color(255, 255, 255, 255);
+            }
+            else
+            {
+                slot.sprite = null;
+                slot.color = new Color(255, 255, 255, 0);
+            }
+        }
     }
 
     /// <summary>Retrieves an item from the shop.</summary>
