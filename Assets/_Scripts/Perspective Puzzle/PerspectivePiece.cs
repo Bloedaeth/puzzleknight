@@ -7,11 +7,12 @@ public class PerspectivePiece : MonoBehaviour {
 
 	private ParticleSystem particle;
 	private ParticleSystem.ShapeModule sm;
-	private const float BASE_PIECE_MESH_SCALE = 8.539178f;
+	private float originalPieceMeshScale;
 
 	void ResetParticle() {
 		particle = GetComponentInChildren<ParticleSystem> ();
 		sm = particle.shape;
+		originalPieceMeshScale = sm.meshScale;
 	}
 
 	public void SimulateParticle() {
@@ -23,7 +24,7 @@ public class PerspectivePiece : MonoBehaviour {
 	}
 
 	public void ResizeParticle(float scale) {
-		sm.meshScale = BASE_PIECE_MESH_SCALE * scale;
+		sm.meshScale = originalPieceMeshScale * scale;
 	}
 
 	public GameObject getGameObject() {

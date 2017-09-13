@@ -6,9 +6,8 @@ public class TimeFreeze : MonoBehaviour
     /// <summary>The scaled flow of time in the freeze radius.</summary>
     public static float FROZEN_TIME_SCALE { get { return 0.1f; } }
 
-    private const float EXPANSION_RATE = 0.3f;
+    private const float EXPANSION_RATE_MULT = 3f;
     private const float EMISSION_RATE = 50000f;
-    //private const float GAME_SCALE = 6f;
 
     /// <summary>The game object that determines where time should freeze.</summary>
     public new SphereCollider collider;
@@ -20,10 +19,10 @@ public class TimeFreeze : MonoBehaviour
     {
         ParticleSystem ps = collider.GetComponent<ParticleSystem>();
         ParticleSystem.MainModule main = ps.main;
-        main.maxParticles = main.maxParticles /* * (int)GAME_SCALE*/;
+        main.maxParticles = main.maxParticles;
 
         ParticleSystem.EmissionModule emit = ps.emission;
-        emit.rateOverTimeMultiplier = EMISSION_RATE /* * GAME_SCALE*/;
+        emit.rateOverTimeMultiplier = EMISSION_RATE;
 
         particleShape = ps.shape;
     }
@@ -42,22 +41,33 @@ public class TimeFreeze : MonoBehaviour
     private IEnumerator ExpandFreezeRadius(float time, float radius)
     {
         freezeUsed = true;
-        for (float i = collider.radius; i <= radius /* * GAME_SCALE*/; i += EXPANSION_RATE /* * GAME_SCALE*/)
+        float step = 0;
+        float rate = 1 / time * EXPANSION_RATE_MULT;
+        float start = 0.1f;
+        float end = radius;
+        while(step < 1f)
         {
-            collider.radius = i;
-            particleShape.radius = i;
+            step += rate * Time.deltaTime;
+            float curRad = Mathf.Lerp(start, end, step);
+            collider.radius = curRad;
+            particleShape.radius = curRad;
             yield return new WaitForFixedUpdate();
         }
         
         yield return new WaitForSeconds(time);
-        
-        for(float i = collider.radius; i >= 0.1f; i -= EXPANSION_RATE /* * GAME_SCALE*/)
+
+        step = 0;
+        while(step < 1f)
         {
-            collider.radius = i;
-            particleShape.radius = i;
+            step += rate * Time.deltaTime;
+            float curRad = Mathf.Lerp(end, start, step);
+            collider.radius = curRad;
+            particleShape.radius = curRad;
             yield return new WaitForFixedUpdate();
         }
         freezeUsed = false;
         collider.gameObject.SetActive(false);
+
+        yield return null;
     }
 }

@@ -30,7 +30,7 @@ public class Turret : Enemy
             projectile.forward = turretMuzzle.forward;
             //projectile.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             projectile.gameObject.SetActive(true);
-            fireTime = Time.time + Random.Range(3, 7);
+            fireTime = Time.time + Random.Range(1, 7);
         }
     }
 

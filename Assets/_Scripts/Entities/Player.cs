@@ -389,6 +389,7 @@ public class Player : Entity
         if(!(target is Enemy))
             return;
 
+        AttackPlaySound();
         base.Attack(target, damage);
     }
 
