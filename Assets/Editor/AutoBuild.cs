@@ -5,7 +5,7 @@ public class AutoBuild
 {
 	static void BuildGame()
     {
-        string[] scenes = { "Assets/_Scenes/Menus/Start Menu.unity", "Assets/_Scenes/Deliverable.unity", "Assets/_Scenes/Menus/Controls Menu.unity", "Assets/_Scenes/Menus/Options Menu.unity" };
+        string[] scenes = { "Assets/_Scenes/Menus/Start Menu.unity", "Assets/_Scenes/Menus/Controls Menu.unity", "Assets/_Scenes/Menus/Options Menu.unity", "Assets/_Scenes/Tutorial.unity", "Assets/_Scenes/Deliverable.unity"};
         BuildPipeline.BuildPlayer(scenes, "Builds/Windows/PuzzleKnight.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
     }
 
