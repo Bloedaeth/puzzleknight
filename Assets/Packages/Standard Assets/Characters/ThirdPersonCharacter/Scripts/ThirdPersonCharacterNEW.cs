@@ -11,11 +11,20 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_MovingTurnSpeed = 360;
 		[SerializeField] float m_StationaryTurnSpeed = 180;
 		[SerializeField] float m_JumpPower = 12f;
-		[Range(1f, 4f)][SerializeField] float m_GravityMultiplier = 2f;
+		[Range(0f, 4f)][SerializeField] float m_GravityMultiplier = 1f;
 		[SerializeField] float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
+
+		//       The arrows are as follows:     ^  >  v   <
+		enum buttons : int {Up = 0, Right = 1, Down = 2, Left = 3};
+		public float[] buttonsHoldTime = new float[4] {0f,0f,0f,0f};
+		public bool[] buttonsHoldInc = new bool[4] {false, false, false, false};
+		float jumpMultMax = 4f;
+		float buttonsIncRate = 8f;
+
+		public Vector3 jumpVector;
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
@@ -48,6 +57,51 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         //    throw new NotImplementedException();
         //}
 
+		void Update() {
+			SetUpIncs();
+
+			SetUpJumpVec ();
+		}
+
+		void SetUpIncs() {
+			buttonsHoldInc [(int)buttons.Up] = Input.GetKey (KeyCode.W);
+			buttonsHoldInc [(int)buttons.Right] = Input.GetKey (KeyCode.D);
+			buttonsHoldInc [(int)buttons.Down] = Input.GetKey (KeyCode.S);
+			buttonsHoldInc [(int)buttons.Left] = Input.GetKey (KeyCode.A);
+
+			RunThroughIncs ();
+		}
+
+		void RunThroughIncs() {
+			float max = Input.GetKey (KeyCode.LeftShift) ? jumpMultMax * 2 : jumpMultMax;
+			for (int i = 0; i < buttonsHoldInc.Length; i++) {
+				if (buttonsHoldInc [i]) {
+					if (buttonsHoldTime [i] < max) {
+						buttonsHoldTime [i] += buttonsIncRate * Time.deltaTime;
+					} else {
+						buttonsHoldTime [i] = max;
+					}
+				} else{
+					buttonsHoldTime [i] = 0f;
+				}
+
+			}
+		}
+
+		void SetUpJumpVec() {
+			Vector3 cFor = Vector3.ProjectOnPlane (Camera.main.transform.forward, m_GroundNormal).normalized;
+			Vector3 cRight = Vector3.ProjectOnPlane (Camera.main.transform.right, m_GroundNormal).normalized;
+
+			cFor *= (buttonsHoldTime [(int)buttons.Up] - buttonsHoldTime [(int)buttons.Down]);
+			cRight *= (buttonsHoldTime [(int)buttons.Right] - buttonsHoldTime [(int)buttons.Left]);
+
+			jumpVector = Vector3.ClampMagnitude((cFor + cRight), Input.GetKey (KeyCode.LeftShift) ? jumpMultMax * 2 : jumpMultMax);
+
+			//float angle = Vector3.Angle(cFor, Vector3.ProjectOnPlane(Camera.main.transform.forward, m_GroundNormal));
+			//Quaternion rotation = Quaternion.AngleAxis (angle, m_GroundNormal);
+
+		}
+
         public void Move(Vector3 move, bool crouch, bool jump, bool unused)
 		{
 			// convert the world relative moveInput vector into a local-relative
@@ -65,7 +119,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// control and velocity handling is different when grounded and airborne:
 			if (m_IsGrounded)
 			{
-				HandleGroundedMovement(crouch, jump);
+				HandleGroundedMovement(crouch, jump, move);
 			}
 			else
 			{
@@ -167,13 +221,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		}
 
 
-		void HandleGroundedMovement(bool crouch, bool jump)
+		void HandleGroundedMovement(bool crouch, bool jump, Vector3 m_Move)
 		{
 			// check whether conditions are right to allow a jump:
 			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
 			{
 				// jump!
-				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
+				m_Rigidbody.velocity = new Vector3(jumpVector.x, m_JumpPower, jumpVector.z);
 				m_IsGrounded = false;
 				m_Animator.applyRootMotion = false;
 				m_GroundCheckDistance = 0.1f;
