@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    public GameObject puzzleDoor;
-
     public Transform GuiInventory;
     public Transform GuiMissingDoorPieces;
     public Transform GuiCollectedDoorPieces;
@@ -42,15 +40,6 @@ public class Inventory : MonoBehaviour
 
 		doorPieceCollected = new bool[collectablePieces.Length]; 
     }
-
-    /*private void Update()
-    {
-        foreach(DoorPiece piece in collectablePieces)
-            if(piece.gameObject.activeInHierarchy)
-                return;
-
-        puzzleDoor.SetActive(false);
-    }*/
 
     /// <summary>Toggles the visibility of the GUI Inventory.</summary>
     public void ToggleGuiInventory()

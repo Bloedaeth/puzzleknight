@@ -9,6 +9,7 @@ public class DeathAnimation : MonoBehaviour
 
     private void Awake()
     {
+        GetComponent<ThirdPersonUserControl>().movementActive = false;
         AICharacterControl ai = GetComponent<AICharacterControl>();
         if(ai)
             ai.enabled = false;
@@ -49,6 +50,7 @@ public class DeathAnimation : MonoBehaviour
                     player.InBossFight = false;
                 }
 
+                GetComponent<ThirdPersonUserControl>().movementActive = true;
                 Destroy(this);
             }
         }
