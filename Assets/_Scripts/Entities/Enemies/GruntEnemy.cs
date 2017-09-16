@@ -82,11 +82,12 @@ public class GruntEnemy : ShieldedEnemy
          */
         if (ai.target != null)
         {
-            Vector3 aiPosition = transform.position;
+            //Make it a bit above the ground, so collisions with ground objects don't occur
+            Vector3 aiPosition = transform.position + Vector3.up;
             RaycastHit raycastHit;
-            Vector3 rayDirection = ai.target.transform.position - aiPosition;
+            Vector3 rayDirection = (ai.target.transform.position + Vector3.up) - aiPosition;
 
-            if (Physics.Raycast(aiPosition, rayDirection, out raycastHit))
+            if(Physics.Raycast(aiPosition, rayDirection, out raycastHit))
             {
                 if (raycastHit.transform.tag != "Player")
                     ai.target = null;
