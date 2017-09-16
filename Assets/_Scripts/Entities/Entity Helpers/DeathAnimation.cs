@@ -9,7 +9,10 @@ public class DeathAnimation : MonoBehaviour
 
     private void Awake()
     {
-        GetComponent<ThirdPersonUserControl>().movementActive = false;
+        ThirdPersonUserControl uc = GetComponent<ThirdPersonUserControl>();
+        if(uc)
+            uc.movementActive = false;
+
         AICharacterControl ai = GetComponent<AICharacterControl>();
         if(ai)
             ai.enabled = false;
