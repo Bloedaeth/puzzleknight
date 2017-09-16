@@ -1,26 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class DialogueHolder : MonoBehaviour {
+public class DialogueHolder : MonoBehaviour
+{
     public string dialogue;
     private DialogueManager dMan;
     public string[] dialogueLines;
+    public Image interact;
 
-
-	// Use this for initialization
-	void Start () {
+	private void Start()
+    {
         dMan = FindObjectOfType<DialogueManager>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.CompareTag("Player"))
+            interact.enabled = true;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.CompareTag("Player"))
         {
             if(Input.GetKeyUp(KeyCode.E))
             {
@@ -35,5 +36,11 @@ public class DialogueHolder : MonoBehaviour {
 
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("Player"))
+            interact.enabled = false;
     }
 }
