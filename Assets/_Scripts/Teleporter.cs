@@ -22,15 +22,23 @@ public class Teleporter : MonoBehaviour
 		else
 			Destroy(this);
 
-        if(Debug.isDebugBuild)
+        if(!Debug.isDebugBuild)
             FindTransforms();
-	}
+        else
+#if UNITY_EDITOR
+            FindTransforms();
+#endif
+    }
 
-	private void OnLevelWasLoaded()
+    private void OnLevelWasLoaded()
 	{
-        if(Debug.isDebugBuild)
+        if(!Debug.isDebugBuild)
             FindTransforms();
-	}
+        else
+#if UNITY_EDITOR
+            FindTransforms();
+#endif
+    }
 
     private void FindTransforms()
     {
@@ -45,9 +53,26 @@ public class Teleporter : MonoBehaviour
 
     private void Update()
 	{
-        if(Debug.isDebugBuild)
+        if(!Debug.isDebugBuild)
             return;
-
+        else
+#if UNITY_EDITOR
+        if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.Alpha6))
+                player.position = hub.position;
+            if(Input.GetKeyDown(KeyCode.Alpha7))
+                player.position = jumpPuzzle.position;
+            if(Input.GetKeyDown(KeyCode.Alpha8))
+                player.position = shadowPuzzle.position;
+            if(Input.GetKeyDown(KeyCode.Alpha9))
+                player.position = pressurePlatePuzzle.position;
+            if(Input.GetKeyDown(KeyCode.Alpha0))
+                player.position = bossFight.position;
+        }
+#endif
         if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		else

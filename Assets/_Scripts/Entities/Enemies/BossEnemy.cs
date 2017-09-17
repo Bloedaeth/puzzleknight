@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-public class BossEnemy : ShieldedEnemy
+public class BossEnemy : Enemy
 {
     private int stage = 0;
     public int Stage
