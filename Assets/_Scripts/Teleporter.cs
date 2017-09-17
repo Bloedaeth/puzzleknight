@@ -9,12 +9,12 @@ public class Teleporter : MonoBehaviour
 	private Transform pressurePlatePuzzle;
 	private Transform shadowPuzzle;
 	private Transform bossFight;
-
+    private Transform hub;
 	private Transform player;
 
 	private void Awake()
 	{
-		if (instance == null)
+		if(instance == null)
 		{
 			instance = this;
 			DontDestroyOnLoad(gameObject);
@@ -22,12 +22,14 @@ public class Teleporter : MonoBehaviour
 		else
 			Destroy(this);
 
-        FindTransforms();
+        if(Debug.isDebugBuild)
+            FindTransforms();
 	}
 
 	private void OnLevelWasLoaded()
 	{
-        FindTransforms();
+        if(Debug.isDebugBuild)
+            FindTransforms();
 	}
 
     private void FindTransforms()
@@ -37,21 +39,28 @@ public class Teleporter : MonoBehaviour
         jumpPuzzle = GameObject.FindGameObjectWithTag("TPjump").transform;
         shadowPuzzle = GameObject.FindGameObjectWithTag("TPshadow").transform;
         bossFight = GameObject.FindGameObjectWithTag("TPboss").transform;
+        hub = GameObject.FindGameObjectWithTag("TPhub").transform;
+
     }
 
-	private void Update()
+    private void Update()
 	{
-		if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
+        if(Debug.isDebugBuild)
+            return;
+
+        if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		else
 		{
-			if (Input.GetKeyDown(KeyCode.Alpha7))
+            if(Input.GetKeyDown(KeyCode.Alpha6))
+                player.position = hub.position;
+			if(Input.GetKeyDown(KeyCode.Alpha7))
 				player.position = jumpPuzzle.position;
-			if (Input.GetKeyDown(KeyCode.Alpha8))
+			if(Input.GetKeyDown(KeyCode.Alpha8))
 				player.position = shadowPuzzle.position;
-			if (Input.GetKeyDown(KeyCode.Alpha9))
+			if(Input.GetKeyDown(KeyCode.Alpha9))
 				player.position = pressurePlatePuzzle.position;
-			if (Input.GetKeyDown(KeyCode.Alpha0))
+			if(Input.GetKeyDown(KeyCode.Alpha0))
 				player.position = bossFight.position;
 		}
 	}

@@ -119,8 +119,8 @@ public class Player : Entity
                 ToggleControls(true);
         }
 		
-        if(Input.GetKeyDown(KeyCode.R))
-            transform.position = SpawnPoint.position;
+        //if(Input.GetKeyDown(KeyCode.R))
+        //    transform.position = SpawnPoint.position;
 
         //CombatSwitcher ();
 
