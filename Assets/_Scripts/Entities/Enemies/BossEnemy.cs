@@ -60,7 +60,7 @@ public class BossEnemy : Enemy
         attackHashStage1 = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
-        agent.stoppingDistance = 1f;
+        agent.stoppingDistance = 2f;
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
     }
 

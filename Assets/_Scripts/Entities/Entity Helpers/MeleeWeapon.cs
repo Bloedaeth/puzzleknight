@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
 public class MeleeWeapon : MonoBehaviour
 {
