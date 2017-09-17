@@ -14,7 +14,7 @@ public class Teleporter : MonoBehaviour
 
 	private void Awake()
 	{
-		if (instance == null)
+		if(instance == null)
 		{
 			instance = this;
 			DontDestroyOnLoad(gameObject);
@@ -22,12 +22,14 @@ public class Teleporter : MonoBehaviour
 		else
 			Destroy(this);
 
-        FindTransforms();
+        if(Debug.isDebugBuild)
+            FindTransforms();
 	}
 
 	private void OnLevelWasLoaded()
 	{
-        FindTransforms();
+        if(Debug.isDebugBuild)
+            FindTransforms();
 	}
 
     private void FindTransforms()
@@ -41,7 +43,10 @@ public class Teleporter : MonoBehaviour
 
 	private void Update()
 	{
-		if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
+        if(Debug.isDebugBuild)
+            return;
+
+        if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		else
 		{
