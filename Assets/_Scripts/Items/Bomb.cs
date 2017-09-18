@@ -10,7 +10,7 @@ public class Bomb : ThrowableItem
 
     public override Sprite ShopTooltip { get { throw new System.NotImplementedException(); } }
 
-    public float Damage;
+    public int Damage;
 
     /// <summary>Uses the item on the given entity.</summary>
     /// <param name="self">The entity using the item.</param>
