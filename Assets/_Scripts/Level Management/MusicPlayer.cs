@@ -19,7 +19,7 @@ public class MusicPlayer : MonoBehaviour
             Destroy(gameObject);
     }
 
-    void Start()
+    private void Start()
     {
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
@@ -31,19 +31,30 @@ public class MusicPlayer : MonoBehaviour
         audio.Play();
     }
 
+    private void Update()
+    {
+        if(!player)
+            return;
+
+        if(audio.clip != musicArray[2] && player.InBossFight)
+            PlayMusicAtIndex(2);
+        else if(audio.clip != musicArray[1] && !player.InBossFight)
+            PlayMusicAtIndex(1);
+    }
+
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode mode)
     {
         player = FindObjectOfType<Player>();
-        string sceneName = scene.name;
-        if(audio.clip != musicArray[0] && (sceneName.Contains("Start") || sceneName.Contains("Options") || sceneName.Contains("Controls")))
+        //string sceneName = scene.name;
+        if(audio.clip != musicArray[1] && player)
+            PlayMusicAtIndex(1);
+        else if(audio.clip != musicArray[0] && !player)
             PlayMusicAtIndex(0);
-        else if(player)
-        {
-            if(audio.clip != musicArray[2] && player.InBossFight)
-                PlayMusicAtIndex(2);
-            else if(audio.clip != musicArray[1])
-                PlayMusicAtIndex(1);
-        }
+
+        //if(audio.clip != musicArray[0] && (sceneName.Contains("Start") || sceneName.Contains("Options") || sceneName.Contains("Controls")))
+        //    PlayMusicAtIndex(0);
+        //else if(player)
+        //    PlayMusicAtIndex(1);
     }
 
     private void PlayMusicAtIndex(int index)

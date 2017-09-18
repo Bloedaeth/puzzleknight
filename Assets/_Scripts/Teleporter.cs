@@ -32,7 +32,7 @@ public class Teleporter : MonoBehaviour
 
     private void OnLevelWasLoaded()
 	{
-        if(inEditor || Debug.isDebugBuild)
+        if((inEditor || Debug.isDebugBuild) && SceneManager.GetActiveScene().name.Contains("Deliverable"))
             FindTransforms();
     }
 
