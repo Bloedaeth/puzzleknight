@@ -79,7 +79,7 @@ namespace UnityStandardAssets.Cameras
                         bool cont = false;
                         for(int j = 0; j < dontClipTags.Length; ++j)
                         {
-                            if(cols[i].transform.CompareTag(dontClipTags[i]))
+                            if(cols[i].transform.CompareTag(dontClipTags[j]))
                             {
                                 cont = true;
                                 break;
