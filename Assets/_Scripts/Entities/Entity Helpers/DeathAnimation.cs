@@ -42,7 +42,7 @@ public class DeathAnimation : MonoBehaviour
 
                 Health hp = GetComponent<Health>();
                 hp.enabled = true;
-                hp.RecoverHealth(hp.InitialAndMaxHealth);
+                hp.ResetHealth();
                 transform.position = player.SpawnPoint.position;
 
                 if(player.InBossFight)

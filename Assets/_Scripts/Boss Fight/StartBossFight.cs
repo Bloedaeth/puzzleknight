@@ -21,6 +21,7 @@ public class StartBossFight : MonoBehaviour
 
         boss.GetComponent<AICharacterControl>().SetTarget(col.gameObject.transform);
         boss.GetComponent<BossEnemy>().Stage = 1;
+        boss.GetComponent<Health>().HealthBar.transform.parent.gameObject.SetActive(true);
 
         rocks.SetActive(true);
         gameObject.SetActive(false);

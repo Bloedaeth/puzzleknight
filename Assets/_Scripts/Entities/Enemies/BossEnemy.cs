@@ -170,12 +170,14 @@ public class BossEnemy : Enemy
     {
         Stage = 0;
         transform.localScale = originalScale;
+        transform.position = originalPosition;
 
         ai.SetTarget(null);
         ai.agent.SetDestination(originalPosition);
+        
+        hp.ResetHealth();
+        hp.HealthBar.transform.parent.gameObject.SetActive(false);
 
-        transform.position = originalPosition;
-        hp.HealthRemaining = hp.InitialAndMaxHealth;
         startCollider.SetActive(true);
     }
     

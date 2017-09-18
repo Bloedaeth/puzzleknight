@@ -62,4 +62,12 @@ public class Health : MonoBehaviour
         if(HealthBar)
             HealthBar.UpdateGUI(HealthRemaining, InitialAndMaxHealth);
     }
+
+    public void ResetHealth()
+    {
+        HealthRemaining = InitialAndMaxHealth;
+
+        if(HealthBar)
+            HealthBar.UpdateGUI(HealthRemaining, InitialAndMaxHealth);
+    }
 }
