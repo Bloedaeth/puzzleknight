@@ -17,7 +17,7 @@ public class TimeFreezeCollider : MonoBehaviour
         IFreezable obj = other.GetComponent<IFreezable>();
         if(obj == null)
             return;
-
+        Debug.Log(other.name + ": " + frozenState);
         obj.SlowedTime = frozenState;
     }
 }

@@ -73,11 +73,11 @@ public class BossEnemy : Enemy
     private void Update()
     {
         agent.stoppingDistance = 1.5f + bossScaleMult - 1;
-        if(bossScaleMult >= 2f)
-            animator.SetInteger("Stage", 2);
-        else
-            animator.SetInteger("Stage", 1);
-
+        //if(bossScaleMult >= 2f)
+        //    animator.SetInteger("Stage", 2);
+        //else
+        animator.SetInteger("Stage", 1);
+        //TODO ^^ uncomment above after stomp particles working
         if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x)
         {
             ps.Play();
