@@ -62,7 +62,7 @@ public class PendulumHinge : MonoBehaviour {
 
 		CheckSlowTime ();
 
-		if (pen.SlowTime) {
+		if (pen.SlowedTime) {
 			changeTime += Time.deltaTime * (fastSwingSpeed - slowSwingSpeed);
 		}
 
@@ -86,7 +86,7 @@ public class PendulumHinge : MonoBehaviour {
 	}*/
 
 	void CheckSlowTime() {
-		currSwingSpeed = pen.SlowTime ? slowSwingSpeed : fastSwingSpeed;
+		currSwingSpeed = pen.SlowedTime ? slowSwingSpeed : fastSwingSpeed;
 	}
 
 	/*bool NearAngles() {

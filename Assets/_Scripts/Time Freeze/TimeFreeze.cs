@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class TimeFreeze : MonoBehaviour
@@ -14,6 +15,8 @@ public class TimeFreeze : MonoBehaviour
     private ParticleSystem.ShapeModule particleShape;
 
     public bool freezeUsed;
+
+    private float radius;
 
     private void Awake()
     {
@@ -38,6 +41,32 @@ public class TimeFreeze : MonoBehaviour
         StartCoroutine(ExpandFreezeRadius(time, radius));
     }
 
+    private void Update()
+    {
+        Transform[] freezable = FindObjectsOfType<Transform>().Where(o => o.GetComponent<IFreezable>() != null).ToArray();
+        foreach(Transform freeze in freezable)
+        {
+            Debug.Log(radius + " : " + Vector3.Distance(transform.position, freeze.position) + " : " + freeze.name);
+            if(Vector3.Distance(transform.position, freeze.position) < radius)
+            {
+                FreezeObj(freeze, true);
+            }
+            else
+            {
+                FreezeObj(freeze, false);
+            }
+        }
+    }
+
+    private void FreezeObj(Transform other, bool frozenState)
+    {
+        IFreezable obj = other.GetComponent<IFreezable>();
+        if(obj == null)
+            return;
+        if(frozenState) Debug.Log(other.name + ": " + frozenState);
+        obj.SlowedTime = frozenState;
+    }
+
     private IEnumerator ExpandFreezeRadius(float time, float radius)
     {
         freezeUsed = true;
@@ -49,7 +78,8 @@ public class TimeFreeze : MonoBehaviour
         {
             step += rate * Time.deltaTime;
             float curRad = Mathf.Lerp(start, end, step);
-            collider.radius = curRad;
+            //collider.radius = curRad;
+            this.radius = curRad;
             particleShape.radius = curRad;
             yield return new WaitForFixedUpdate();
         }
@@ -61,7 +91,8 @@ public class TimeFreeze : MonoBehaviour
         {
             step += rate * Time.deltaTime;
             float curRad = Mathf.Lerp(end, start, step);
-            collider.radius = curRad;
+            //collider.radius = curRad;
+            this.radius = curRad;
             particleShape.radius = curRad;
             yield return new WaitForFixedUpdate();
         }
