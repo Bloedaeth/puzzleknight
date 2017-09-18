@@ -58,8 +58,12 @@ public class MeleeWeapon : MonoBehaviour
         if(target.transform.CompareTag("Player"))
             shield = target.GetComponent<Player>().Shield;
         else if(target.transform.CompareTag("Enemy"))
-            shield = target.GetComponent<ShieldedEnemy>().Shield;
-        
+        {
+            ShieldedEnemy se = target.GetComponent<ShieldedEnemy>();
+            if(se)
+                shield = se.Shield;
+        }
+
         if(shield != null && shield.IsBlocking)
         {
             Vector3 targetDir = target.transform.position - Self.transform.position;

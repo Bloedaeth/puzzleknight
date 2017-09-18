@@ -417,11 +417,15 @@ public class Player : Entity
     
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag.ToLower() == "shop")
+        if(other.gameObject.CompareTag("Shop"))
             shop = other.GetComponent<Shop>();
 
         if(other.CompareTag("Checkpoint"))
             SpawnPoint = other.transform;
     }
 
+    private void OnParticleTrigger()
+    {
+        GetComponent<Health>().TakeDamage(25);
     }
+}

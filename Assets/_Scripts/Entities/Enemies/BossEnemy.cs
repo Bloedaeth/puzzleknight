@@ -14,7 +14,6 @@ public class BossEnemy : Enemy
         set
         {
             stage = value;
-            animator.SetInteger("Stage", stage);
             if(stage == 0)
             {
                 for(int i = 0; i < pylons.Count; ++i)
@@ -33,8 +32,11 @@ public class BossEnemy : Enemy
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
-    private ParticleSystem ps;
+    [SerializeField] private ParticleSystem ps;
     private GameObject startCollider;
+    [SerializeField] private GameObject stompObject;
+    private ParticleSystem.ShapeModule stompShape;
+    private SphereCollider stompCol;
 
     private Vector3 originalScale;
     private Vector3 originalPosition;
@@ -43,6 +45,8 @@ public class BossEnemy : Enemy
     private int attackHashStage2;
 
     private bool scaling;
+
+    private const float EXPANSION_RATE_MULT = 1f;
 
     private void Awake()
     {
@@ -55,17 +59,25 @@ public class BossEnemy : Enemy
         ai = GetComponent<AICharacterControl>();
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>().transform;
-        ps = GetComponentInChildren<ParticleSystem>();
         animator = GetComponent<Animator>();
+
+        stompShape = stompObject.GetComponent<ParticleSystem>().shape;
+        stompCol = stompObject.GetComponentInChildren<SphereCollider>();
+
         attackHashStage1 = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
-        agent.stoppingDistance = 2f;
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
     }
 
     private void Update()
     {
+        agent.stoppingDistance = 1.5f + bossScaleMult - 1;
+        if(bossScaleMult >= 2f)
+            animator.SetInteger("Stage", 2);
+        else
+            animator.SetInteger("Stage", 1);
+
         if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x)
         {
             ps.Play();
@@ -90,6 +102,8 @@ public class BossEnemy : Enemy
                 look.y = 0;
                 transform.rotation = Quaternion.LookRotation(look);
                 animator.SetTrigger("Attack");
+                if(animator.GetInteger("Stage") == 2)
+                    StompAttack();
             }
         }
 
@@ -106,10 +120,27 @@ public class BossEnemy : Enemy
 		transform.localScale = originalScale * bossScaleMult;
 	}
 
+    private IEnumerator StompAttack()
+    {
+        float start = 0.1f;
+        stompCol.radius = start;
+        stompShape.radius = start;
+        stompObject.SetActive(true);
 
+        float startTime = Time.time;
+        float step = 0;
+        float rate = 1 / 5f * EXPANSION_RATE_MULT;
+        while(Time.time - startTime < 5f)
+        {
+            step = rate * Time.deltaTime;
+            stompCol.radius += step;
+            stompShape.radius += step;
+            yield return new WaitForFixedUpdate();
+        }
 
-
-
+        stompObject.SetActive(false);
+        yield return null;
+    }
 
     private IEnumerator SmoothScale(Vector3 start, Vector3 end, Pylon pylon)
     {
