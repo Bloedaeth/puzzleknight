@@ -67,7 +67,7 @@ public class Player : Entity
 		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
         thirdPersonUserControl.enabled = false;
         animator = GetComponent<Animator>();
-        timeFreeze = GetComponent<TimeFreeze>();
+        timeFreeze = FindObjectOfType<TimeFreeze>();
         rigidBody = GetComponent<Rigidbody>();
         
         attackerList = new GameObject[2];
@@ -127,9 +127,11 @@ public class Player : Entity
         if(inventory.IsOpen || Shopping)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Z) && timeFreeze.freezeUsed == false)
+        if(Input.GetKeyDown(KeyCode.Z) && !timeFreeze.freezeUsed)
+        {
+            timeFreeze.transform.position = transform.position;
             timeFreeze.FreezeTime(5f, 20f);
-            
+        }   
         
         MoveObject();
 
