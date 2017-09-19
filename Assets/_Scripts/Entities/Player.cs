@@ -51,7 +51,7 @@ public class Player : Entity
 	private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl thirdPersonUserControl;
     
     private new AudioSource audio;
-    private AudioClip[] idleSounds;
+    //private AudioClip[] idleSounds;
     
     private TimeFreeze timeFreeze;
 
@@ -75,20 +75,20 @@ public class Player : Entity
         attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
 
         audio = GetComponent<AudioSource>();
-        idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
+        //idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
 
         perspPieceUI = FindObjectOfType<PerspectivePieceHolderUiInteractor>();
 
         //Invoke("PlayMorpheusSounds", Random.Range(20, 30));
     }
     
-    private void PlayMorpheusSounds()
-    {
-        audio.clip = idleSounds[Random.Range(0, idleSounds.Length)];
-        audio.Play();
+    //private void PlayMorpheusSounds()
+    //{
+    //    audio.clip = idleSounds[Random.Range(0, idleSounds.Length)];
+    //    audio.Play();
 
-        Invoke("PlayMorpheusSounds", Random.Range(20, 30));
-    }
+    //    Invoke("PlayMorpheusSounds", Random.Range(20, 30));
+    //}
 
     private void Update()
     {
