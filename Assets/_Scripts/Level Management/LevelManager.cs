@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
         if(SceneManager.GetActiveScene().name == "Splash Screen")
             Invoke("LoadNextLevel", loadLevelAfter);
     }
