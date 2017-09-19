@@ -91,7 +91,7 @@ public class Shop : MonoBehaviour
 		player.Shopping = state;
 		player.StopMovement(state);
 	}
-		
+
 
     /// <summary>Purchases the selected item, if the player can afford it.</summary>
     /// <param name="index">The index of the item in the shop.</param>
@@ -101,11 +101,12 @@ public class Shop : MonoBehaviour
         if(playerInventory.Money < item.ShopCost)
             return;
 
-        playerInventory.AddItem(item);
-        playerInventory.RemoveMoney(item.ShopCost);
-        RemoveItem(item);
-
-        shopkeep.PlayPurchase();
+        if(playerInventory.AddItem(item))
+        {
+            playerInventory.RemoveMoney(item.ShopCost);
+            RemoveItem(item);
+            shopkeep.PlayPurchase();
+        }
     }
 
     /// <summary>Removes an item from the shop.</summary>

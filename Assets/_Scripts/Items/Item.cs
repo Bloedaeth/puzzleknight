@@ -51,12 +51,11 @@ public abstract class Item : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         Inventory inv = other.gameObject.GetComponent<Inventory>();
-        if(inv == null)
-            return;
-
-        audioSource.clip = PickupSound;
-        audioSource.Play();
-        //AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-        inv.AddItem(this);
+        if(inv && inv.AddItem(this))
+        {
+            audioSource.clip = PickupSound;
+            audioSource.Play();
+            //AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+        }
     }
 }

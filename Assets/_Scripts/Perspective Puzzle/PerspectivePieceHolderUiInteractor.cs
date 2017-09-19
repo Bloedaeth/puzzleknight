@@ -28,7 +28,7 @@ public class PerspectivePieceHolderUiInteractor : MonoBehaviour {
 		if (p) {
 			p.NearInteractableObject = true;
 			ButtonManager.UpdateHolder (h);
-			ButtonManager.UpdatePieces(p.GetComponent<Inventory>().GetDoorPieces());
+			ButtonManager.UpdatePieces(p.GetComponent<Inventory>().DoorPieces);
 		}
 		
 	}

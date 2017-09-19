@@ -140,7 +140,7 @@ public class Player : Entity
         CheckBlocking();
         CheckAttacking();
 
-        CheckScrollItem();
+        //CheckScrollItem();
         CheckUseItem();
 
         //CheckFalling();
@@ -239,46 +239,46 @@ public class Player : Entity
         sword.PlaySound();
     }
     
-    private void CheckScrollItem()
-    {
-        float delta = Input.GetAxis("Mouse ScrollWheel");
-        if(delta > 0) //scroll up
-        {
-            Item item = inventory.EquippedItem;
-            if(item == null)
-                inventory.EquipItem(inventory.Count - 1);
-            else
-            {
-                bool switched = false;
-                for(int i = inventory.Count - 1; i >= 0; --i)
-                    if(inventory.GetItem(i).TypeId < item.TypeId)
-                    {
-                        switched = true;
-                        inventory.EquipItem(i);
-                    }
-                if(!switched)
-                    inventory.EquipItem(inventory.Count - 1);
-            }
-        }
-        else if(delta < 0) //scroll down
-        {
-            Item item = inventory.EquippedItem;
-            if(item == null)
-                inventory.EquipItem(0);
-            else
-            {
-                bool switched = false;
-                for(int i = 0; i < inventory.Count; ++i)
-                    if(inventory.GetItem(i).TypeId > item.TypeId)
-                    {
-                        switched = true;
-                        inventory.EquipItem(i);
-                    }
-                if(!switched)
-                    inventory.EquipItem(0);
-            }
-        }
-    }
+    //private void CheckScrollItem()
+    //{
+    //    float delta = Input.GetAxis("Mouse ScrollWheel");
+    //    if(delta > 0) //scroll up
+    //    {
+    //        Item item = inventory.EquippedItem;
+    //        if(item == null)
+    //            inventory.EquipItem(inventory.Count - 1);
+    //        else
+    //        {
+    //            bool switched = false;
+    //            for(int i = inventory.Count - 1; i >= 0; --i)
+    //                if(inventory.GetItem(i).TypeId < item.TypeId)
+    //                {
+    //                    switched = true;
+    //                    inventory.EquipItem(i);
+    //                }
+    //            if(!switched)
+    //                inventory.EquipItem(inventory.Count - 1);
+    //        }
+    //    }
+    //    else if(delta < 0) //scroll down
+    //    {
+    //        Item item = inventory.EquippedItem;
+    //        if(item == null)
+    //            inventory.EquipItem(0);
+    //        else
+    //        {
+    //            bool switched = false;
+    //            for(int i = 0; i < inventory.Count; ++i)
+    //                if(inventory.GetItem(i).TypeId > item.TypeId)
+    //                {
+    //                    switched = true;
+    //                    inventory.EquipItem(i);
+    //                }
+    //            if(!switched)
+    //                inventory.EquipItem(0);
+    //        }
+    //    }
+    //}
 
     private void CheckUseItem()
     {
