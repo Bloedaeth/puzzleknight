@@ -24,12 +24,16 @@ public class Shop : MonoBehaviour
     private float shopOpenTime;
 	private float shopOpenRate;
 
+    private ShopSounds shopSounds;
+
     private void Awake()
     {
         player = FindObjectOfType<Player>();
         playerInventory = FindObjectOfType<Player>().GetComponent<Inventory>();
         shopInventory = GetComponentsInChildren<Item>(true).ToList();
 		IsOpen = false;
+
+        shopSounds = GetComponent<ShopSounds>();
 
         Image[] guiSlots = GuiShop.GetChild(1).GetComponentsInChildren<Image>();
         for(int i = 0; i < shopInventory.Count; ++i)
@@ -41,8 +45,11 @@ public class Shop : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-		if (other.GetComponent<Player> ()) 
-			player.NearInteractableObject = true;
+        if(other.GetComponent<Player>())
+        {
+            player.NearInteractableObject = true;
+            shopSounds.PlayGreeting();
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -62,7 +69,8 @@ public class Shop : MonoBehaviour
 			player.NearInteractableObject = false;
 			// Sometimes the Shop inventory stays open after an E press, and if the character moves out of the trigger, pressing E won't close it
 			ToggleGuiShop (false);
-		}
+            shopSounds.PlayGoodbye();
+        }
     }
 
     /// <summary>Toggles the visibility of the GUI Shop.</summary>
@@ -96,6 +104,8 @@ public class Shop : MonoBehaviour
         playerInventory.AddItem(item);
         playerInventory.RemoveMoney(item.ShopCost);
         RemoveItem(item);
+
+        shopSounds.PlayPurchase();
     }
 
     /// <summary>Removes an item from the shop.</summary>

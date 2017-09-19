@@ -46,7 +46,7 @@ public class TimeFreeze : MonoBehaviour
         Transform[] freezable = FindObjectsOfType<Transform>().Where(o => o.GetComponent<IFreezable>() != null).ToArray();
         foreach(Transform freeze in freezable)
         {
-            Debug.Log(radius + " : " + Vector3.Distance(transform.position, freeze.position) + " : " + freeze.name);
+            //Debug.Log(radius + " : " + Vector3.Distance(transform.position, freeze.position) + " : " + freeze.name);
             if(Vector3.Distance(transform.position, freeze.position) < radius)
             {
                 FreezeObj(freeze, true);
