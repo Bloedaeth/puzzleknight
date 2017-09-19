@@ -5,7 +5,7 @@
 public class Player : Entity
 {
     //JANKY AND TEMPORARY BUT WHO CARES FOR THE PROTOTYPE
-    public GameObject tutorial;
+    //public GameObject tutorial;
 
     public Transform SpawnPoint;
     
@@ -65,7 +65,7 @@ public class Player : Entity
         inventory = GetComponent<Inventory>();
 		freeLookCam = Camera.main.GetComponentInParent<UnityStandardAssets.Cameras.FreeLookCam>();
 		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
-        thirdPersonUserControl.enabled = false;
+        //thirdPersonUserControl.enabled = false;
         animator = GetComponent<Animator>();
         timeFreeze = FindObjectOfType<TimeFreeze>();
         rigidBody = GetComponent<Rigidbody>();
@@ -94,14 +94,14 @@ public class Player : Entity
     {
         enemylist = GameObject.FindGameObjectsWithTag("Enemy");
 
-        if(tutorial.activeInHierarchy)
-        {
-            freeLookCam.hideCursor = false;
-            freeLookCam.orbitActive = false;
-            if(Input.GetKeyDown(KeyCode.Escape))
-                ToggleControls(false);
-            return;
-        }
+        //if(tutorial.activeInHierarchy)
+        //{
+        //    freeLookCam.hideCursor = false;
+        //    freeLookCam.orbitActive = false;
+        //    if(Input.GetKeyDown(KeyCode.Escape))
+        //        ToggleControls(false);
+        //    return;
+        //}
 
 		if(!Shopping && Input.GetKeyDown (KeyCode.I))
 			ToggleInventory ();
@@ -115,8 +115,8 @@ public class Player : Entity
                 shop.ToggleGuiShop(false);
             else if(perspPieceUI.IsOpen)
                 perspPieceUI.TogglePuzzlePieceUI(false);
-            else
-                ToggleControls(true);
+            //else
+            //    ToggleControls(true);
         }
 		
         //if(Input.GetKeyDown(KeyCode.R))
@@ -148,13 +148,13 @@ public class Player : Entity
             Debug.Log(rigidBody.velocity.y);
     }
 
-    public void ToggleControls(bool state)
-    {
-        tutorial.SetActive(state);
-        thirdPersonUserControl.enabled = !state;
-        freeLookCam.orbitActive = !state;
-        freeLookCam.hideCursor = !state;
-    }
+    //public void ToggleControls(bool state)
+    //{
+    //    tutorial.SetActive(state);
+    //    thirdPersonUserControl.enabled = !state;
+    //    freeLookCam.orbitActive = !state;
+    //    freeLookCam.hideCursor = !state;
+    //}
 
     private void CheckFalling()
     {
