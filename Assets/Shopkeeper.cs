@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class ShopSounds : MonoBehaviour
+public class Shopkeeper : MonoBehaviour
 {
     public AudioClip[] Greetings;
     public AudioClip[] Goodbyes;
     public AudioClip[] Purchases;
 
     private new AudioSource audio;
-
+    private Animator anim;
     private const float SOUND_COOLDOWN = 10f;
 
     private float timeSinceGreet;
     private float timeSinceGoodbye;
 
+    private int beckonHash;
+    private int waveHash;
+
     private void Awake()
     {
         audio = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
+        beckonHash = Animator.StringToHash("Base Layer.Beckon");
+        waveHash = Animator.StringToHash("Base Layer.Wave");
     }
 
     private void Update()
@@ -27,6 +33,9 @@ public class ShopSounds : MonoBehaviour
 
     public void PlayGreeting()
     {
+        if(anim.GetCurrentAnimatorStateInfo(0).fullPathHash != beckonHash)
+            anim.SetTrigger("Beckon");
+
         if(Greetings.Length == 0 || timeSinceGreet < SOUND_COOLDOWN)
             return;
 
@@ -38,6 +47,9 @@ public class ShopSounds : MonoBehaviour
 
     public void PlayGoodbye()
     {
+        if(anim.GetCurrentAnimatorStateInfo(0).fullPathHash != waveHash)
+            anim.SetTrigger("Wave");
+
         if(Goodbyes.Length == 0 || timeSinceGoodbye < SOUND_COOLDOWN)
             return;
 
