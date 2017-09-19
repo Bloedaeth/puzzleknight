@@ -12,8 +12,11 @@ public class EntitySoundsCommon : MonoBehaviour
     public AudioClip[] attackSounds;
 
     /// <summary>A list of taunts to be played during or after combat.</summary>
-    public AudioClip[] taunts;
+    //public AudioClip[] taunts;
 
     /// <summary>A list of sounds to be played when idle or roaming.</summary>
-    public AudioClip[] idleSounds;
+    //public AudioClip[] idleSounds;
+    
+    /// <summary>A list of sounds to be played when the entity walks.</summary>
+    //public AudioClip[] walkSounds;
 }
