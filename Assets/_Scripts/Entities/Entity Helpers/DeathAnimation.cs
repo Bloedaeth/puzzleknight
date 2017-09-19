@@ -35,7 +35,11 @@ public class DeathAnimation : MonoBehaviour
         {
             Player player = GetComponent<Player>();
             if(player == null)
+            {
+                if(GetComponent<BossEnemy>())
+                    FindObjectOfType<LevelManager>().LoadNextLevel();
                 gameObject.SetActive(false);
+            }
             else
             {
                 anim.SetTrigger("Respawn");

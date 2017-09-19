@@ -5,6 +5,16 @@ public class LevelManager : MonoBehaviour
 {
     public float loadLevelAfter;
 
+    private static LevelManager instance;
+
+    private void Awake()
+    {
+        if(instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
+
     private void Start()
     {
         if(SceneManager.GetActiveScene().name == "Splash Screen")
