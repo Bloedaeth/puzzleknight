@@ -27,11 +27,15 @@ public abstract class Puzzle : MonoBehaviour {
 		rightDoorOpen = Quaternion.Euler (rightDoor.transform.rotation.eulerAngles + new Vector3(0f, 90f, 0f));
 	}
 
-	void Update() {
+	public void Update() {
 		if (solved) {
+			OpenDoor ();
+		}
+	}
+
+	public void OpenDoor() {
 		leftDoor.transform.rotation = Quaternion.Lerp (leftDoor.transform.rotation, leftDoorOpen, doorMoveSpeed * Time.deltaTime);
 		rightDoor.transform.rotation = Quaternion.Lerp (rightDoor.transform.rotation, rightDoorOpen, doorMoveSpeed * Time.deltaTime);
-		}
 	}
 
     /// <summary>Checks if the puzzle is to be solved and finalized, and sets the solved variable accordingly.</summary>

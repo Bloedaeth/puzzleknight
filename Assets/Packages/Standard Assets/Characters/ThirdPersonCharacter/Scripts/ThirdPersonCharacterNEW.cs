@@ -19,12 +19,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		//       The arrows are as follows:     ^  >  v   <
 		enum buttons : int {Up = 0, Right = 1, Down = 2, Left = 3};
-		public float[] buttonsHoldTime = new float[4] {0f,0f,0f,0f};
-		public bool[] buttonsHoldInc = new bool[4] {false, false, false, false};
+		float[] buttonsHoldTime = new float[4] {0f,0f,0f,0f};
+		bool[] buttonsHoldInc = new bool[4] {false, false, false, false};
 		float jumpMultMax = 4f;
 		float buttonsIncRate = 8f;
 
-		public Vector3 jumpVector;
+		Vector3 jumpVector;
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;

@@ -60,20 +60,17 @@ namespace UnityStandardAssets.Cameras
 
         protected void Update()
         {
-
 			m_LockCursor = hideCursor; // <------------------ CHANGE
-
 			Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
 			Cursor.visible = !m_LockCursor;
+
+			UpdateCameraPositions (pivotCameraTransforms); //<----------------------- CHANGE
 
 			if (!orbitActive) { // <------------------ CHANGE
 				return;
 			}
-				
 
             HandleRotationMovement();
-
-			UpdateCameraPositions (pivotCameraTransforms); //<----------------------- CHANGE
 		}
 
 
@@ -182,5 +179,23 @@ namespace UnityStandardAssets.Cameras
 				transform.localRotation = m_TransformTargetRot;
 			}
         }
+
+		public void HandleRotationMovement(Quaternion rotation) {
+			Vector3 eulers = rotation.eulerAngles;
+
+			m_TransformTargetRot = Quaternion.Euler (0f, eulers.y, 0f);
+			m_PivotTargetRot = Quaternion.Euler(eulers.x, m_PivotEulers.y , m_PivotEulers.z);
+
+			if (m_TurnSmoothing > 0)
+			{
+				m_Pivot.localRotation = Quaternion.Slerp(m_Pivot.localRotation, m_PivotTargetRot, m_TurnSmoothing * Time.deltaTime);
+				transform.localRotation = Quaternion.Slerp(transform.localRotation, m_TransformTargetRot, m_TurnSmoothing * Time.deltaTime);
+			}
+			else
+			{
+				m_Pivot.localRotation = m_PivotTargetRot;
+				transform.localRotation = m_TransformTargetRot;
+			}
+		}
     }
 }
