@@ -37,6 +37,7 @@ public class BossEnemy : Enemy
     [SerializeField] private GameObject stompObject;
     private ParticleSystem.ShapeModule stompShape;
     private SphereCollider stompCol;
+    private BossSounds sounds;
 
     private Vector3 originalScale;
     private Vector3 originalPosition;
@@ -60,6 +61,7 @@ public class BossEnemy : Enemy
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>().transform;
         animator = GetComponent<Animator>();
+        sounds = GetComponent<BossSounds>();
 
         stompShape = stompObject.GetComponent<ParticleSystem>().shape;
         stompCol = stompObject.GetComponentInChildren<SphereCollider>();
@@ -72,6 +74,8 @@ public class BossEnemy : Enemy
 
     private void Update()
     {
+        SetHurtSounds();
+
         agent.stoppingDistance = 1.5f + bossScaleMult - 1;
         //if(bossScaleMult >= 2f)
         //    animator.SetInteger("Stage", 2);
@@ -108,6 +112,16 @@ public class BossEnemy : Enemy
         }
 
 		ScaleBoss (); // Use this instead ~ Steve
+    }
+
+    private void SetHurtSounds()
+    {
+        if(bossScaleMult <= 1f)
+            sounds.hurtSounds = sounds.hurtSize1;
+        else if(bossScaleMult <= 2f)
+            sounds.hurtSounds = sounds.hurtSize2;
+        else
+            sounds.hurtSounds = sounds.hurtSize3;
     }
 
 	private void ScaleBoss() { // Here is the method I'm using

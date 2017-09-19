@@ -18,12 +18,7 @@ public abstract class Entity : MonoBehaviour
     /// <param name="damage">The damage to deal to the entity.</param>
     public virtual void Attack(Entity target, int damage)
     {
-        Health targetHp = target.GetComponent<Health>();
-        
-        if(targetHp.WasAttackedRecently || targetHp.IsInvulnerable)
-            return;
-
-        targetHp.TakeDamage(damage);
+        target.GetComponent<Health>().TakeDamage(damage);
     }
 
     /// <summary>Triggers the stagger animation of the entity.</summary>

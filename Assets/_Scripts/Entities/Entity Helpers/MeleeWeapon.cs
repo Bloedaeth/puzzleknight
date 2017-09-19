@@ -36,8 +36,11 @@ public class MeleeWeapon : MonoBehaviour
     /// <summary>Plays a random attack sound from the list of sounds.</summary>
     public void PlaySound()
     {
-        audio.clip = attackSounds[Random.Range(0, attackSounds.Length)];
-        audio.Play();
+        if(attackSounds.Length > 0)
+        {
+            audio.clip = attackSounds[Random.Range(0, attackSounds.Length)];
+            audio.Play();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

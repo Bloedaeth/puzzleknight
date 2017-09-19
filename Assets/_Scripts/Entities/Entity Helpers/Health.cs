@@ -5,13 +5,12 @@ public class Health : MonoBehaviour
     public int InitialAndMaxHealth = 100;
     public int HealthRemaining;
 
-    public bool WasAttackedRecently { get { return timeSinceDamageTaken < 0.5f; } }
     public float timeSinceDamageTaken;
+    private bool WasAttackedRecently { get { return timeSinceDamageTaken < 0.5f; } }
 
     public bool IsInvulnerable;
 
     private new AudioSource audio;
-    private AudioClip[] damageSounds;
 
     public GUIHealthBar HealthBar;
 
@@ -20,7 +19,6 @@ public class Health : MonoBehaviour
         HealthRemaining = InitialAndMaxHealth;
 
         audio = GetComponent<AudioSource>();
-        damageSounds = GetComponent<EntitySoundsCommon>().hurtSounds;
     }
 
     private void Update()
@@ -32,17 +30,26 @@ public class Health : MonoBehaviour
     /// <param name="amount">The amount of damage to deal to the entity.</param>
     public void TakeDamage(int amount)
     {
+        if(WasAttackedRecently)
+            return;
+
+        if(!audio.isPlaying)
+        {
+            AudioClip[] damageSounds = GetComponent<EntitySoundsCommon>().hurtSounds;
+            audio.clip = damageSounds[Random.Range(0, damageSounds.Length)];
+            audio.Play();
+        }
+
+        if(IsInvulnerable)
+            return;
+
         timeSinceDamageTaken = 0f;
 
         HealthRemaining -= amount;
-        if(HealthRemaining < 0)
-            HealthRemaining = 0;
-
-        audio.clip = damageSounds[Random.Range(0, damageSounds.Length)];
-        audio.Play();
 
         if(HealthRemaining <= 0)
         {
+            HealthRemaining = 0;
             gameObject.AddComponent<DeathAnimation>();
             enabled = false;
         }
