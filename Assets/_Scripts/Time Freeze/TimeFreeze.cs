@@ -8,7 +8,8 @@ public class TimeFreeze : MonoBehaviour
     public static float FROZEN_TIME_SCALE { get { return 0.1f; } }
 
     public bool freezeUsed;
-    
+
+    private ParticleSystem ps;
     private ParticleSystem.ShapeModule particleShape;
 
     private const float EXPANSION_RATE_MULT = 3f;
@@ -18,7 +19,7 @@ public class TimeFreeze : MonoBehaviour
 
     private void Awake()
     {
-        ParticleSystem ps = GetComponent<ParticleSystem>();
+        ps = GetComponent<ParticleSystem>();
         ParticleSystem.MainModule main = ps.main;
         main.maxParticles = main.maxParticles;
 
@@ -33,7 +34,6 @@ public class TimeFreeze : MonoBehaviour
     /// <param name="radius">How far the effect will spread.</param>
     public void FreezeTime(float time, float radius)
     {
-        Debug.Log("freezing");
         StartCoroutine(ExpandFreezeRadius(time, radius));
     }
 
@@ -63,6 +63,7 @@ public class TimeFreeze : MonoBehaviour
     {
         freezeUsed = true;
         active = true;
+        ps.Play();
 
         float step = 0;
         float rate = 1 / time * EXPANSION_RATE_MULT;
@@ -91,6 +92,7 @@ public class TimeFreeze : MonoBehaviour
 
         freezeUsed = false;
         active = false;
+        ps.Stop();
 
         yield return null;
     }
