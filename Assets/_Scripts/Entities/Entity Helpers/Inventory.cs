@@ -90,7 +90,6 @@ public class Inventory : MonoBehaviour
         if(inventory.Count == inventoryLimit)
             return false;
         
-        AddMoney(250);
         inventory.Add(item);
         item.gameObject.SetActive(false);
 
