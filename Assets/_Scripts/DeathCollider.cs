@@ -10,6 +10,6 @@ public class DeathCollider : MonoBehaviour
 
         Health hp = other.GetComponent<Health>();
         if(hp)
-            hp.TakeDamage(hp.InitialAndMaxHealth);
+            hp.ForceKill();
     }
 }
