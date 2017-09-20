@@ -11,6 +11,8 @@ public class Shop : MonoBehaviour
 
     public ToolTip tooltip;
 
+    public AudioClip[] CoinPurchases;
+
     /// <summary>Is the shop GUI open.</summary>
     public bool IsOpen { get; private set; }
 
@@ -21,13 +23,16 @@ public class Shop : MonoBehaviour
 
     private Player player;
     private Inventory playerInventory;
+    private Shopkeeper shopkeep;
+    private new AudioSource audio;
+
     private float shopOpenTime;
 	private float shopOpenRate;
 
-    private Shopkeeper shopkeep;
-
     private void Awake()
     {
+        audio = GetComponent<AudioSource>();
+
         player = FindObjectOfType<Player>();
         playerInventory = FindObjectOfType<Player>().GetComponent<Inventory>();
         shopInventory = GetComponentsInChildren<Item>(true).ToList();
@@ -105,6 +110,11 @@ public class Shop : MonoBehaviour
         {
             playerInventory.RemoveMoney(item.ShopCost);
             RemoveItem(item);
+            if(CoinPurchases.Length > 0)
+            {
+                audio.clip = CoinPurchases[Random.Range(0, CoinPurchases.Length)];
+                audio.Play();
+            }
             shopkeep.PlayPurchase();
         }
     }

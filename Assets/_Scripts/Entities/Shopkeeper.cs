@@ -11,8 +11,8 @@ public class Shopkeeper : MonoBehaviour
     private Animator anim;
     private const float SOUND_COOLDOWN = 10f;
 
-    private float timeSinceGreet;
-    private float timeSinceGoodbye;
+    private float timeSinceGreet = SOUND_COOLDOWN;
+    private float timeSinceGoodbye = SOUND_COOLDOWN;
 
     private int beckonHash;
     private int waveHash;
