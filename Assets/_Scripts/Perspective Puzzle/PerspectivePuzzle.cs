@@ -41,7 +41,7 @@ public class PerspectivePuzzle : Puzzle {
 		//Run through each holder to see if the current index matches the correct index
 		if (ppm.IndexesAllCorrect ()) {
 			solved = true;
-
+            GetComponent<AudioSource>().Play();
 			FinilizePieces ();
 		}
 	}
