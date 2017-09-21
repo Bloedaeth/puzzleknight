@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Pylon : MonoBehaviour, IFreezable
 {
     private static int numPylonsActive = 0;
@@ -15,6 +16,7 @@ public class Pylon : MonoBehaviour, IFreezable
     public int ID;
     public bool SlowedTime { get; set; }
 
+    private new AudioSource audio;
     private Lever lever;
     private BossEnemy boss;
     private ParticleSystem ps;
@@ -38,6 +40,7 @@ public class Pylon : MonoBehaviour, IFreezable
 
 		distToMin = 0;
 
+        audio = GetComponent<AudioSource>();
         lever = transform.parent.GetComponentInChildren<Lever>();
         boss = FindObjectOfType<BossEnemy>();
         ps = GetComponentInChildren<ParticleSystem>();
@@ -60,6 +63,7 @@ public class Pylon : MonoBehaviour, IFreezable
 
     private IEnumerator RaiseLower(Vector3 endPos)
     {
+        audio.Play();
         Vector3 start = transform.localPosition;
         float step = 0;
         while(step < 1f)
@@ -75,6 +79,7 @@ public class Pylon : MonoBehaviour, IFreezable
         else
             Invoke("AutoActivate", 5f);
 
+        audio.Stop();
         yield return null;
     }
 
