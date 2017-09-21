@@ -1,19 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Destroy_Forcefield : MonoBehaviour {
-    public GameObject other;
-    void OnCollisionEnter(Collision collidingObject)
+public class Destroy_Forcefield : MonoBehaviour
+{
+    private void OnTriggerEnter(Collider other)
     {
-        
-        //If collidingObject is an Enemy
-        if (collidingObject.gameObject.tag == "Player")
+        if(other.CompareTag("Player"))
         {
-            Destroy(other);
+            Destroy(GameObject.FindGameObjectWithTag("ForceField"));
+            enabled = false;
         }
-
-        ;
     }
 }
 
