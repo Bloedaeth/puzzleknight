@@ -2,14 +2,14 @@
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(AudioSource))]
-public class MusicPlayer : MonoBehaviour
+public class SoundManager : MonoBehaviour
 {
     public AudioClip[] musicArray;
-
+    
     private Player player;
     private new AudioSource audio;
 
-    private static MusicPlayer instance;
+    private static SoundManager instance;
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class MusicPlayer : MonoBehaviour
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 
         audio = GetComponent<AudioSource>();
-        audio.volume = PlayPrefs.Volume;
+        audio.volume = PlayPrefs.MusicVolume;
         audio.clip = musicArray[0];
         audio.loop = true;
         audio.Play();
@@ -42,19 +42,25 @@ public class MusicPlayer : MonoBehaviour
             PlayMusicAtIndex(1);
     }
 
+    public void SetGameVolume(float val)
+    {
+        foreach(AudioSource obj in FindObjectsOfType<AudioSource>())
+        {
+            if(obj.gameObject == gameObject)
+                continue;
+
+            obj.volume = val;
+        }
+    }
+
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode mode)
     {
         player = FindObjectOfType<Player>();
-        //string sceneName = scene.name;
+
         if(audio.clip != musicArray[1] && player)
             PlayMusicAtIndex(1);
         else if(audio.clip != musicArray[0] && !player)
             PlayMusicAtIndex(0);
-
-        //if(audio.clip != musicArray[0] && (sceneName.Contains("Start") || sceneName.Contains("Options") || sceneName.Contains("Controls")))
-        //    PlayMusicAtIndex(0);
-        //else if(player)
-        //    PlayMusicAtIndex(1);
     }
 
     private void PlayMusicAtIndex(int index)

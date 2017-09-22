@@ -4,8 +4,7 @@
 [RequireComponent(typeof(Health))]
 public class Player : Entity
 {
-    //JANKY AND TEMPORARY BUT WHO CARES FOR THE PROTOTYPE
-    //public GameObject tutorial;
+    public GameObject PauseMenu;
 
     public Transform SpawnPoint;
     
@@ -94,16 +93,14 @@ public class Player : Entity
     {
         enemylist = GameObject.FindGameObjectsWithTag("Enemy");
 
-        //if(tutorial.activeInHierarchy)
-        //{
-        //    freeLookCam.hideCursor = false;
-        //    freeLookCam.orbitActive = false;
-        //    if(Input.GetKeyDown(KeyCode.Escape))
-        //        ToggleControls(false);
-        //    return;
-        //}
+        if(PauseMenu.activeInHierarchy)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+                TogglePause(false);
+            return;
+        }
 
-		if(!Shopping && Input.GetKeyDown (KeyCode.I))
+        if(!Shopping && Input.GetKeyDown (KeyCode.I))
 			ToggleInventory ();
 
         //Turn all inventory menus off, regardless of states, this essentially resets the inventory state
@@ -115,13 +112,9 @@ public class Player : Entity
                 shop.ToggleGuiShop(false);
             else if(perspPieceUI.IsOpen)
                 perspPieceUI.TogglePuzzlePieceUI(false);
-            //else
-            //    ToggleControls(true);
+            else
+                TogglePause(true);
         }
-		
-        //if(Input.GetKeyDown(KeyCode.R))
-        //    transform.position = SpawnPoint.position;
-
         //CombatSwitcher ();
 
         if(inventory.IsOpen || Shopping)
@@ -148,13 +141,15 @@ public class Player : Entity
             Debug.Log(rigidBody.velocity.y);
     }
 
-    //public void ToggleControls(bool state)
-    //{
-    //    tutorial.SetActive(state);
-    //    thirdPersonUserControl.enabled = !state;
-    //    freeLookCam.orbitActive = !state;
-    //    freeLookCam.hideCursor = !state;
-    //}
+    public void TogglePause(bool state)
+    {
+        Time.timeScale = state ? 1f : 0f;
+
+        PauseMenu.SetActive(state);
+        thirdPersonUserControl.enabled = !state;
+        freeLookCam.orbitActive = !state;
+        freeLookCam.hideCursor = !state;
+    }
 
     private void CheckFalling()
     {
