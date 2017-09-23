@@ -25,7 +25,7 @@ public class DeathAnimation : MonoBehaviour
         AudioClip[] possibleDeathSounds = GetComponent<EntitySoundsCommon>().deathSounds;
         AudioClip deathSound = possibleDeathSounds[Random.Range(0, possibleDeathSounds.Length)];
 
-        AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        AudioSource.PlayClipAtPoint(deathSound, transform.position, PlayPrefs.GameSoundVolume);
     }
 
     private void Update()

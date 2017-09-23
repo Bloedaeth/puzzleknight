@@ -110,7 +110,7 @@ public class Player : Entity
                 ToggleInventory(false);
             else if(shop != null && shop.IsOpen)
                 shop.ToggleGuiShop(false);
-            else if(perspPieceUI.IsOpen)
+            else if(perspPieceUI != null && perspPieceUI.IsOpen)
                 perspPieceUI.TogglePuzzlePieceUI(false);
             else
                 TogglePause(true);
@@ -143,9 +143,12 @@ public class Player : Entity
 
     public void TogglePause(bool state)
     {
-        Time.timeScale = state ? 1f : 0f;
+        Time.timeScale = state ? 0f : 1f;
 
         PauseMenu.SetActive(state);
+        foreach(Transform child in PauseMenu.transform)
+            child.gameObject.SetActive(state);
+
         thirdPersonUserControl.enabled = !state;
         freeLookCam.orbitActive = !state;
         freeLookCam.hideCursor = !state;

@@ -19,7 +19,7 @@ public class DoorPiece : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            AudioSource.PlayClipAtPoint(CollectedClip, transform.position, 1f);
+            AudioSource.PlayClipAtPoint(CollectedClip, transform.position, PlayPrefs.GameSoundVolume);
             Inventory inventory = other.GetComponent<Inventory>();
             inventory.AddDoorPiece(Type);
             inventory.AddMoney(MONEY_REWARD);

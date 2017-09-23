@@ -44,7 +44,7 @@ public abstract class ThrowableItem : Item
     {
         if(active)
         {
-            AudioSource.PlayClipAtPoint(ThrowHitSound, transform.position);
+            AudioSource.PlayClipAtPoint(ThrowHitSound, transform.position, PlayPrefs.GameSoundVolume);
             StopAllCoroutines();
             Entity[] hitEntities = GetHitEntities();
             if(hitEntities != null)

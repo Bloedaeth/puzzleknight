@@ -17,7 +17,7 @@ public class Coin : MonoBehaviour
 
         inv.AddMoney(CoinValue);
         AudioClip clip = pickupSounds[Random.Range(0, pickupSounds.Length)];
-        AudioSource.PlayClipAtPoint(clip, transform.position);
+        AudioSource.PlayClipAtPoint(clip, transform.position, PlayPrefs.GameSoundVolume);
         gameObject.SetActive(false);
     }
 }

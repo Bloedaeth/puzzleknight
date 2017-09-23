@@ -37,7 +37,7 @@ public abstract class Item : MonoBehaviour
     {
         audioSource.clip = UseSound;
         audioSource.Play();
-        //AudioSource.PlayClipAtPoint(UseSound, transform.position);
+        //AudioSource.PlayClipAtPoint(UseSound, transform.position, PlayPrefs.GameSoundVolume);
     }
 
     /// <summary>Uses the item on the given entity.</summary>
@@ -55,7 +55,7 @@ public abstract class Item : MonoBehaviour
         {
             audioSource.clip = PickupSound;
             audioSource.Play();
-            //AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+            //AudioSource.PlayClipAtPoint(PickupSound, transform.position, PlayPrefs.GameSoundVolume);
         }
     }
 }

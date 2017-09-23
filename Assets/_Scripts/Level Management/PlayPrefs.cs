@@ -9,7 +9,7 @@ public static class PlayPrefs
     public static float MusicVolume
     {
         get { return PlayerPrefs.HasKey(MUSIC_VOLUME_KEY) ? PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY) : DEFAULT_MUSIC_VOLUME; }
-        set { Debug.Log("Start set"); PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, Mathf.Clamp(value, 0f, 1f)); Debug.Log("Finished"); }
+        set { PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, Mathf.Clamp(value, 0f, 1f)); }
     }
 
     private const string GAME_VOLUME_KEY = "GameVolume";

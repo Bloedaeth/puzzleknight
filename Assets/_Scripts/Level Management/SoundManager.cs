@@ -42,7 +42,12 @@ public class SoundManager : MonoBehaviour
             PlayMusicAtIndex(1);
     }
 
-    public void SetGameVolume(float val)
+    public void SetMusicVolume(float val)
+    {
+        audio.volume = val;
+    }
+
+    public void SetGameSoundVolume(float val)
     {
         foreach(AudioSource obj in FindObjectsOfType<AudioSource>())
         {
