@@ -24,7 +24,7 @@ public static class PlayPrefs
 
     private const string GAME_CONTRAST_KEY = "GameContrast";
 
-    public const float DEFAULT_GAME_CONTRAST = 0f;
+    public const float DEFAULT_GAME_CONTRAST = 0.5f;
 
     public static float GameContrast
     {
