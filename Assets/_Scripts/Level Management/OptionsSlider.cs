@@ -68,29 +68,8 @@ public class OptionsSlider : MonoBehaviour
     {
         float val = slider.value;
         PlayPrefs.GameContrast = val;
-        GameObject.Find("Directional light").GetComponent<Light>().color = new Color(val, val, val, 1f);
+        GameObject mainLight = GameObject.FindGameObjectWithTag("MainLight");
+        if(mainLight)
+            mainLight.GetComponent<Light>().color = new Color(val, val, val, 1f);
     }
-}
-
-public class MyGUISliderExample : MonoBehaviour
-{
-
-    public float GammaCorrection;
-
-    public Rect SliderLocation;
-
-    void Update()
-    {
-
-        RenderSettings.ambientLight = new Color(GammaCorrection, GammaCorrection, GammaCorrection, 1.0f);
-
-    }
-
-    void OnGUI()
-    {
-
-        GammaCorrection = GUI.HorizontalSlider(SliderLocation, GammaCorrection, 0, 1.0f);
-
-    }
-
 }

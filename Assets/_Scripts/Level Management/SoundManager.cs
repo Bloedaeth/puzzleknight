@@ -60,6 +60,12 @@ public class SoundManager : MonoBehaviour
 
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        SetMusicVolume(PlayPrefs.MusicVolume);
+        SetGameSoundVolume(PlayPrefs.GameSoundVolume);
+        GameObject mainLight = GameObject.FindGameObjectWithTag("MainLight");
+        if(mainLight)
+            mainLight.GetComponent<Light>().color = new Color(PlayPrefs.GameContrast, PlayPrefs.GameContrast, PlayPrefs.GameContrast, 1f);
+
         player = FindObjectOfType<Player>();
 
         if(audio.clip != musicArray[1] && player)
