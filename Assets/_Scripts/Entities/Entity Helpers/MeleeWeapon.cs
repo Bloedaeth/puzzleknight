@@ -43,7 +43,7 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
         if(state.fullPathHash != attackStateOneHash &&
@@ -54,7 +54,7 @@ public class MeleeWeapon : MonoBehaviour
            state.fullPathHash != attackHash)
             return;
 
-        Entity target = collision.gameObject.GetComponent<Entity>();
+        Entity target = other.gameObject.GetComponent<Entity>();
         Debug.DrawRay(Self.transform.position, Self.transform.forward);
 
         Shield shield = null;
