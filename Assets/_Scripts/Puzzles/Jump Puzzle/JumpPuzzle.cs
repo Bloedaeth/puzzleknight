@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PressurePlatePuzzle : Puzzle {
+public class JumpPuzzle: Puzzle {
 
 	Inventory inv;
 	CameraChaser CC;
@@ -28,7 +28,7 @@ public class PressurePlatePuzzle : Puzzle {
 	}
 
 	public override void CheckFinalizePuzzle() {
-		if (inv.GetDoorPieces () [(int)DoorPiece.PieceType.Knob]) {
+		if (inv.GetDoorPieces () [(int)DoorPiece.PieceType.Frame]) {
 			done = true;
 			CC.BeginChase ();
 		}
