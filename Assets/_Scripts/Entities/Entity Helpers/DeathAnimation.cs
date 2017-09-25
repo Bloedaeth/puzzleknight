@@ -17,6 +17,10 @@ public class DeathAnimation : MonoBehaviour
         if(ai)
             ai.enabled = false;
 
+		Rigidbody rb = GetComponent<Rigidbody> ();
+		if (rb)
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+		
         anim = GetComponent<Animator>();
         anim.SetTrigger("Die");
 
@@ -48,6 +52,10 @@ public class DeathAnimation : MonoBehaviour
                 hp.enabled = true;
                 hp.ResetHealth();
                 transform.position = player.SpawnPoint.position;
+
+				Rigidbody rb = GetComponent<Rigidbody> ();
+				rb.velocity = Vector3.zero;
+				rb.constraints = RigidbodyConstraints.None;
 
                 if(player.InBossFight)
                 {
