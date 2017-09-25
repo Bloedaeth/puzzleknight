@@ -45,17 +45,18 @@ public class DeathAnimation : MonoBehaviour
                 gameObject.SetActive(false);
             }
             else
-            {
+			{
+
+				Rigidbody rb = GetComponent<Rigidbody> ();
+				rb.velocity = Vector3.zero;
+				rb.constraints = RigidbodyConstraints.FreezeRotation;
+
                 anim.SetTrigger("Respawn");
 
                 Health hp = GetComponent<Health>();
                 hp.enabled = true;
                 hp.ResetHealth();
                 transform.position = player.SpawnPoint.position;
-
-				Rigidbody rb = GetComponent<Rigidbody> ();
-				rb.velocity = Vector3.zero;
-				rb.constraints = RigidbodyConstraints.None;
 
                 if(player.InBossFight)
                 {

@@ -24,7 +24,7 @@ public class RespawnGoblin : MonoBehaviour
         hp.enabled = true;
         hp.HealthRemaining = hp.InitialAndMaxHealth;
 		goblin.GetComponent<Animator>().SetTrigger("Respawn");
-		goblin.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.None;
+		goblin.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeRotation;
 		goblin.GetComponent<Rigidbody> ().velocity = Vector3.zero;
         goblin.transform.position = transform.position;
         goblin.SetActive(true);
