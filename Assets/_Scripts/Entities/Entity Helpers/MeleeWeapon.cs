@@ -10,7 +10,7 @@ public class MeleeWeapon : MonoBehaviour
 
     private Animator anim;
     private new AudioSource audio;
-    private AudioClip[] attackSounds;
+	private AudioClip[] swordWhoosh;
 
     private int attackStateOneHash;
     private int attackStateTwoHash;
@@ -30,15 +30,15 @@ public class MeleeWeapon : MonoBehaviour
         attackHash = Animator.StringToHash("Base Layer.Attack");
 
         audio = Self.GetComponent<AudioSource>();
-        attackSounds = Self.GetComponent<EntitySoundsCommon>().attackSounds;
+        swordWhoosh = Self.GetComponent<EntitySoundsCommon>().swordSwingSounds;
     }
 
     /// <summary>Plays a random attack sound from the list of sounds.</summary>
     public void PlaySound()
     {
-        if(attackSounds.Length > 0)
+        if(swordWhoosh.Length > 0)
         {
-            audio.clip = attackSounds[Random.Range(0, attackSounds.Length)];
+            audio.clip = swordWhoosh[Random.Range(0, swordWhoosh.Length)];
             audio.Play();
         }
     }
@@ -56,6 +56,9 @@ public class MeleeWeapon : MonoBehaviour
 
         Entity target = other.gameObject.GetComponent<Entity>();
         Debug.DrawRay(Self.transform.position, Self.transform.forward);
+
+		if (!target)
+			return;
 
         Shield shield = null;
         if(target.transform.CompareTag("Player"))

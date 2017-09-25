@@ -34,9 +34,7 @@ public class BossEnemy : Enemy
     private Transform player;
     [SerializeField] private ParticleSystem ps;
     private GameObject startCollider;
-    [SerializeField] private GameObject stompObject;
-    private ParticleSystem.ShapeModule stompShape;
-    private SphereCollider stompCol;
+    [SerializeField] private ParticleSystem stompParticles;
     private BossSounds sounds;
 
     private Vector3 originalScale;
@@ -48,6 +46,9 @@ public class BossEnemy : Enemy
     private bool scaling;
 
     private const float EXPANSION_RATE_MULT = 1f;
+
+	private float particleTime;
+	private float particleRate = 2f;
 
     private void Awake()
     {
@@ -63,13 +64,12 @@ public class BossEnemy : Enemy
         animator = GetComponent<Animator>();
         sounds = GetComponent<BossSounds>();
 
-        stompShape = stompObject.GetComponent<ParticleSystem>().shape;
-        stompCol = stompObject.GetComponentInChildren<SphereCollider>();
-
         attackHashStage1 = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
+
+		hp.TakeDamage (hp.InitialAndMaxHealth / 2);
     }
 
     private void Update()
@@ -80,8 +80,8 @@ public class BossEnemy : Enemy
         //if(bossScaleMult >= 2f)
         //    animator.SetInteger("Stage", 2);
         //else
-        animator.SetInteger("Stage", 1);
-        //TODO ^^ uncomment above after stomp particles working
+        	animator.SetInteger("Stage", 1);
+		
         if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x)
         {
             ps.Play();
@@ -100,14 +100,19 @@ public class BossEnemy : Enemy
         if(dist <= agent.stoppingDistance)
         {
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-            if(state.fullPathHash != attackHashStage1 && state.fullPathHash != attackHashStage2)
+			if(state.fullPathHash != attackHashStage1 && state.fullPathHash != attackHashStage2  && Time.time > particleTime)
             {
                 Vector3 look = player.position - transform.position;
                 look.y = 0;
                 transform.rotation = Quaternion.LookRotation(look);
                 animator.SetTrigger("Attack");
-                if(animator.GetInteger("Stage") == 2)
-                    StompAttack();
+				if(animator.GetInteger ("Stage") == 2)
+				{
+					particleTime = Time.time + particleRate;
+
+					stompParticles.transform.position = transform.position + transform.forward;
+					stompParticles.Play();
+				}
             }
         }
 
@@ -133,28 +138,6 @@ public class BossEnemy : Enemy
 
 		transform.localScale = originalScale * bossScaleMult;
 	}
-
-    private IEnumerator StompAttack()
-    {
-        float start = 0.1f;
-        stompCol.radius = start;
-        stompShape.radius = start;
-        stompObject.SetActive(true);
-
-        float startTime = Time.time;
-        float step = 0;
-        float rate = 1 / 5f * EXPANSION_RATE_MULT;
-        while(Time.time - startTime < 5f)
-        {
-            step = rate * Time.deltaTime;
-            stompCol.radius += step;
-            stompShape.radius += step;
-            yield return new WaitForFixedUpdate();
-        }
-
-        stompObject.SetActive(false);
-        yield return null;
-    }
 
     private IEnumerator SmoothScale(Vector3 start, Vector3 end, Pylon pylon)
     {

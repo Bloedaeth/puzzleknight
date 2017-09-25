@@ -8,8 +8,11 @@ public class EntitySoundsCommon : MonoBehaviour
     /// <summary>A list of sounds to be played when damage is taken.</summary>
     public AudioClip[] hurtSounds;
 
-    /// <summary>A list of sounds to be played when the entity executes an attack.</summary>
-    public AudioClip[] attackSounds;
+    /// <summary>A list of sounds to be played when the entity's attack hits.</summary>
+    public AudioClip[] attackHitSounds;
+
+	/// <summary>A list of sounds to be played when the entity swings its sword.</summary>
+	public AudioClip[] swordSwingSounds;
 
     /// <summary>A list of taunts to be played during or after combat.</summary>
     //public AudioClip[] taunts;

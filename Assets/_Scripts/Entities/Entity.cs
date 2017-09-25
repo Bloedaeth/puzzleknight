@@ -7,10 +7,14 @@
 public abstract class Entity : MonoBehaviour
 {
     protected Animator animator;
+	protected new AudioSource audio;
+
+	private AudioClip[] attackSounds;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+		attackSounds = GetComponent<EntitySoundsCommon>().attackHitSounds;
     }
 
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
@@ -28,6 +32,15 @@ public abstract class Entity : MonoBehaviour
         animator.SetTrigger("Stagger");
         Invoke("SetBlock", animator.GetCurrentAnimatorStateInfo(0).length);
     }
+
+	public void AttackTaunt()
+	{
+		if(attackSounds.Length > 0)
+		{
+			audio.clip = attackSounds[Random.Range(0, attackSounds.Length)];
+			audio.Play();
+		}
+	}
 
     private void SetBlock()
     {
