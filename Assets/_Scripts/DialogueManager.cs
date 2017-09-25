@@ -50,4 +50,10 @@ public class DialogueManager : MonoBehaviour {
         dialogueActive = true;
         dBox.SetActive(true);
     }
+
+	public void HideDialogue()
+	{
+		dialogueActive = false;
+		dBox.SetActive(false);
+	}
 }

@@ -40,7 +40,10 @@ public class DialogueHolder : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player"))
-            interact.enabled = false;
+		if(other.CompareTag("Player")) 
+		{
+			interact.enabled = false;
+			dMan.HideDialogue();
+		}
     }
 }
