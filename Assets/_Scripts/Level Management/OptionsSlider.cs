@@ -12,7 +12,6 @@ public class OptionsSlider : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("enabled");
         soundManager = FindObjectOfType<SoundManager>();
 
         slider = GetComponent<Slider>();
