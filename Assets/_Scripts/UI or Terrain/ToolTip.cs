@@ -20,10 +20,14 @@ public class ToolTip : MonoBehaviour
     }
 
     private void OnGUI()
-    {
-        if(img.sprite != null)
-        {
-            transform.localPosition = Event.current.mousePosition;
-        }
+	{
+		if(img.sprite != null) 
+		{
+			float x = Event.current.mousePosition.x - FindObjectOfType<Canvas> ().GetComponent<RectTransform> ().rect.width / 2;
+			float y = Event.current.mousePosition.y - FindObjectOfType<Canvas> ().GetComponent<RectTransform> ().rect.height / 2;
+			Vector3 toolTipPos = new Vector3(x, -y, transform.localPosition.z);
+			
+			transform.localPosition = toolTipPos;
+		}
     }
 }

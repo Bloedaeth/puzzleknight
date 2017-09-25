@@ -85,6 +85,9 @@ public class Shop : MonoBehaviour
         GuiShop.gameObject.SetActive(IsOpen);
         player.Shopping = !player.Shopping;
         player.StopMovement();
+
+		if(!IsOpen)
+			tooltip.DisplayNull();
     }
 		
 	/// <summary>Sets the visibility of the GUI Shop.</summary>
@@ -95,6 +98,9 @@ public class Shop : MonoBehaviour
 		GuiShop.gameObject.SetActive(IsOpen);
 		player.Shopping = state;
 		player.StopMovement(state);
+
+		if(!state)
+			tooltip.DisplayNull();
 	}
 
 
