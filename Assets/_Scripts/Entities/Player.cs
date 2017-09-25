@@ -64,8 +64,10 @@ public class Player : Entity
         inventory = GetComponent<Inventory>();
 		freeLookCam = Camera.main.GetComponentInParent<UnityStandardAssets.Cameras.FreeLookCam>();
 		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
-        //thirdPersonUserControl.enabled = false;
-        animator = GetComponent<Animator>();
+		thirdPersonUserControl.movementActive = false; // Disabling TPUC makes morpheus unable to slow down, so he maintains his previous momentum.
+		// I have this nice little variable that controls the input already. ~Steve
+
+		animator = GetComponent<Animator>();
         timeFreeze = FindObjectOfType<TimeFreeze>();
         rigidBody = GetComponent<Rigidbody>();
         
@@ -143,14 +145,14 @@ public class Player : Entity
 
     public void TogglePause(bool state)
     {
-        Time.timeScale = state ? 0f : 1f;
+		Time.timeScale = state ? 0f : 1f;
 
-        PauseMenu.SetActive(state);
-        foreach(Transform child in PauseMenu.transform)
+		PauseMenu.SetActive(state);
+		foreach(Transform child in PauseMenu.transform)
             child.gameObject.SetActive(state);
 
-        thirdPersonUserControl.enabled = !state;
-        freeLookCam.orbitActive = !state;
+		thirdPersonUserControl.movementActive = !state;
+		freeLookCam.orbitActive = !state;
         freeLookCam.hideCursor = !state;
     }
 
@@ -314,6 +316,7 @@ public class Player : Entity
         animator.SetFloat("Forward", 0);
         thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
         freeLookCam.hideCursor = !freeLookCam.hideCursor;
+
     }
 	
 	///<summary>Change of StopMovement(), allows the code to set a devinitive state as opposed to toggling between the states</summary>

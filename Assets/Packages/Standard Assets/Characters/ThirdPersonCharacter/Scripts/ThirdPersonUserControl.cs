@@ -32,7 +32,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private Player m_Player;
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
         private Vector3 m_CamForward;             // The current forward direction of the camera
-        public Vector3 m_Move;
+        private Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
 
 		private float runSpeed = 1f;
@@ -40,7 +40,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         
         private void Start()
         {
-			movementActive = true;
 
 			cameraDistancesRight = new Vector3[2] {new Vector3(0.75f,1.25f,0f), new Vector3(0f,0f,-camDist)}; // <---------------- CHANGE
 			cameraDistancesLeft = new Vector3[2] {new Vector3(-0.75f,1.25f,0f), new Vector3(0f,0f,-camDist)}; // <---------------- CHANGE
@@ -96,13 +95,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         // Fixed update is called in sync with physics
         private void FixedUpdate()
         {
-            if(!movementActive)
+            /*if(!movementActive)
             {   // <----------------- CHANGE
                 return;
-            }
+            }*/
             // read inputs
-            float h = CrossPlatformInputManager.GetAxis("Horizontal");
-            float v = CrossPlatformInputManager.GetAxis("Vertical");
+            float h = movementActive ? CrossPlatformInputManager.GetAxis("Horizontal") : 0;
+			float v = movementActive ? CrossPlatformInputManager.GetAxis("Vertical") : 0;
             bool crouch = false;// Input.GetKey(KeyCode.C);
 
             // calculate move direction to pass to character
@@ -155,6 +154,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			cameraAiming[0] = cameraRight ? cameraDistancesRight [0] : cameraDistancesLeft [0];
 			}
+
+		/// <summary>
+		/// Resets the camera, and also resets the target back to the character.
+		/// </summary>
+		/// <param name="resetTarget">This int doesn't change anything, it just identifies this version of the method.</param>
+		public void ResetCamera(int resetTarget) {
+			freeLookCamera.SetTarget (transform);
+			ResetCamera ();
+		}
 
 		public void SetCameraToZeros() { // <------------------- CHANGE
 			freeLookCamera.UpdateTransforms (cameraZeros);
