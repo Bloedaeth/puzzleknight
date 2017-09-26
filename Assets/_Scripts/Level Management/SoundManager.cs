@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     
     private Player player;
     private new AudioSource audio;
+	private AudioClip levelMusic;
 
     private static SoundManager instance;
 
@@ -35,11 +36,11 @@ public class SoundManager : MonoBehaviour
     {
         if(!player)
             return;
-
-        if(audio.clip != musicArray[2] && player.InBossFight)
-            PlayMusicAtIndex(2);
-        else if(audio.clip != musicArray[1] && !player.InBossFight)
+		
+        if(audio.clip != musicArray[1] && player.InBossFight)
             PlayMusicAtIndex(1);
+        else if(audio.clip == musicArray[1] && !player.InBossFight)
+            PlayMusicAtIndex(3);
     }
 
     public void SetMusicVolume(float val)
@@ -68,8 +69,11 @@ public class SoundManager : MonoBehaviour
 
         player = FindObjectOfType<Player>();
 
-        if(audio.clip != musicArray[1] && player)
-            PlayMusicAtIndex(1);
+
+		if(audio.clip != musicArray[2] && scene.name.Contains("Tutorial"))
+			PlayMusicAtIndex(2);
+		if(audio.clip != musicArray[3] && scene.name.Contains("Deliverable"))
+            PlayMusicAtIndex(3);
         else if(audio.clip != musicArray[0] && !player)
             PlayMusicAtIndex(0);
     }

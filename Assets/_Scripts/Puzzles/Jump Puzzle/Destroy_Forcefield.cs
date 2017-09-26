@@ -2,13 +2,24 @@
 
 public class Destroy_Forcefield : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private new AudioSource audio;
+
+    private void Awake()
     {
-        if(other.CompareTag("Player"))
-        {
+        audio = GetComponent<AudioSource>();
+    }
+
+    private void OnTriggerEnter(Collider o)
+    {
+        if(o.CompareTag("Player"))
             Destroy(GameObject.FindGameObjectWithTag("ForceField"));
-            enabled = false;
-        }
+
+        audio.Play();
+    }
+
+    private void OnTriggerExit(Collider o)
+    {
+        audio.Play();
     }
 }
 

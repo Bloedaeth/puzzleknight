@@ -4,11 +4,14 @@ public class PressurePlate : MonoBehaviour
 {
     private int numEntitiesOnPlate;
 
+    private new AudioSource audio;
+
     private LowerPlatform platform;
     private bool triggered = false;
 
     private void Awake()
     {
+        audio = GetComponent<AudioSource>();
         platform = FindObjectOfType<LowerPlatform>();
     }
 
@@ -36,13 +39,13 @@ public class PressurePlate : MonoBehaviour
             platform.PressurePlateActive = true;
     }
 
-    //private void OnTriggerEnter(Collider o)
-    //{
-    //    ++numEntitiesOnPlate;
-    //}
+    private void OnTriggerEnter(Collider o)
+    {
+        audio.Play();
+    }
 
-    //private void OnTriggerExit(Collider o)
-    //{
-    //    --numEntitiesOnPlate;
-    //}
+    private void OnTriggerExit(Collider o)
+    {
+        audio.Play();
+    }
 }
