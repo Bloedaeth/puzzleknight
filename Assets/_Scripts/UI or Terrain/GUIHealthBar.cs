@@ -7,8 +7,8 @@ public class GUIHealthBar : MonoBehaviour
 
     private RectTransform rect;
 
-    private const float FULL_HEALTH_TOP = 33f;
-    private const float NO_HEALTH_TOP = 123f;
+    private const float FULL_HEALTH_TOP = 40f;
+    private const float NO_HEALTH_TOP = 130f;
 
     private const float FULL_HEALTH_RIGHT = -55f;
     private const float NO_HEALTH_RIGHT = 154f;
