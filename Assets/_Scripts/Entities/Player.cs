@@ -64,7 +64,7 @@ public class Player : Entity
         inventory = GetComponent<Inventory>();
 		freeLookCam = Camera.main.GetComponentInParent<UnityStandardAssets.Cameras.FreeLookCam>();
 		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
-		thirdPersonUserControl.movementActive = false; // Disabling TPUC makes morpheus unable to slow down, so he maintains his previous momentum.
+		//thirdPersonUserControl.movementActive = false; // Disabling TPUC makes morpheus unable to slow down, so he maintains his previous momentum.
 		// I have this nice little variable that controls the input already. ~Steve
 
 		animator = GetComponent<Animator>();
@@ -102,8 +102,8 @@ public class Player : Entity
             return;
         }
 
-        if(!Shopping && Input.GetKeyDown (KeyCode.I))
-			ToggleInventory ();
+        if(!Shopping && Input.GetKeyDown(KeyCode.I))
+            ToggleInventory();
 
         //Turn all inventory menus off, regardless of states, this essentially resets the inventory state
         if(Input.GetKeyDown(KeyCode.Escape))
