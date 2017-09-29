@@ -10,7 +10,7 @@ public class PerspectivePieceHolder : MonoBehaviour {
 	public Transform pieceLocation;
 
 	private Transform door;
-	private Transform cam;
+	//private Transform cam;
 
 	private GameObject emptPiece;
 
@@ -20,14 +20,14 @@ public class PerspectivePieceHolder : MonoBehaviour {
 	public int currIndex;
 	private int corrIndex;
 
-	public void SetVariables (int currIndex, int corrIndex, PerspectivePieceManager parent, Transform door, Transform cam) {
+	public void SetVariables (int currIndex, int corrIndex, PerspectivePieceManager parent, Transform door) {//, Transform cam) {
 		this.parent = parent;
 		this.currIndex = currIndex;
 		this.corrIndex = corrIndex;
 		this.door = door;
-		this.cam = cam;
+		//this.cam = cam;
 		//pieceLocation = this.gameObject.GetComponentInChildren<Transform> ();
-		projectToDoorVector ();
+		ProjectToDoorVector ();
 
 		SetupPiece();
 	}
@@ -44,13 +44,13 @@ public class PerspectivePieceHolder : MonoBehaviour {
 		return currIndex;
 	}
 
-	public void resetPieceLocations() {
+	public void ResetPieceLocations() {
 		for (int i = 0; i < parent.pieces.Length; i++) {
 			parent.pieces [i].transform.position = pieceLocation.position;
 		}
 	}
 
-	private void projectToDoorVector() {
+	private void ProjectToDoorVector() {
 		Vector3 proj;
 		Vector3 final;
 

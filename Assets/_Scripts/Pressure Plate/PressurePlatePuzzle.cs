@@ -8,19 +8,17 @@ public class PressurePlatePuzzle : Puzzle {
 	CameraChaser CC;
 
 	bool done = false;
-
-	// Use this for initialization
-	void Start () {
+    
+	private void Start () {
 		inv = FindObjectOfType<Inventory> ();
 		CC = GetComponentInChildren<CameraChaser> ();
 	}
-
-	// Update is called once per frame
-	void Update () {
+    
+	private void Update () {
 		if (!done) {
 			CheckFinalizePuzzle ();
 		} else {
-			if (CC.currPoint >= 4) {
+			if (CC.CurrPoint >= 4) {
 				this.solved = true;
 				OpenDoor ();
 			}

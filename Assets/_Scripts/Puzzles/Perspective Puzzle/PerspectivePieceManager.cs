@@ -67,7 +67,7 @@ public class PerspectivePieceManager : MonoBehaviour {
 		holders = GetComponentsInChildren<PerspectivePieceHolder> ();
 
 		for (int i = 0; i < holders.Length; i++) {
-			holders [i].SetVariables (i, i, this, door, cam);
+            holders[i].SetVariables(i, i, this, door);//, cam);
 		}
 	}
 

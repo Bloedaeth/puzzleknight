@@ -11,9 +11,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_StationaryTurnSpeed = 360;
 		[SerializeField] float m_JumpPower = 5f;
 		[Range(1f, 4f)][SerializeField] float m_GravityMultiplier = 2f;
-		[SerializeField] float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
+		//[SerializeField] float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
-		[SerializeField] float m_AnimSpeedMultiplier = 1f;
+		//[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.15f;
 
 		Rigidbody m_Rigidbody;
@@ -24,12 +24,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		float m_TurnAmount;
 		float m_ForwardAmount;
 		Vector3 m_GroundNormal;
-		float m_CapsuleHeight;
-		Vector3 m_CapsuleCenter;
-		CapsuleCollider m_Capsule;
+		//float m_CapsuleHeight;
+		//Vector3 m_CapsuleCenter;
+		//CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
-		Vector3 lastMoveVector;
+		//Vector3 lastMoveVector;
 
 		float moveDamp = 0f;
 
@@ -37,9 +37,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		{
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
-			m_Capsule = GetComponent<CapsuleCollider>();
-			m_CapsuleHeight = m_Capsule.height;
-			m_CapsuleCenter = m_Capsule.center;
+			//m_Capsule = GetComponent<CapsuleCollider>();
+			//m_CapsuleHeight = m_Capsule.height;
+			//m_CapsuleCenter = m_Capsule.center;
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
@@ -72,7 +72,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			}
 
 			// send input and other state parameters to the animator
-			lastMoveVector = move;
+			//lastMoveVector = move;
 			UpdateAnimator(move, jump);
 		}
 

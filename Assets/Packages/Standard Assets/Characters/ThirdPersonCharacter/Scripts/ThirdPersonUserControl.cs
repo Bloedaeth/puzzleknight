@@ -1,7 +1,6 @@
  // CUSTOM CHANGES IN THIRDPERSON USER CONTROL
 // LOOK FOR ARROWS <---
 
-using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -19,7 +18,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		public bool movementActive; // <--------------- CHANGE
 
-		private GameObject currentPuzzle; // <---------------- CHANGE
+		//private GameObject currentPuzzle; // <---------------- CHANGE
 
 		//Store the values of the camera so that manipulation can be easier, {Pivot point, Camera transform}
 		private Vector3[] cameraDistancesRight; // <---------------- CHANGE
@@ -168,16 +167,16 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			freeLookCamera.UpdateTransforms (cameraZeros);
 		}
 
-		void OnTriggerEnter(Collider o) { // <------------------- CHANGE
-			if (o.gameObject.tag.ToLower () == "puzzlemanager") {
-				currentPuzzle = o.gameObject;
-			}
-		}
+		//void OnTriggerEnter(Collider o) { // <------------------- CHANGE
+		//	if (o.gameObject.tag.ToLower () == "puzzlemanager") {
+		//		currentPuzzle = o.gameObject;
+		//	}
+		//}
 
-		void OnTriggerExit(Collider o) { // <------------------- CHANGE
-			if (o.gameObject.tag.ToLower () == "puzzlemanager") {
-				currentPuzzle = null;
-			}
-		}
+		//void OnTriggerExit(Collider o) { // <------------------- CHANGE
+		//	if (o.gameObject.tag.ToLower () == "puzzlemanager") {
+		//		currentPuzzle = null;
+		//	}
+		//}
     }
 }

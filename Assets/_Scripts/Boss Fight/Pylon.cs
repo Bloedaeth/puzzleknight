@@ -18,7 +18,7 @@ public class Pylon : MonoBehaviour, IFreezable
 
     private new AudioSource audio;
     private Lever lever;
-    private BossEnemy boss;
+    //private BossEnemy boss;
     private ParticleSystem ps;
 
     private bool isActive = false;
@@ -42,7 +42,7 @@ public class Pylon : MonoBehaviour, IFreezable
 
         audio = GetComponent<AudioSource>();
         lever = transform.parent.GetComponentInChildren<Lever>();
-        boss = FindObjectOfType<BossEnemy>();
+        //boss = FindObjectOfType<BossEnemy>();
         ps = GetComponentInChildren<ParticleSystem>();
     }
 

@@ -14,7 +14,7 @@ public class GruntEnemy : ShieldedEnemy
     private float timer;
 
     private int testNumber;
-    private float testStopDistance = 3.5f;
+    //private float testStopDistance = 3.5f;
 
     private float attackTimer = 1.5f;
     private float timer2;
@@ -26,7 +26,8 @@ public class GruntEnemy : ShieldedEnemy
     private int blockHash;
 
     private Vector3 gruntOrigin;
-    
+
+    private Animator animator;
     private Rigidbody rb;
 
     private void Awake()

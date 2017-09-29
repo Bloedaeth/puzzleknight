@@ -7,8 +7,8 @@ public class CameraChaser : MonoBehaviour {
 	bool active;
 
 	Transform ChaseObject;
-	Vector3 coOrigPos;
-	Quaternion coOrigRot;
+	//Vector3 coOrigPos;
+	//Quaternion coOrigRot;
 
 	Vector3 pointDir;
 	Vector3 positionBuffer;
@@ -17,11 +17,11 @@ public class CameraChaser : MonoBehaviour {
 	Quaternion rotationBuffer;
 
 	TransformIterator ChasePoints;
-	public int currPoint { get { return ChasePoints.GetIndex (); } }
+	public int CurrPoint { get { return ChasePoints.GetIndex (); } }
 
-	Camera cam;
+	//Camera cam;
 
-	bool hanging;
+	//bool hanging;
 	float hangTime = 2f;
 	float currHangTime = 0f;
 
@@ -33,7 +33,7 @@ public class CameraChaser : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GetChasePointsAndObject ();
-		cam = Camera.main;
+		//cam = Camera.main;
 		tpuc = FindObjectOfType<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl> ();
 		p = FindObjectOfType<Player> ();
 	}
@@ -123,7 +123,7 @@ public class CameraChaser : MonoBehaviour {
 
 	public void EndChase() {
 
-		hanging = true;
+		//hanging = true;
 
 
 		while (currHangTime < hangTime) {
@@ -136,14 +136,14 @@ public class CameraChaser : MonoBehaviour {
 		tpuc.freeLookCamera.orbitActive = true;
 		tpuc.freeLookCamera.ToggleCamClip (false);
 		tpuc.ResetCamera(1238709123); //Very specific number, many importants.
-		ResetCameraObject ();
+		//ResetCameraObject ();
 		p.StopMovement (false);
 
-		hanging = false;
+		//hanging = false;
 	}
 
-	void ResetCameraObject() {
-		ChaseObject.position = coOrigPos;
-		ChaseObject.rotation = coOrigRot;
-	}
+	//void ResetCameraObject() {
+	//	ChaseObject.position = coOrigPos;
+	//	ChaseObject.rotation = coOrigRot;
+	//}
 }

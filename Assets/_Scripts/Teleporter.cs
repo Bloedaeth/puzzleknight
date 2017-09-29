@@ -27,10 +27,12 @@ public class Teleporter : MonoBehaviour
 		else
 			Destroy(this);
 
-        OnLevelWasLoaded();
+        SceneManager.sceneLoaded += SceneManager_SceneLoaded;
+
+        SceneManager_SceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
-    private void OnLevelWasLoaded()
+    private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
 	{
         if((inEditor || Debug.isDebugBuild) && SceneManager.GetActiveScene().name.Contains("Deliverable"))
             FindTransforms();

@@ -42,14 +42,15 @@ public class Player : Entity
     //The max distance to check for movable objects
     private const float MAX_RAYCAST_DISTANCE = 2f;
 
-    private Rigidbody rigidBody;
+    private Animator animator;
+    private new AudioSource audio;
+    private Rigidbody rb;
 
     private Inventory inventory;
 	private Shop shop;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
 	private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl thirdPersonUserControl;
     
-    private new AudioSource audio;
     //private AudioClip[] idleSounds;
     
     private TimeFreeze timeFreeze;
@@ -62,34 +63,18 @@ public class Player : Entity
     private void Awake()
     {
         inventory = GetComponent<Inventory>();
-		freeLookCam = Camera.main.GetComponentInParent<UnityStandardAssets.Cameras.FreeLookCam>();
-		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
-		//thirdPersonUserControl.movementActive = false; // Disabling TPUC makes morpheus unable to slow down, so he maintains his previous momentum.
-		// I have this nice little variable that controls the input already. ~Steve
-
-		animator = GetComponent<Animator>();
         timeFreeze = FindObjectOfType<TimeFreeze>();
-        rigidBody = GetComponent<Rigidbody>();
-        
-        attackerList = new GameObject[2];
-        
-        attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
-
+        rb = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
-        //idleSounds = GetComponent<EntitySoundsCommon>().idleSounds;
+        animator = GetComponent<Animator>();
 
+        freeLookCam = Camera.main.GetComponentInParent<UnityStandardAssets.Cameras.FreeLookCam>();
+		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
         perspPieceUI = FindObjectOfType<PerspectivePieceHolderUiInteractor>();
 
-        //Invoke("PlayMorpheusSounds", Random.Range(20, 30));
+        attackerList = new GameObject[2];
+        attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
     }
-    
-    //private void PlayMorpheusSounds()
-    //{
-    //    audio.clip = idleSounds[Random.Range(0, idleSounds.Length)];
-    //    audio.Play();
-
-    //    Invoke("PlayMorpheusSounds", Random.Range(20, 30));
-    //}
 
     private void Update()
     {
@@ -140,7 +125,7 @@ public class Player : Entity
 
         //CheckFalling();
         if (Input.GetKeyDown(KeyCode.L))
-            Debug.Log(rigidBody.velocity.y);
+            Debug.Log(rb.velocity.y);
     }
 
     public void TogglePause(bool state)
@@ -190,7 +175,7 @@ public class Player : Entity
         }
         */
 
-        if(Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10) && rigidBody.velocity.y < 0.003)
+        if(Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10) && rb.velocity.y < 0.003)
         {
             animator.SetFloat("Speed", 0);
             thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
@@ -360,7 +345,7 @@ public class Player : Entity
 
             movingObject.GetComponent<MovableObject>().BeingMoved = false;
             
-            rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
             movingObject.constraints = RigidbodyConstraints.FreezeRotation;
 
             movingObject = null;
@@ -380,7 +365,7 @@ public class Player : Entity
     private void ConstrainAxis(Vector3 fwd, RigidbodyConstraints axis)
     {
         transform.forward = fwd;
-        rigidBody.constraints |= axis;
+        rb.constraints |= axis;
         movingObject.constraints |= axis;
     }
 

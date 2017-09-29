@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TransformIterator : MonoBehaviour {
+public class TransformIterator {
 	Transform[] points;
 	int currPoint;
 
@@ -26,7 +26,7 @@ public class TransformIterator : MonoBehaviour {
 	}
 
 	public bool EndList() {
-		print (points.Length.ToString() + " : " + currPoint.ToString());
+		Debug.Log (points.Length.ToString() + " : " + currPoint.ToString());
 		return currPoint >= points.Length;
 	}
 

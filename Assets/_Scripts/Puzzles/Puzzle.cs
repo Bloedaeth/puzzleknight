@@ -18,7 +18,7 @@ public abstract class Puzzle : MonoBehaviour {
 
 	private float doorMoveSpeed = 2f;
 
-	void Awake() {
+	private void Awake() {
 		if (leftDoor == null || rightDoor == null) {
 			Debug.LogError ("One or both of the doors for the" + gameObject.name + "puzzle are not set.");
 		}
@@ -27,7 +27,7 @@ public abstract class Puzzle : MonoBehaviour {
 		rightDoorOpen = Quaternion.Euler (rightDoor.transform.rotation.eulerAngles + new Vector3(0f, 90f, 0f));
 	}
 
-	public void Update() {
+	private void Update() {
 		if (solved) {
 			OpenDoor ();
 		}

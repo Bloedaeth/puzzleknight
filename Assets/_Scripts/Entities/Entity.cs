@@ -6,14 +6,15 @@
 [RequireComponent(typeof(EntitySoundsCommon))]
 public abstract class Entity : MonoBehaviour
 {
-    protected Animator animator;
-	protected new AudioSource audio;
+    private Animator animator;
+	private new AudioSource audio;
 
 	private AudioClip[] attackSounds;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
 		attackSounds = GetComponent<EntitySoundsCommon>().attackHitSounds;
     }
 
