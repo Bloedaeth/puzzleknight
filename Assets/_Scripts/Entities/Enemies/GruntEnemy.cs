@@ -27,8 +27,8 @@ public class GruntEnemy : ShieldedEnemy
 
     private Vector3 gruntOrigin;
 
-    private Animator animator;
-    private Rigidbody rb;
+    //private Animator animator;
+    //private Rigidbody rb;
 
     private void Awake()
     {
@@ -114,9 +114,8 @@ public class GruntEnemy : ShieldedEnemy
 
             }                
             
-
             state = animator.GetCurrentAnimatorStateInfo(0);
-            if (state.fullPathHash != attackHash)
+            if (state.fullPathHash != attackHash && !GetComponent<DeathAnimation>())
             {
                 timer2 += Time.deltaTime;
                 Vector3 look = player.position - transform.position;

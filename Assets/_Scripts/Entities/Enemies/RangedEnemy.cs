@@ -4,7 +4,7 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 public class RangedEnemy : Enemy
 {
-    private Animator animator;
+    //private Animator animator;
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;

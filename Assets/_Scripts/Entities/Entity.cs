@@ -6,16 +6,50 @@
 [RequireComponent(typeof(EntitySoundsCommon))]
 public abstract class Entity : MonoBehaviour
 {
-    private Animator animator;
-	private new AudioSource audio;
+    protected Animator animator;
+	protected new AudioSource audio;
+    protected Rigidbody rb;
 
 	private AudioClip[] attackSounds;
+
+    private int attackStateOneHash;
+    private int attackStateTwoHash;
+    private int attackStateThreeHash;
+    private int attackBossOneHash;
+    private int attackBossTwoHash;
+    private int attackHash;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
 		attackSounds = GetComponent<EntitySoundsCommon>().attackHitSounds;
+        rb = GetComponent<Rigidbody>();
+
+        attackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
+        attackStateTwoHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 2");
+        attackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
+        attackBossOneHash = Animator.StringToHash("Base Layer.Attack Stage 1");
+        attackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
+        attackHash = Animator.StringToHash("Base Layer.Attack");
+    }
+
+    private void Update()
+    {
+        if(GetComponent<DeathAnimation>())
+            return;
+
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        if(state.fullPathHash != attackStateOneHash &&
+           state.fullPathHash != attackStateTwoHash &&
+           state.fullPathHash != attackStateThreeHash &&
+           state.fullPathHash != attackBossOneHash &&
+           state.fullPathHash != attackBossTwoHash &&
+           state.fullPathHash != attackHash &&
+           rb.constraints == RigidbodyConstraints.FreezeRotation)
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+        else if(rb.constraints == RigidbodyConstraints.FreezeAll)
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
@@ -30,7 +64,7 @@ public abstract class Entity : MonoBehaviour
     public virtual void Stagger()
     {
         SetBlock(false);
-        animator.SetTrigger("Stagger");
+        GetComponent<Animator>().SetTrigger("Stagger");
         Invoke("SetBlock", animator.GetCurrentAnimatorStateInfo(0).length);
     }
 

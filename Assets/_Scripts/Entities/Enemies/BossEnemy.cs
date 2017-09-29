@@ -28,7 +28,7 @@ public class BossEnemy : Enemy
 
     private List<Pylon> pylons;
 
-    private Animator animator;
+    //private Animator animator;
     private Health hp;
     private AICharacterControl ai;
     private NavMeshAgent agent;

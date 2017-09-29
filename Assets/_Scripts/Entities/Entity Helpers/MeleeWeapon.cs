@@ -18,6 +18,7 @@ public class MeleeWeapon : MonoBehaviour
     private int attackBossOneHash;
     private int attackBossTwoHash;
     private int attackHash;
+    private int blockHash;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class MeleeWeapon : MonoBehaviour
         attackBossOneHash = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
         attackHash = Animator.StringToHash("Base Layer.Attack");
+        blockHash = Animator.StringToHash("Base Layer.Block");
 
         audio = Self.GetComponent<AudioSource>();
         swordWhoosh = Self.GetComponent<EntitySoundsCommon>().swordSwingSounds;
@@ -70,7 +72,7 @@ public class MeleeWeapon : MonoBehaviour
                 shield = se.Shield;
         }
 
-        if(shield != null && shield.IsBlocking)
+        if(shield != null && (shield.IsBlocking || state.fullPathHash == blockHash))
         {
             Vector3 targetDir = target.transform.position - Self.transform.position;
             float angle = Vector3.Angle(-(target.transform.forward), targetDir);

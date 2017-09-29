@@ -42,17 +42,15 @@ public class Player : Entity
     //The max distance to check for movable objects
     private const float MAX_RAYCAST_DISTANCE = 2f;
 
-    private Animator animator;
-    private new AudioSource audio;
-    private Rigidbody rb;
+    //private Animator animator;
+    //private new AudioSource audio;
+    //private Rigidbody rb;
 
     private Inventory inventory;
 	private Shop shop;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
 	private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl thirdPersonUserControl;
-    
-    //private AudioClip[] idleSounds;
-    
+
     private TimeFreeze timeFreeze;
 
     public GameObject[] enemylist;
