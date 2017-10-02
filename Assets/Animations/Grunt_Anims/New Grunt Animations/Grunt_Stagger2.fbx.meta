@@ -133,7 +133,7 @@ ModelImporter:
     400122: Character1_Spine2
     400124: //RootNode
     400126: Character1_Reference
-    7400000: Take 001
+    7400000: StaggerGrunt
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -163,7 +163,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: StaggerGrunt
       takeName: Take 001
       firstFrame: 1
       lastFrame: 15

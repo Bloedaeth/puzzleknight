@@ -56,7 +56,7 @@ public class Player : Entity
     public GameObject[] enemylist;
     public GameObject[] attackerList; 
 
-    private int attackStateThreeHash;
+    //private int attackStateThreeHash;
 
     private void Awake()
     {

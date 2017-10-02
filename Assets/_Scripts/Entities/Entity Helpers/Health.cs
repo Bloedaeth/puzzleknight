@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     public bool IsInvulnerable;
 
     private new AudioSource audio;
+    private Animator animator;
 
     public GUIHealthBar HealthBar;
 
@@ -19,6 +20,7 @@ public class Health : MonoBehaviour
         HealthRemaining = InitialAndMaxHealth;
 
         audio = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -60,6 +62,8 @@ public class Health : MonoBehaviour
             return;
 
         SetHealth(Mathf.Clamp(HealthRemaining - amount, 0, InitialAndMaxHealth));
+        if(HealthRemaining > 0)
+            animator.SetTrigger("Stagger");
     }
 
     /// <summary>Forcibly kills the entity, regardless of whether it is invulnerable or has been attacked recently.</summary>
