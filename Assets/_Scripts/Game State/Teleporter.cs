@@ -12,13 +12,8 @@ public class Teleporter : MonoBehaviour
     private Transform hub;
 	private Transform player;
 
-    private bool inEditor = false;
-
 	private void Awake()
 	{
-#if UNITY_EDITOR
-        inEditor = true;
-#endif
         if(instance == null)
 		{
 			instance = this;
@@ -34,7 +29,7 @@ public class Teleporter : MonoBehaviour
 
     private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-        if((inEditor || Debug.isDebugBuild) && SceneManager.GetActiveScene().name.Contains("Deliverable"))
+        if((Application.isEditor || Debug.isDebugBuild) && SceneManager.GetActiveScene().name.Contains("Deliverable"))
             FindTransforms();
     }
 
@@ -51,7 +46,7 @@ public class Teleporter : MonoBehaviour
 
     private void Update()
 	{
-        if(!(inEditor || Debug.isDebugBuild))
+        if(!(Application.isEditor || Debug.isDebugBuild))
             return;
 
         if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
