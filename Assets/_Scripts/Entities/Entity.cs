@@ -14,10 +14,10 @@ public abstract class Entity : MonoBehaviour
 
     private int attackStateOneHash;
     private int attackStateTwoHash;
-    private int attackStateThreeHash;
+    protected int attackStateThreeHash;
     private int attackBossOneHash;
     private int attackBossTwoHash;
-    private int attackHash;
+    protected int attackHash;
 
     private void Awake()
     {
@@ -64,7 +64,7 @@ public abstract class Entity : MonoBehaviour
     public virtual void Stagger()
     {
         SetBlock(false);
-        GetComponent<Animator>().SetTrigger("Stagger");
+        animator.SetTrigger("BlockStagger");
         Invoke("SetBlock", animator.GetCurrentAnimatorStateInfo(0).length);
     }
 

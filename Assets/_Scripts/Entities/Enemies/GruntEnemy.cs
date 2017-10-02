@@ -22,7 +22,7 @@ public class GruntEnemy : ShieldedEnemy
     //private const float SCALE_MULT = 10f;
     private const float MIN_DIST = 10f;
 
-    private int attackHash;
+    //private int attackHash;
     private int blockHash;
 
     private Vector3 gruntOrigin;
@@ -129,16 +129,16 @@ public class GruntEnemy : ShieldedEnemy
             }
         }
 
-        state = animator.GetCurrentAnimatorStateInfo(0);
-        if (Shield.IsBlocking == false && state.fullPathHash != blockHash && this.GetComponent<Health>().timeSinceDamageTaken < 1)
-        {
-            transform.LookAt(player);
-            SetBlocking(true);
-        }
-        else if (Shield.IsBlocking == true && this.GetComponent<Health>().timeSinceDamageTaken > 1)
-        {
-            SetBlocking(false);
-        }
+        //state = animator.GetCurrentAnimatorStateInfo(0);
+        //if(Shield.IsBlocking == false && state.fullPathHash != blockHash && this.GetComponent<Health>().timeSinceDamageTaken < 1)
+        //{
+        //    transform.LookAt(player);
+        //    SetBlocking(true);
+        //}
+        //else if(Shield.IsBlocking == true && this.GetComponent<Health>().timeSinceDamageTaken > 1)
+        //{
+        //    SetBlocking(false);
+        //}
 
         AlertOthers();
     }
