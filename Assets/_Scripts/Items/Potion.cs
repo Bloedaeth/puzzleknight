@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Potion : ThrowableItem
+public class Potion : Item
 {
     public override int TypeId { get { return 1; } }
 
@@ -12,9 +12,9 @@ public class Potion : ThrowableItem
     [SerializeField] private Sprite shopTooltip;
     public override Sprite ShopTooltip { get { return shopTooltip; } }
 
-    public enum PotionType { Health, Damage, Speed }
+    //public enum PotionType { Health, Damage, Speed }
 
-    public PotionType Type;
+    //public PotionType Type;
 
     private int healthPotionHealAmount = 25;
     //private int damagePotionDamageBoost = 10;
@@ -39,17 +39,18 @@ public class Potion : ThrowableItem
 
     private void ApplyEffect(Entity entity)
     {
-        switch(Type)
-        {
-            case PotionType.Health:
-                entity.GetComponent<Health>().RecoverHealth(healthPotionHealAmount);
-                break;
-            case PotionType.Damage:
-                //Increase damage
-                break;
-            case PotionType.Speed:
-                //Increase speed
-                break;
-        }
+        entity.GetComponent<Health>().RecoverHealth(healthPotionHealAmount);
+        //switch(Type)
+        //{
+        //    case PotionType.Health:
+        //        entity.GetComponent<Health>().RecoverHealth(healthPotionHealAmount);
+        //        break;
+        //    case PotionType.Damage:
+        //        //Increase damage
+        //        break;
+        //    case PotionType.Speed:
+        //        //Increase speed
+        //        break;
+        //}
     }
 }
