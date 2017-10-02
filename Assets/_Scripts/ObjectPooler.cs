@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GameLogging;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class ObjectPooler : MonoBehaviour
 
 	private void Start()
 	{
+        BuildDebug.Log("Pooling object: " + objectToPool.name + " " + numObjectsToPool + " times", true);
 		pooledObjects = new List<GameObject>();
 		for(int i = 0; i < numObjectsToPool; i++)
 		{
@@ -26,12 +28,14 @@ public class ObjectPooler : MonoBehaviour
 	}
 
 	public GameObject GetPooledObject()
-	{
-		GameObject any = pooledObjects.FirstOrDefault(obj => !obj.activeInHierarchy);
+    {
+        BuildDebug.Log("Getting a pooled object of type " + objectToPool.name, true);
+        GameObject any = pooledObjects.FirstOrDefault(obj => !obj.activeInHierarchy);
 
 		if(!any && growList)
-		{
-			GameObject obj = Instantiate(objectToPool);
+        {
+            BuildDebug.Log("Growing pooled objects list of type " + objectToPool.name, true);
+            GameObject obj = Instantiate(objectToPool);
 			obj.transform.parent = transform;
 			obj.SetActive(false);
 			pooledObjects.Add(obj);

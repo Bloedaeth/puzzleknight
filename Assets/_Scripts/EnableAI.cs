@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class EnableAI : MonoBehaviour
@@ -8,6 +7,8 @@ public class EnableAI : MonoBehaviour
     {
         if(!other.CompareTag("Player"))
             return;
+
+        BuildDebug.Log("Enabling tutorial goblin AI");
 
         GruntEnemy[] enemies = FindObjectsOfType<GruntEnemy>();
         foreach(GruntEnemy e in enemies)

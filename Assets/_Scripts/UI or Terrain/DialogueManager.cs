@@ -2,40 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using GameLogging;
 
-public class DialogueManager : MonoBehaviour {
-
+public class DialogueManager : MonoBehaviour
+{
     public GameObject dBox;
     public Text dtext;
     public bool dialogueActive;
 
-    public string [] dialogueLines;
+    public string[] dialogueLines;
     public int currentLine;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (dialogueActive && Input.GetKeyUp(KeyCode.E))
+    private void Update()
+    {
+        if(dialogueActive && Input.GetKeyUp(KeyCode.E))
         {
+            BuildDebug.Log("Showing next line of dialog");
             //dBox.SetActive(false);
             //dialogueActive = false;
             currentLine++;
         }
 
-        if (currentLine >= dialogueLines.Length)
+        if(currentLine >= dialogueLines.Length)
         {
+            BuildDebug.Log("Hiding dialog - all text shown");
             dBox.SetActive(false);
             dialogueActive = false;
 
             currentLine = 0;
         }
-        
-         dtext.text = dialogueLines[currentLine];
-        
+
+        dtext.text = dialogueLines[currentLine];
     }
 
     public void ShowBox(string dialogue)
@@ -51,9 +48,9 @@ public class DialogueManager : MonoBehaviour {
         dBox.SetActive(true);
     }
 
-	public void HideDialogue()
-	{
-		dialogueActive = false;
-		dBox.SetActive(false);
-	}
+    public void HideDialogue()
+    {
+        dialogueActive = false;
+        dBox.SetActive(false);
+    }
 }

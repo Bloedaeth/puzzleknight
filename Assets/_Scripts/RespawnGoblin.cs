@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class RespawnGoblin : MonoBehaviour
@@ -18,6 +19,8 @@ public class RespawnGoblin : MonoBehaviour
 
     private void Respawn()
     {
+        BuildDebug.Log("Respawning pressure plate goblin");
+
         Destroy(goblin.GetComponent<DeathAnimation>());
         goblin.GetComponent<AICharacterControl>().enabled = true;
         Health hp = goblin.GetComponent<Health>();

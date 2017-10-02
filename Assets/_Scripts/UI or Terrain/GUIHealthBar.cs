@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 public class GUIHealthBar : MonoBehaviour
 {
@@ -24,10 +25,12 @@ public class GUIHealthBar : MonoBehaviour
         switch(orientation)
         {
             case Orientation.Vertical:
+                BuildDebug.Log("Updating vertical health bar " + name + ". New Value: " + curHP + ". Percent: " + percent);
                 float newRectTop = NO_HEALTH_TOP - ((NO_HEALTH_TOP - FULL_HEALTH_TOP) * percent);
                 rect.offsetMax = new Vector2(rect.offsetMax.x, -newRectTop);
                 break;
             case Orientation.Horizontal:
+                BuildDebug.Log("Updating horizontal health bar " + name + ". New Value: " + curHP + ". Percent: " + percent);
                 float newRectRight = NO_HEALTH_RIGHT - ((NO_HEALTH_RIGHT - FULL_HEALTH_RIGHT) * percent);
                 rect.offsetMax = new Vector2(-newRectRight, rect.offsetMax.y);
                 break;
