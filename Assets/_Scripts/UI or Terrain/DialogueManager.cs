@@ -7,10 +7,10 @@ using GameLogging;
 public class DialogueManager : MonoBehaviour
 {
     public GameObject dBox;
-    public Image dtext;
+    public Text dtext;
     public bool dialogueActive;
 
-    public Sprite[] dialogueLines;
+    public string[] dialogueLines;
     public int currentLine;
 
     private void Update()
@@ -32,14 +32,14 @@ public class DialogueManager : MonoBehaviour
             currentLine = 0;
         }
 
-        dtext.sprite = dialogueLines[currentLine];
+        dtext.text = dialogueLines[currentLine];
     }
 
-    public void ShowBox(Sprite dialogue)
+    public void ShowBox(string dialogue)
     {
         dialogueActive = true;
         dBox.SetActive(true);
-        dtext.sprite = dialogue;
+        dtext.text = dialogue;
     }
 
     public void ShowDialogue()
