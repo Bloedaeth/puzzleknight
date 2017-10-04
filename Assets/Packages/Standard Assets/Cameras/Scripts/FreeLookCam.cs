@@ -73,6 +73,17 @@ namespace UnityStandardAssets.Cameras
             HandleRotationMovement();
 		}
 
+		public void BreakRig(Transform newParent) {
+			camObject.transform.parent = newParent;
+		}
+
+		public void BreakRig() {
+			camObject.transform.parent = null;
+		}
+
+		public void FixRig() {
+			camObject.transform.parent = camPivot.transform;
+		}
 
         private void OnDisable()
         {
@@ -137,6 +148,11 @@ namespace UnityStandardAssets.Cameras
 
         private void HandleRotationMovement()
         {
+			if (camObject.transform.localRotation.eulerAngles != Vector3.zero) {
+				camObject.transform.localRotation = Quaternion.Euler (Vector3.zero);
+			}
+
+
 			if(Time.timeScale < float.Epsilon)
 			return;
 
