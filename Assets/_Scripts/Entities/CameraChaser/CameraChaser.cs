@@ -72,9 +72,10 @@ public class CameraChaser : MonoBehaviour {
 		ChaseObject.position = Vector3.Lerp (ChaseObject.position, positionBuffer, Time.deltaTime * moveSpeed/2);
 
 		rotationBuffer = Quaternion.Slerp (rotationBuffer, pointRot, Time.deltaTime * moveSpeed);
-		tpuc.freeLookCamera.transform.rotation = Quaternion.Slerp (tpuc.freeLookCamera.transform.rotation, rotationBuffer, Time.deltaTime * moveSpeed/2);
+		ChaseObject.rotation = Quaternion.Slerp (ChaseObject.rotation, rotationBuffer, Time.deltaTime * moveSpeed/2);
+		//tpuc.freeLookCamera.transform.rotation = Quaternion.Slerp (tpuc.freeLookCamera.transform.rotation, rotationBuffer, Time.deltaTime * moveSpeed/2);
 
-		tpuc.freeLookCamera.camPivot.transform.localRotation = Quaternion.Slerp (tpuc.freeLookCamera.camPivot.transform.localRotation, new Quaternion (0, 0, 0, 1), Time.deltaTime);
+		tpuc.freeLookCamera.camObject.transform.localRotation = Quaternion.Slerp (tpuc.freeLookCamera.camObject.transform.localRotation, new Quaternion (0, 0, 0, 1), Time.deltaTime);
 
 		/*if (ChasePoints.EndList ()) {
 			EndChase ();
@@ -109,10 +110,11 @@ public class CameraChaser : MonoBehaviour {
 
 		active = true;
 		tpuc.isLooking = true;
+		tpuc.freeLookCamera.BreakRig (ChaseObject);
 		tpuc.freeLookCamera.orbitActive = false;
-		tpuc.freeLookCamera.ToggleCamClip (true);
 		tpuc.freeLookCamera.SetTarget (ChaseObject);
 		tpuc.SetCameraToZeros ();
+		tpuc.freeLookCamera.ToggleCamClip (true);
 		currHangTime = 0f;
 
 		ChasePoints.ResetPoints ();
@@ -133,6 +135,7 @@ public class CameraChaser : MonoBehaviour {
 
 		active = false;
 		tpuc.isLooking = false;
+		tpuc.freeLookCamera.FixRig ();
 		tpuc.freeLookCamera.orbitActive = true;
 		tpuc.freeLookCamera.ToggleCamClip (false);
 		tpuc.ResetCamera(1238709123); //Very specific number, many importants.
