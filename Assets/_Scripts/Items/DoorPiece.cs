@@ -7,7 +7,7 @@ public class DoorPiece : MonoBehaviour
     public PieceType Type;
     public AudioClip CollectedClip;
 
-    private const int MONEY_REWARD = 75;
+    private const int MONEY_REWARD = 50;
     private const float SPEED = 2f;
 
     private void Update()
