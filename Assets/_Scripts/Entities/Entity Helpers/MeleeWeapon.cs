@@ -7,10 +7,12 @@ public class MeleeWeapon : MonoBehaviour
 {
     public Entity Self;
     public int Damage;
+    public bool IsAttacking;
 
     private Animator anim;
     private new AudioSource audio;
 	private AudioClip[] swordWhoosh;
+    private AnimatorStateInfo state;
 
     private int attackStateOneHash;
     private int attackStateTwoHash;
@@ -45,15 +47,21 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        state = anim.GetCurrentAnimatorStateInfo(0);
+        IsAttacking = 
+            state.fullPathHash == attackStateOneHash ||
+            state.fullPathHash == attackStateTwoHash ||
+            state.fullPathHash == attackStateThreeHash ||
+            state.fullPathHash == attackBossOneHash ||
+            state.fullPathHash == attackBossTwoHash ||
+            state.fullPathHash == attackHash;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
-        if(state.fullPathHash != attackStateOneHash &&
-           state.fullPathHash != attackStateTwoHash &&
-           state.fullPathHash != attackStateThreeHash &&
-           state.fullPathHash != attackBossOneHash &&
-           state.fullPathHash != attackBossTwoHash &&
-           state.fullPathHash != attackHash)
+        if(!IsAttacking)
             return;
 
         Entity target = other.gameObject.GetComponent<Entity>();

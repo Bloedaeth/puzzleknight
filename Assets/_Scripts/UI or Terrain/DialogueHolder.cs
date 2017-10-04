@@ -7,7 +7,7 @@ public class DialogueHolder : MonoBehaviour
     private GameObject heyYou;
     public string dialogue;
     private DialogueManager dMan;
-    public Sprite[] dialogueLines;
+    public string[] dialogueLines;
     public Image interact;
 
 	private void Start()
