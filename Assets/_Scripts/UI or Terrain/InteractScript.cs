@@ -6,12 +6,12 @@ public class InteractScript : MonoBehaviour
 {
     [SerializeField] private Image customImage;
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
             BuildDebug.Log("Displaying interact image");
-            customImage.enabled = true;
+            customImage.gameObject.SetActive(true);
         }
     }
 
@@ -20,16 +20,16 @@ public class InteractScript : MonoBehaviour
         if(FindObjectOfType<Player>().Shopping)
         {
             BuildDebug.Log("Hiding interact image - shopping");
-            customImage.enabled = false;
+            customImage.gameObject.SetActive(false);
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             BuildDebug.Log("Hiding interact image - left area");
-            customImage.enabled = false;
+            customImage.gameObject.SetActive(false);
         }
     }
 }
