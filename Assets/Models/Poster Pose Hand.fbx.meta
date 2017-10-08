@@ -1,0 +1,149 @@
+fileFormatVersion: 2
+guid: 53b45e787f90e8848a19baba9f3fec4d
+timeCreated: 1507476678
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Character1_Hips
+    100002: Character1_LeftArm
+    100004: Character1_LeftForeArm
+    100006: Character1_LeftHand
+    100008: Character1_LeftHandIndex1
+    100010: Character1_LeftHandIndex2
+    100012: Character1_LeftHandIndex3
+    100014: Character1_LeftHandIndex4
+    100016: Character1_LeftHandMiddle1
+    100018: Character1_LeftHandMiddle2
+    100020: Character1_LeftHandMiddle3
+    100022: Character1_LeftHandMiddle4
+    100024: Character1_LeftHandPinky1
+    100026: Character1_LeftHandPinky2
+    100028: Character1_LeftHandPinky3
+    100030: Character1_LeftHandPinky4
+    100032: Character1_LeftHandRing1
+    100034: Character1_LeftHandRing2
+    100036: Character1_LeftHandRing3
+    100038: Character1_LeftHandRing4
+    100040: Character1_LeftHandThumb1
+    100042: Character1_LeftHandThumb2
+    100044: Character1_LeftHandThumb3
+    100046: Character1_LeftHandThumb4
+    100048: Character1_LeftShoulder
+    100050: Character1_Reference
+    100052: Character1_Spine
+    100054: Character1_Spine1
+    100056: Character1_Spine2
+    100058: pCube22
+    100060: pCube7
+    100062: polySurface5
+    100064: //RootNode
+    400000: Character1_Hips
+    400002: Character1_LeftArm
+    400004: Character1_LeftForeArm
+    400006: Character1_LeftHand
+    400008: Character1_LeftHandIndex1
+    400010: Character1_LeftHandIndex2
+    400012: Character1_LeftHandIndex3
+    400014: Character1_LeftHandIndex4
+    400016: Character1_LeftHandMiddle1
+    400018: Character1_LeftHandMiddle2
+    400020: Character1_LeftHandMiddle3
+    400022: Character1_LeftHandMiddle4
+    400024: Character1_LeftHandPinky1
+    400026: Character1_LeftHandPinky2
+    400028: Character1_LeftHandPinky3
+    400030: Character1_LeftHandPinky4
+    400032: Character1_LeftHandRing1
+    400034: Character1_LeftHandRing2
+    400036: Character1_LeftHandRing3
+    400038: Character1_LeftHandRing4
+    400040: Character1_LeftHandThumb1
+    400042: Character1_LeftHandThumb2
+    400044: Character1_LeftHandThumb3
+    400046: Character1_LeftHandThumb4
+    400048: Character1_LeftShoulder
+    400050: Character1_Reference
+    400052: Character1_Spine
+    400054: Character1_Spine1
+    400056: Character1_Spine2
+    400058: pCube22
+    400060: pCube7
+    400062: polySurface5
+    400064: //RootNode
+    2300000: pCube7
+    3300000: pCube7
+    4300000: polySurface5
+    4300002: pCube7
+    9500000: //RootNode
+    13700000: polySurface5
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
