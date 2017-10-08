@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class DoorPiece : MonoBehaviour
 {
@@ -6,6 +7,9 @@ public class DoorPiece : MonoBehaviour
 
     public PieceType Type;
     public AudioClip CollectedClip;
+
+    public PieceCollectNotif popupText;
+    public GameObject popupPiece;
 
     private const int MONEY_REWARD = 50;
     private const float SPEED = 2f;
@@ -23,6 +27,9 @@ public class DoorPiece : MonoBehaviour
             Inventory inventory = other.GetComponent<Inventory>();
             inventory.AddDoorPiece(Type);
             inventory.AddMoney(MONEY_REWARD);
+            
+            popupText.Activate(popupPiece);
+
             gameObject.SetActive(false);
         }
     }
