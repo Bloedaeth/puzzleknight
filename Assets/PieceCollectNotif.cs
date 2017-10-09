@@ -6,14 +6,14 @@ public class PieceCollectNotif : MonoBehaviour
     private Text txt;
     private GameObject activeChild;
 
-    private const float SPEED = 20;
+    private const float SPEED = 10;
 
     private void Awake()
     {
         txt = GetComponent<Text>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(activeChild)
             activeChild.transform.localEulerAngles += Vector3.up * SPEED;
