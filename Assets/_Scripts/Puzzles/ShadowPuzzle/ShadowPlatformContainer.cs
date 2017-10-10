@@ -1,49 +1,54 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
-public class ShadowPlatformContainer : MonoBehaviour {
+public class ShadowPlatformContainer : MonoBehaviour
+{
+    private ShadowModifier[] platforms;
 
-	private ShadowModifier[] platforms;
+    public GameObject master;
+    public GameObject evilMaster;
 
-	public GameObject master;
-	public GameObject evilMaster;
+    private void Start()
+    {
+        platforms = GetComponentsInChildren<ShadowModifier>(false);
+        ResetAllSystems();
+    }
 
-	//private ShadowGradientStore sgs;
+    private void ResetAllSystems()
+    {
+        BuildDebug.Log("Resetting Shadow Platforms");
+        if(ParticlesExist())
+        {
+            BroadcastMessage("KillAllShadowParticles");
+        }
 
-	// Use this for initialization
-	void Start () {
-		platforms = GetComponentsInChildren<ShadowModifier> (false);
+        for(int i = 0; i < platforms.Length; i++)
+        {
+            if(platforms[i].tag == "FalsePlatform")
+            {
+                BuildDebug.Log("Instantiating false platform.");
+                Instantiate(evilMaster, platforms[i].transform);
+            }
+            else
+            {
+                BuildDebug.Log("Instantiating platform.");
+                Instantiate(master, platforms[i].transform);
+            }
 
-		//sgs = GetComponent<ShadowGradientStore> ();
+            platforms[i].ResetParticleSystem();
+        }
+    }
 
-		ResetAllSystems ();
-	}
+    private bool ParticlesExist()
+    {
+        for(int i = 0; i < platforms.Length; i++)
+        {
+            if(platforms[i].HasParticleSystem())
+            {
+                return true;
+            }
+        }
 
-	private void ResetAllSystems() {
-		if (particlesExist ()) {
-			BroadcastMessage ("KillAllShadowParticles");
-		}
-
-		for (int i = 0; i < platforms.Length; i++) {
-
-			if (platforms [i].tag == "FalsePlatform") {
-				Instantiate(evilMaster, platforms[i].transform);
-			} else {
-				Instantiate(master, platforms[i].transform);
-			}
-
-			platforms [i].ResetParticleSystem ();
-		}
-	}
-
-	private bool particlesExist() {
-		for (int i = 0; i < platforms.Length; i++) {
-			if (platforms [i].hasParticleSystem ()) {
-				return true;
-			}
-		}
-
-		return false;
-	}
+        return false;
+    }
 }
