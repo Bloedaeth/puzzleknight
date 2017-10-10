@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class Coin : MonoBehaviour
@@ -15,6 +16,7 @@ public class Coin : MonoBehaviour
         if(inv == null)
             return;
 
+        BuildDebug.Log("Coin collected");
         inv.AddMoney(CoinValue);
         AudioClip clip = pickupSounds[Random.Range(0, pickupSounds.Length)];
         AudioSource.PlayClipAtPoint(clip, transform.position, PlayPrefs.GameSoundVolume);

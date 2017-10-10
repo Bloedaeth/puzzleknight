@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 public class Potion : Item
 {
@@ -24,6 +25,7 @@ public class Potion : Item
     /// <param name="self">The entity using the item.</param>
     public override void UseOn(Entity self)
     {
+        BuildDebug.Log("Potion used");
         PlayUseSound();
         ApplyEffect(self);
     }
