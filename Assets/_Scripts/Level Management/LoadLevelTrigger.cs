@@ -3,5 +3,5 @@
 [RequireComponent(typeof(BoxCollider))]
 public class LoadLevelTrigger : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other) { FindObjectOfType<LevelManager>().LoadNextLevel(); }
+    private void OnTriggerEnter(Collider other) { FindObjectOfType<LevelManager>().LoadNextLevelAsync(); }
 }

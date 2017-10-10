@@ -4,11 +4,13 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 public class StartBossFight : MonoBehaviour
 {
-    public BossEnemy boss;
     public GameObject rocks;
+
+    private BossEnemy boss;
 
     private void OnEnable()
     {
+        boss = FindObjectOfType<BossEnemy>();
         rocks.SetActive(false);
     }
 

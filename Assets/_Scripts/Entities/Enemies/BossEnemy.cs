@@ -69,8 +69,6 @@ public class BossEnemy : Enemy
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
-
-		hp.TakeDamage (hp.InitialAndMaxHealth / 2);
     }
 
     private void Update()
