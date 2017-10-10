@@ -1,16 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class LoadingScreen : MonoBehaviour {
+public class LoadingScreen : MonoBehaviour
+{
+    private Slider slider;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private void Awake()
+    {
+        slider = GetComponentInChildren<Slider>();
+    }
+
+    private void Update()
+    {
+        if(slider.value == slider.maxValue && Input.anyKey)
+        {
+            FindObjectOfType<LevelManager>().ContinueToScene();
+        }
+    }
 }
