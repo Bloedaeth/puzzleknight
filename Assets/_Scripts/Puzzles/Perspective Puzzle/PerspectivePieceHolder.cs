@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class PerspectivePieceHolder : MonoBehaviour {
@@ -44,8 +43,10 @@ public class PerspectivePieceHolder : MonoBehaviour {
 		return currIndex;
 	}
 
-	public void ResetPieceLocations() {
-		for (int i = 0; i < parent.pieces.Length; i++) {
+	public void ResetPieceLocations()
+    {
+        BuildDebug.Log("Resetting perspective piece locations");
+        for (int i = 0; i < parent.pieces.Length; i++) {
 			parent.pieces [i].transform.position = pieceLocation.position;
 		}
 	}
@@ -69,8 +70,10 @@ public class PerspectivePieceHolder : MonoBehaviour {
 		ChangePiece (corrIndex);
 	}
 
-	private void ResetPiece() {
-		if (currPiece) {
+	private void ResetPiece()
+    {
+        BuildDebug.Log("Resetting perspective piece");
+        if (currPiece) {
 			currPiece.transform.position = parent.hidePosition;
 		}
 
@@ -93,7 +96,7 @@ public class PerspectivePieceHolder : MonoBehaviour {
 		int pas = parent.PieceAlreadySet (corrIndex, i);
 
 		if (pas != -1) {
-			parent.swapIndexes (pas, corrIndex);
+			parent.SwapIndexes (pas, corrIndex);
 			if (parent.isActive) parent.holders [pas].ResetPiece ();
 		} else {
 			currIndex = i;

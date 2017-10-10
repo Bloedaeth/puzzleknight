@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class PerspectivePieceUiButtonManager : MonoBehaviour {
@@ -18,8 +17,8 @@ public class PerspectivePieceUiButtonManager : MonoBehaviour {
 	}
 
 	public void UpdatePieces(bool[] playerPieces) {
-		//currentDoorPieces = playerPieces;
-
+        //currentDoorPieces = playerPieces;
+        BuildDebug.Log("Updating perspective puzzle pieces");
 		for (int i = 0; i < buttons.Length; i++) {
 			if (playerPieces [i]) {
 				buttons [i].GetComponent<UnityEngine.UI.Image> ().sprite = CollectedPieces [i];

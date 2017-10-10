@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class PerspectivePiece : MonoBehaviour {
@@ -9,8 +8,10 @@ public class PerspectivePiece : MonoBehaviour {
 	private ParticleSystem.ShapeModule sm;
 	private float originalPieceMeshScale;
 
-	void ResetParticle() {
-		particle = GetComponentInChildren<ParticleSystem> ();
+	void ResetParticle()
+    {
+        BuildDebug.Log("Resetting perspective piece particles");
+        particle = GetComponentInChildren<ParticleSystem> ();
 		sm = particle.shape;
 		originalPieceMeshScale = sm.meshScale;
 	}
@@ -27,7 +28,7 @@ public class PerspectivePiece : MonoBehaviour {
 		sm.meshScale = originalPieceMeshScale * scale;
 	}
 
-	public GameObject getGameObject() {
+	public GameObject GetGameObject() {
 		return gameObject;
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameLogging;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,14 +35,17 @@ public class PerspectivePieceManager : MonoBehaviour {
 	}
 
 	void SetupEmpty() {
+        BuildDebug.Log("Setting up perspective puzzle empty piece");
 		emptyPiece = GameObject.CreatePrimitive (PrimitiveType.Cube);
 		GameObject.Destroy (emptyPiece.GetComponent<MeshFilter> ());
 		GameObject.Destroy (emptyPiece.GetComponent<MeshRenderer> ());
 		GameObject.Destroy (emptyPiece.GetComponent<Collider> ());
 	}
 
-	void SetupPieces() {
-		PerspectivePiece[] pp = GetComponentsInChildren<PerspectivePiece> ();
+	void SetupPieces()
+    {
+        BuildDebug.Log("Setting up perspective pieces");
+        PerspectivePiece[] pp = GetComponentsInChildren<PerspectivePiece> ();
 
 		hidePosition = emptyPiece.transform.position;
 
@@ -52,27 +56,33 @@ public class PerspectivePieceManager : MonoBehaviour {
 		pieces = new GameObject[pp.Length];
 
 		for (int i = 0; i < pieces.Length; i++) {
-			pieces [i] = pp [i].getGameObject ();
+			pieces [i] = pp [i].GetGameObject ();
 		}
 
 	}
 
-	void HidePieces() {
-		for (int i = 1; i < holders.Length - 1; i++) {
+	void HidePieces()
+    {
+        BuildDebug.Log("Hiding perspective puzzle pieces");
+        for (int i = 1; i < holders.Length - 1; i++) {
 			holders [i].ChangePiece (-1);
 		}
 	}
 
-	void SetupHolders() {
-		holders = GetComponentsInChildren<PerspectivePieceHolder> ();
+	void SetupHolders()
+    {
+        BuildDebug.Log("Setting up perspective puzzle piece holders");
+        holders = GetComponentsInChildren<PerspectivePieceHolder> ();
 
 		for (int i = 0; i < holders.Length; i++) {
             holders[i].SetVariables(i, i, this, door);//, cam);
 		}
 	}
 
-	void RescalePieces () {
-		for (int i = 0; i < pieces.Length; i++) {
+	void RescalePieces ()
+    {
+        BuildDebug.Log("Scaling perspective puzzle pieces");
+        for (int i = 0; i < pieces.Length; i++) {
 			RescalePiece (pieces [i]);
 		}
 	}
@@ -109,8 +119,10 @@ public class PerspectivePieceManager : MonoBehaviour {
 		return -1;
 	}
 
-	public void swapIndexes(int holderIndex1, int holderIndex2) {
-		int temp = holders [holderIndex1].currIndex;
+	public void SwapIndexes(int holderIndex1, int holderIndex2)
+    {
+        BuildDebug.Log("Swapping piece positions: " + holders[holderIndex1].name + " - " + holders[holderIndex2].name);
+        int temp = holders [holderIndex1].currIndex;
 		holders [holderIndex1].currIndex = holders [holderIndex2].currIndex;
 		holders [holderIndex2].currIndex = temp;
 	}
