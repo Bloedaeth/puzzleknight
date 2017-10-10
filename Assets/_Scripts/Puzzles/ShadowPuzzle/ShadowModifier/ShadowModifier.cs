@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class ShadowModifier : MonoBehaviour {
@@ -69,17 +68,21 @@ public class ShadowModifier : MonoBehaviour {
 	}
 
 	protected void UpdateModels(bool visible) {
-		if (visible) {
-			if (smr != null) {
+		if (visible)
+        {
+            BuildDebug.Log("Setting ShadowCastingMode to On for " + name, true);
+            if (smr != null) {
 				smr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 			} else if (mr != null) {
 				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 			}
 
 			emitted = false;
-
-		} else {
-			if (smr != null) {
+		}
+        else
+        {
+            BuildDebug.Log("Setting ShadowCastingMode to ShadowsOnly for " + name, true);
+            if (smr != null) {
 				smr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
 			} else if (mr != null) {
 				mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
@@ -92,7 +95,6 @@ public class ShadowModifier : MonoBehaviour {
 				}
 				emitted = true;
 			}
-
 		}
 	}
 
@@ -173,7 +175,7 @@ public class ShadowModifier : MonoBehaviour {
 		particle = GetComponentInChildren<ParticleSystem> ();
 	}
 
-	public bool hasParticleSystem() {
+	public bool HasParticleSystem() {
 		return particle != null;
 	}
 }

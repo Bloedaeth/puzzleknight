@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameLogging;
 
 public class PressurePlatePuzzle : Puzzle {
 
@@ -26,8 +27,10 @@ public class PressurePlatePuzzle : Puzzle {
 	}
 
 	public override void CheckFinalizePuzzle() {
-		if (inv.DoorPieces[(int)DoorPiece.PieceType.Knob]) {
-			done = true;
+		if (inv.DoorPieces[(int)DoorPiece.PieceType.Knob])
+        {
+            BuildDebug.Log("Pressure plate puzzle door opened");
+            done = true;
 			CC.BeginChase ();
 		}
 	}

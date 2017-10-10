@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class PerspectiveButton : MonoBehaviour {
@@ -36,27 +35,33 @@ public class PerspectiveButton : MonoBehaviour {
 		}
 	}
 
-    /// <summary></summary>
-	public void Deactivate() {
-		deactivateTime = Time.time + deactivateDelay;
+    /// <summary>Deactivates the button, preventing further use.</summary>
+	public void Deactivate()
+    {
+        BuildDebug.Log("Deactivating perspective button");
+        deactivateTime = Time.time + deactivateDelay;
 		deactivateCalled = true;
 	}
 
-    /// <summary></summary>
+    /// <summary>Gets the camera point game object.</summary>
 	public GameObject GetCameraPoint() {
 		return cameraPoint;
 	}
 
 	private void OnTriggerEnter(Collider o) {
-		if (o.gameObject.transform.tag.ToLower() == "player" && isActive) {
-			playerStanding = true;
+		if (o.gameObject.transform.tag.ToLower() == "player" && isActive)
+        {
+            BuildDebug.Log("Perspective button stepped on");
+            playerStanding = true;
 			tpuc = o.GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl> ();
 		}
 	}
 
     private void OnTriggerExit(Collider o) {
-		if (o.gameObject.transform.tag.ToLower() == "player") {
-			playerStanding = false;
+		if (o.gameObject.transform.tag.ToLower() == "player")
+        {
+            BuildDebug.Log("Perspective button stepped off");
+            playerStanding = false;
 
 			tpuc.isLooking = false;
 			tpuc.ResetCamera ();

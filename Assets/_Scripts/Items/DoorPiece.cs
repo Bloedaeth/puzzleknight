@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using GameLogging;
+using UnityEngine;
 
 public class DoorPiece : MonoBehaviour
 {
@@ -23,6 +23,7 @@ public class DoorPiece : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            BuildDebug.Log("Door Piece collected: " + Type);
             AudioSource.PlayClipAtPoint(CollectedClip, transform.position, PlayPrefs.GameSoundVolume);
             Inventory inventory = other.GetComponent<Inventory>();
             inventory.AddDoorPiece(Type);

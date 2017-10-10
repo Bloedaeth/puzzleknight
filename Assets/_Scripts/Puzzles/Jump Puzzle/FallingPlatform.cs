@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameLogging;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(PlatformShake))]
@@ -22,9 +23,8 @@ public class FallingPlatform : MonoBehaviour {
 
     private IEnumerator Fall()
     {
-		
-        ///longer delay (2 seconds?) and a "shake" animation before falling would be good at some point
-		PS.FallShake (fallDelay); // Ask and ye shall recieve ~Steve
+        BuildDebug.Log("Platform fall activated for " + name);
+        PS.FallShake(fallDelay);
         yield return new WaitForSeconds(fallDelay);
         rbody.isKinematic = false;
         GetComponent<Collider>().isTrigger = true;

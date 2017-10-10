@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameLogging;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -18,7 +19,6 @@ public class Pylon : MonoBehaviour, IFreezable
 
     private new AudioSource audio;
     private Lever lever;
-    //private BossEnemy boss;
     private ParticleSystem ps;
 
     private bool isActive = false;
@@ -42,7 +42,6 @@ public class Pylon : MonoBehaviour, IFreezable
 
         audio = GetComponent<AudioSource>();
         lever = transform.parent.GetComponentInChildren<Lever>();
-        //boss = FindObjectOfType<BossEnemy>();
         ps = GetComponentInChildren<ParticleSystem>();
     }
 
@@ -85,11 +84,13 @@ public class Pylon : MonoBehaviour, IFreezable
 
     private void AutoActivate()
     {
+        BuildDebug.Log("Activating Pylon: " + ID);
         SetPylonActive(true);
     }
 
     public void ResetPylon()
     {
+        BuildDebug.Log("Resetting Pylon: " + ID);
         CancelInvoke();
         StopAllCoroutines();
         if(isActive)
@@ -103,20 +104,19 @@ public class Pylon : MonoBehaviour, IFreezable
 
     public void SetPylonActive(bool val)
     {
+        BuildDebug.Log(val ? "Dea" : "A" + "ctivating Pylon: " + ID);
         isActive = val;
 
         if(isActive)
         {
             ++numPylonsActive;
             StartCoroutine(RaiseLower(maxHeightPos));
-			//boss.ScaleOverTime(BOSS_SCALE_INCREASE, this);  // Don't think we need this - Steve (GO TO LINE 96 in BossEnemy class)
             ps.Play();
         }
         else
         {
             --numPylonsActive;
             StartCoroutine(RaiseLower(minHeightPos));
-            //boss.ScaleOverTime(-BOSS_SCALE_INCREASE, this);//
             ps.Stop();
         }
     }

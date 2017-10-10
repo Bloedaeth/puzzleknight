@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class PerspectivePuzzle : Puzzle {
@@ -40,6 +39,7 @@ public class PerspectivePuzzle : Puzzle {
 	public override void CheckFinalizePuzzle() {
 		//Run through each holder to see if the current index matches the correct index
 		if (ppm.IndexesAllCorrect ()) {
+            BuildDebug.Log("Perspective puzzle solved.");
 			solved = true;
             GetComponent<AudioSource>().Play();
 			FinilizePieces ();

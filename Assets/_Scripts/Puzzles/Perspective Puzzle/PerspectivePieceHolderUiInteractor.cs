@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
 public class PerspectivePieceHolderUiInteractor : MonoBehaviour {
@@ -25,8 +24,9 @@ public class PerspectivePieceHolderUiInteractor : MonoBehaviour {
 	private void OnTriggerEnter(Collider other)
 	{
 		Player p = other.GetComponent<Player>();
-		if (p) {
-			p.NearInteractableObject = true;
+		if (p)
+        {
+            p.NearInteractableObject = true;
 			ButtonManager.UpdateHolder (h);
 			ButtonManager.UpdatePieces(p.GetComponent<Inventory>().DoorPieces);
 		}
@@ -49,20 +49,24 @@ public class PerspectivePieceHolderUiInteractor : MonoBehaviour {
 	private void OnTriggerExit(Collider other)
 	{
 		Player p = other.GetComponent<Player>();
-		if (p) {
-			p.NearInteractableObject = false;
+		if (p)
+        {
+            p.NearInteractableObject = false;
 			p.StopMovement (false);
 			TogglePuzzlePieceUI (false);
 		}
 	}
 
-	void TogglePuzzlePieceUI () {
-		IsOpen = !IsOpen;
+	void TogglePuzzlePieceUI ()
+    {
+        BuildDebug.Log(!IsOpen ? "Opening" : "Closing" + " perspective piece UI buttons");
+        IsOpen = !IsOpen;
 		ButtonManager.gameObject.SetActive (IsOpen);
 	}
 
-	public void TogglePuzzlePieceUI (bool state) {
-		IsOpen = !state;
+	public void TogglePuzzlePieceUI (bool state)
+    {
+        IsOpen = !state;
 		TogglePuzzlePieceUI ();
 	}
 }

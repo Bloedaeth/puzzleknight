@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 public abstract class Item : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public abstract class Item : MonoBehaviour
         Inventory inv = other.gameObject.GetComponent<Inventory>();
         if(inv && inv.AddItem(this))
         {
+            BuildDebug.Log("Potion collected");
             audioSource.clip = PickupSound;
             audioSource.Play();
             //AudioSource.PlayClipAtPoint(PickupSound, transform.position, PlayPrefs.GameSoundVolume);

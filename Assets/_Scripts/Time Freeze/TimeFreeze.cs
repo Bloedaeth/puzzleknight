@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameLogging;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -34,6 +35,7 @@ public class TimeFreeze : MonoBehaviour
     /// <param name="radius">How far the effect will spread.</param>
     public void FreezeTime(float time, float radius)
     {
+        BuildDebug.Log("Activate time power");
         StartCoroutine(ExpandFreezeRadius(time, radius));
     }
 
@@ -45,7 +47,7 @@ public class TimeFreeze : MonoBehaviour
         Transform[] freezable = FindObjectsOfType<Transform>().Where(o => o.GetComponent<IFreezable>() != null).ToArray();
         foreach(Transform freeze in freezable)
         {
-            //Debug.Log(radius + " : " + Vector3.Distance(transform.position, freeze.position) + " : " + freeze.name);
+            //BuildDebug.Log(radius + " : " + Vector3.Distance(transform.position, freeze.position) + " : " + freeze.name, true);
             FreezeObj(freeze, Vector3.Distance(transform.position, freeze.position) < radius);
         }
     }
@@ -56,6 +58,7 @@ public class TimeFreeze : MonoBehaviour
         if(obj == null)
             return;
 
+        BuildDebug.Log("Setting slowed time state for " + other.name + ": " + frozenState);
         obj.SlowedTime = frozenState;
     }
 

@@ -17,16 +17,9 @@ public class PressurePlate : MonoBehaviour
 
     private void Update()
     {
-        if(!triggered)
+        if(!triggered && platform.PressurePlateActive)
             platform.PressurePlateActive = false;
         triggered = false;
-        //if(numEntitiesOnPlate > 0)
-        //{
-        //    if(!platform.PressurePlateActive)
-        //        platform.PressurePlateActive = true;
-        //}
-        //else if(platform.PressurePlateActive)
-        //    platform.PressurePlateActive = false;
     }
 
     private void OnTriggerStay(Collider other)

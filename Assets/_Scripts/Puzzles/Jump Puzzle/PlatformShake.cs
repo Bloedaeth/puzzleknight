@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlatformShake : MonoBehaviour {
+public class PlatformShake : MonoBehaviour
+{
+    public float shake_speed;
+    public float shake_intensity;
+    public Vector3 originPosition;
 
-	float shakeTime;
-	float shakeRateMin = 1f;
-	float shakeRateMax = 2f;
-	float shakePause { get { return Random.Range (shakeRateMin, shakeRateMax*4); } }
-
-	float shakeRate { get { return Random.Range (shakeRateMin, shakeRateMax); } }
+    float shakeTime;
+    float shakeRateMin = 1f;
+    float shakeRateMax = 2f;
+    float shakePause { get { return Random.Range(shakeRateMin, shakeRateMax * 4); } }
+    float shakeRate { get { return Random.Range (shakeRateMin, shakeRateMax); } }
 	float currShakeRate;
 
 	float shakeStage { get { return (Time.time - shakeTime) / currShakeRate; } }
@@ -92,9 +93,9 @@ public class PlatformShake : MonoBehaviour {
         originPosition = transform.position;
     }
 
-    void Update()
+    private void Update()
     {
-        if (isShaking)
+        if(isShaking)
         {
             float step = shake_speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, originPosition + Random.insideUnitSphere, step);
