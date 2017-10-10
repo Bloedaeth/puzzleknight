@@ -1,9 +1,19 @@
 ﻿using UnityEngine;
+using GameLogging;
 
 public class LowerPlatform : MonoBehaviour
 {
-    /// <summary>Is an entity on the pressure plate.</summary>
-    public bool PressurePlateActive;
+    private bool pressurePlateActive;
+    public bool PressurePlateActive
+    {
+        get { return pressurePlateActive; }
+        set
+        {
+            pressurePlateActive = value;
+            BuildDebug.Log("Pressure plate puzzle " + (value ? "de" : "") + "activated");
+            Debug.Log(value);
+        }
+    }
 
     private new AudioSource audio;
 
