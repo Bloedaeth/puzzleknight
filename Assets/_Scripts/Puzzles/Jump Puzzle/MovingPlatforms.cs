@@ -1,23 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameLogging;
 using UnityEngine;
 
-public class MovingPlatforms : MonoBehaviour {
-
-		
-	// Update is called once per frame
-	void Update () {
-		
-	}
-    void OnTriggerEnter(Collider other)
+public class MovingPlatforms : MonoBehaviour
+{
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")        {
+        if(other.tag == "Player")
+        {
+            BuildDebug.Log("Player standing on platform: " + name, true);
             other.transform.parent = transform;
         }
     }
-    void OnTriggerExit(Collider other)
+
+    private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player"){
+        if (other.tag == "Player")
+        {
+            BuildDebug.Log("Player no longer on platform", true);
             other.transform.parent = null;
         }
     }

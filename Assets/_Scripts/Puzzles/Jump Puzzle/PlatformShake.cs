@@ -1,23 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlatformShake : MonoBehaviour {
-
+public class PlatformShake : MonoBehaviour
+{
     public float shake_speed;
     public float shake_intensity;
     public Vector3 originPosition;
 
     public bool isShaking = true;
 
-    void Start()
+    private void Start()
     {
         originPosition = transform.position;
     }
 
-    void Update()
+    private void Update()
     {
-        if (isShaking)
+        if(isShaking)
         {
             float step = shake_speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, originPosition + Random.insideUnitSphere, step);

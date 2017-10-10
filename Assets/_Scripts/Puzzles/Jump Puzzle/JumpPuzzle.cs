@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using GameLogging;
 
 public class JumpPuzzle: Puzzle {
 
@@ -26,9 +24,11 @@ public class JumpPuzzle: Puzzle {
 	}
 
 	public override void CheckFinalizePuzzle() {
-		if (inv.DoorPieces[(int)DoorPiece.PieceType.Frame]) {
+		if (inv.DoorPieces[(int)DoorPiece.PieceType.Frame])
+        {
+            BuildDebug.Log("Jump puzzle door opened");
 			done = true;
-			CC.BeginChase ();
+            CC.BeginChase ();
 		}
 	}
 }
