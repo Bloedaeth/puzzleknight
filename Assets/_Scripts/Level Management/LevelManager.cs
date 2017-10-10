@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System.Linq;
 
 public class LevelManager : MonoBehaviour
 {
@@ -9,9 +10,11 @@ public class LevelManager : MonoBehaviour
 
     private static LevelManager instance;
 
-    private GameObject loadingScreen;
+    private AsyncOperation operation;
+    [SerializeField] private GameObject loadingScreen;
     private Slider progressSlider;
     private Text progressText;
+    private GameObject anyKeyToContinue;
 
     private void Awake()
     {
@@ -33,19 +36,21 @@ public class LevelManager : MonoBehaviour
 
     private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        LoadingScreen[] objs = Resources.FindObjectsOfTypeAll<LoadingScreen>();
+        LoadingScreen[] objs = Resources.FindObjectsOfTypeAll<LoadingScreen>().Where(o => o.hideFlags != HideFlags.HideInHierarchy).ToArray();
         if(objs.Length > 0)
             loadingScreen = objs[0].gameObject;
         if(loadingScreen)
         {
             progressSlider = loadingScreen.GetComponentInChildren<Slider>();
             progressText = loadingScreen.GetComponentInChildren<ProgressText>().GetComponent<Text>();
+            anyKeyToContinue = loadingScreen.GetComponentInChildren<FlashingText>(true).gameObject;
         }
         else
         {
             loadingScreen = null;
             progressSlider = null;
             progressText = null;
+            anyKeyToContinue = null;
         }
     }
 
@@ -58,58 +63,53 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevelAsync(string levelName)
     {
-        FindObjectOfType<SoundManager>().SetMusicVolume(0);
-        FindObjectOfType<SoundManager>().SetGameSoundVolume(0);
-        StartCoroutine(LoadAsynchronously(levelName));
+        SilenceSounds();
+        operation = SceneManager.LoadSceneAsync(levelName);
+        StartCoroutine(UpdateSlider());
     }
 
     public void LoadLevelAsync(int sceneIndex)
     {
-        FindObjectOfType<SoundManager>().SetMusicVolume(0);
-        FindObjectOfType<SoundManager>().SetGameSoundVolume(0);
-        StartCoroutine(LoadAsynchronously(sceneIndex));
+        SilenceSounds();
+        operation = SceneManager.LoadSceneAsync(sceneIndex);
+        StartCoroutine(UpdateSlider());
     }
 
     public void LoadNextLevelAsync()
     {
-        FindObjectOfType<SoundManager>().SetMusicVolume(0);
-        FindObjectOfType<SoundManager>().SetGameSoundVolume(0);
+        SilenceSounds();
         LoadLevelAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
     
     public void QuitGame() { Application.Quit(); }
 
-    private IEnumerator LoadAsynchronously(string levelName)
+    public void ContinueToScene()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(levelName);
-
-        loadingScreen.SetActive(true);
-
-        while(!operation.isDone)
-        {
-            float progress = Mathf.Clamp01(operation.progress / .9f);
-
-            progressSlider.value = progress;
-            progressText.text = progress * 100f + "%";
-
-            yield return null;
-        }
+        operation.allowSceneActivation = true;
     }
 
-    private IEnumerator LoadAsynchronously(int sceneIndex)
+    private void SilenceSounds()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+        SoundManager sm = FindObjectOfType<SoundManager>();
+        sm.SetMusicVolume(0);
+        sm.SetGameSoundVolume(0);
+    }
 
+    private IEnumerator UpdateSlider()
+    {
+        operation.allowSceneActivation = false;
         loadingScreen.SetActive(true);
-
-        while (!operation.isDone)
+        while(progressSlider.value < progressSlider.maxValue)
         {
             float progress = Mathf.Clamp01(operation.progress / .9f);
 
             progressSlider.value = progress;
             progressText.text = progress * 100f + "%";
 
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
+
+        anyKeyToContinue.SetActive(true);
+        yield return null;
     }
 }

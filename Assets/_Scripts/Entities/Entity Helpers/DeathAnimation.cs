@@ -41,7 +41,7 @@ public class DeathAnimation : MonoBehaviour
             if(player == null)
             {
                 if(GetComponent<BossEnemy>())
-                    FindObjectOfType<LevelManager>().LoadNextLevelAsync();
+                    FindObjectOfType<LevelManager>().LoadNextLevel();
                 gameObject.SetActive(false);
             }
             else
