@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 [RequireComponent(typeof(Animation))]
 public class Lever : MonoBehaviour
@@ -24,6 +25,7 @@ public class Lever : MonoBehaviour
     {
         if(active && Input.GetKeyDown(KeyCode.E))
         {
+            BuildDebug.Log("Lever deactivated");
             pylon.SetPylonActive(false);
             SetLeverActive(false);
         }
@@ -38,6 +40,7 @@ public class Lever : MonoBehaviour
 
     public void SetLeverActive(bool val)
     {
+        BuildDebug.Log("Lever activated");
         active = val;
         anim.Play("Flip Lever");
         anim["Flip Lever"].speed *= -1;

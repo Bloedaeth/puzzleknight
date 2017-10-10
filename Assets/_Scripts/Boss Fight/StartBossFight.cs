@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class StartBossFight : MonoBehaviour
@@ -16,6 +17,8 @@ public class StartBossFight : MonoBehaviour
         Player p = col.GetComponent<Player>();
         if(!p)
             return;
+
+        BuildDebug.Log("Boss fight activated");
 
         p.InBossFight = true;
 
