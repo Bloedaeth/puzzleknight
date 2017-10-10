@@ -178,6 +178,6 @@ public class ShadowModifier : MonoBehaviour {
 	}
 
 	public void KillAllShadowParticles() {
-		Destroy (particle.gameObject);
+		return;
 	}
 }
