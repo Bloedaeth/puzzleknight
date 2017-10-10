@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System.Linq;
 
 public class LevelManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class LevelManager : MonoBehaviour
     private static LevelManager instance;
 
     private AsyncOperation operation;
-    private GameObject loadingScreen;
+    [SerializeField] private GameObject loadingScreen;
     private Slider progressSlider;
     private Text progressText;
     private GameObject anyKeyToContinue;
@@ -35,7 +36,7 @@ public class LevelManager : MonoBehaviour
 
     private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        LoadingScreen[] objs = Resources.FindObjectsOfTypeAll<LoadingScreen>();
+        LoadingScreen[] objs = Resources.FindObjectsOfTypeAll<LoadingScreen>().Where(o => o.hideFlags != HideFlags.HideInHierarchy).ToArray();
         if(objs.Length > 0)
             loadingScreen = objs[0].gameObject;
         if(loadingScreen)
@@ -98,8 +99,7 @@ public class LevelManager : MonoBehaviour
     {
         operation.allowSceneActivation = false;
         loadingScreen.SetActive(true);
-
-        while(!operation.isDone)
+        while(progressSlider.value < progressSlider.maxValue)
         {
             float progress = Mathf.Clamp01(operation.progress / .9f);
 
