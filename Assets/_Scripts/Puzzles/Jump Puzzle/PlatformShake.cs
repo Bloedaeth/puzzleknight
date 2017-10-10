@@ -6,14 +6,14 @@ public class PlatformShake : MonoBehaviour {
 
 	float shakeTime;
 	float shakeRateMin = 1f;
-	float shakeRateMax = 2f;
-	float shakePause { get { return Random.Range (shakeRateMin, shakeRateMax*4); } }
+	float shakeRateMax = 3f;
+	float shakePause { get { return Random.Range (shakeRateMin, shakeRateMax*2); } }
 
 	float shakeRate { get { return Random.Range (shakeRateMin, shakeRateMax); } }
 	float currShakeRate;
 
 	float shakeStage { get { return (Time.time - shakeTime) / currShakeRate; } }
-	float shakeMaxAngle = 1f;
+	float shakeMaxAngle = 2f;
 
 	ParticleSystem p;
 	public ParticleSystem particle { get { return p; } }
