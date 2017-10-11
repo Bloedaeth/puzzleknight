@@ -11,7 +11,6 @@ public class LowerPlatform : MonoBehaviour
         {
             pressurePlateActive = value;
             BuildDebug.Log("Pressure plate puzzle " + (value ? "de" : "") + "activated");
-            Debug.Log(value);
         }
     }
 
