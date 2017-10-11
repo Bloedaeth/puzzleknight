@@ -12,7 +12,7 @@ public class DoorPiece : MonoBehaviour
     public GameObject popupPiece;
 
     private const int MONEY_REWARD = 50;
-    private const float SPEED = 2f;
+    private const float SPEED = 4f;
 
     private void Update()
     {
