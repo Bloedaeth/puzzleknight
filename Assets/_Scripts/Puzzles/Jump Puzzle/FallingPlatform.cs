@@ -27,7 +27,8 @@ public class FallingPlatform : MonoBehaviour {
         PS.FallShake(fallDelay);
         yield return new WaitForSeconds(fallDelay);
         rbody.isKinematic = false;
-        GetComponent<Collider>().isTrigger = true;
+        foreach(Collider c in GetComponentsInParent<Collider>())
+            c.isTrigger = true;
         if(PS.particle)
             PS.particle.Stop ();
 		PS.enabled = false;
