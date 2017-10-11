@@ -77,7 +77,6 @@ public class LevelManager : MonoBehaviour
 
     public void LoadNextLevelAsync()
     {
-        SilenceSounds();
         LoadLevelAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
     
@@ -97,6 +96,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator UpdateSlider()
     {
+        progressSlider.value = progressSlider.minValue;
         operation.allowSceneActivation = false;
         loadingScreen.SetActive(true);
         while(progressSlider.value < progressSlider.maxValue)
