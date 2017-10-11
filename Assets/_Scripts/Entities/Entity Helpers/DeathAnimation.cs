@@ -18,8 +18,8 @@ public class DeathAnimation : MonoBehaviour
             ai.enabled = false;
 
 		Rigidbody rb = GetComponent<Rigidbody> ();
-		if (rb)
-			rb.constraints = RigidbodyConstraints.FreezeAll;
+        if(rb)
+            rb.velocity = Vector3.zero;
 		
         anim = GetComponent<Animator>();
         anim.SetTrigger("Die");
@@ -46,11 +46,6 @@ public class DeathAnimation : MonoBehaviour
             }
             else
 			{
-
-				Rigidbody rb = GetComponent<Rigidbody> ();
-				rb.velocity = Vector3.zero;
-				rb.constraints = RigidbodyConstraints.FreezeRotation;
-
                 anim.SetTrigger("Respawn");
 
                 Health hp = GetComponent<Health>();
