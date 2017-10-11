@@ -1,20 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class PlatformShake : MonoBehaviour
-{
-    public float shake_speed;
-    public float shake_intensity;
-    public Vector3 originPosition;
+public class PlatformShake : MonoBehaviour {
 
-    float shakeTime;
-    float shakeRateMin = 1f;
-    float shakeRateMax = 2f;
-    float shakePause { get { return Random.Range(shakeRateMin, shakeRateMax * 4); } }
-    float shakeRate { get { return Random.Range (shakeRateMin, shakeRateMax); } }
+	float shakeTime;
+	float shakeRateMin = 1f;
+	float shakeRateMax = 3f;
+	float shakePause { get { return Random.Range (shakeRateMin, shakeRateMax*2); } }
+
+	float shakeRate { get { return Random.Range (shakeRateMin, shakeRateMax); } }
 	float currShakeRate;
 
 	float shakeStage { get { return (Time.time - shakeTime) / currShakeRate; } }
-	float shakeMaxAngle = 1f;
+	float shakeMaxAngle = 2f;
 
 	ParticleSystem p;
 	public ParticleSystem particle { get { return p; } }
@@ -86,20 +85,4 @@ public class PlatformShake : MonoBehaviour
 		isShaking = false;
 		shakeTime = Time.time + shakePause;
 	}
-
-	/*
-    void Start()
-    {
-        originPosition = transform.position;
-    }
-
-    private void Update()
-    {
-        if(isShaking)
-        {
-            float step = shake_speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, originPosition + Random.insideUnitSphere, step);
-        }
-    }
-    */
 }

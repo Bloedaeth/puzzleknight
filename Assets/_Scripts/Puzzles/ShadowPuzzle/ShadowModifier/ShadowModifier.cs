@@ -174,8 +174,12 @@ public class ShadowModifier : MonoBehaviour {
 	public void ResetParticleSystem() {
 		particle = GetComponentInChildren<ParticleSystem> ();
 	}
-
+    
 	public bool HasParticleSystem() {
-		return particle != null;
+		return particle.gameObject != null;
+	}
+
+	public void KillAllShadowParticles() {
+		return;
 	}
 }
