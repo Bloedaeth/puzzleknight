@@ -6,31 +6,43 @@ public class Projectile : MonoBehaviour
 
     public float projectileSpeed = 40.0f;
     public int projectileDamage = 5;
-    public float despawnTime = 5.0f;
+    public float despawnTime = LIFETIME;
     public Vector3 forward;
 
     private Transform myTransform;
+    private Vector3 origin;
+    private Vector3 endPos;
+    private float step;
+
+    private const float LIFETIME = 5f;
 
     private void Start()
     {
         myTransform = transform;
     }
+
     private void OnEnable()
     {
-        despawnTime = Time.time + despawnTime;
+        despawnTime = Time.time + LIFETIME;
+        origin = myTransform.position;
+        endPos = origin + (forward * projectileSpeed);
+        step = 0;
     }
 
     private void Update()
     {
-        myTransform.position = Vector3.Lerp(myTransform.position, myTransform.position + forward, Time.deltaTime * projectileSpeed);
+        step += Time.deltaTime / LIFETIME;
+        myTransform.position = Vector3.Lerp(origin, endPos, step);
 
         if(Time.time >= despawnTime)
             gameObject.SetActive(false);
     }
 
-    private void OnCollisionEnter(Collision collidingObject)
+    private void OnCollisionEnter(Collision other)
     {
-        Entity target = collidingObject.gameObject.GetComponent<Entity>();
+        Entity target = other.gameObject.GetComponent<Entity>();
+        if(target == Self)
+            return;
 
         if(target)
         {

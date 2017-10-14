@@ -24,12 +24,9 @@ public class MeleeWeapon : MonoBehaviour
     private int blockHash;
 
     private int transAttackStateOneHash;
-    private int transAttackStateTwoHash;
-    private int transAttackStateThreeHash;
     private int transAttackBossOneHash;
     private int transAttackBossTwoHash;
     private int transAttackHash;
-    private int transBlockHash;
 
     private void Awake()
     {
@@ -42,14 +39,11 @@ public class MeleeWeapon : MonoBehaviour
         attackHash = Animator.StringToHash("Base Layer.Attack");
         blockHash = Animator.StringToHash("Base Layer.Block");
 
-        transAttackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
-        transAttackStateTwoHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 2");
-        transAttackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
-        transAttackBossOneHash = Animator.StringToHash("Base Layer.Attack Stage 1");
-        transAttackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
-        transAttackHash = Animator.StringToHash("Base Layer.Attack");
-        transBlockHash = Animator.StringToHash("Base Layer.Block");
-
+        transAttackStateOneHash = Animator.StringToHash("Base Layer.Grounded -> Base Layer.Light Attacks.Light Attack 1");
+        transAttackBossOneHash = Animator.StringToHash("Base Layer.Idle -> Base Layer.Attack Stage 1");
+        transAttackBossTwoHash = Animator.StringToHash("Base Layer.Idle -> Base Layer.Attack Stage 2");
+        transAttackHash = Animator.StringToHash("Base Layer.Idle -> Base Layer.Attack");
+        
         audio = Self.GetComponent<AudioSource>();
         swordWhoosh = Self.GetComponent<EntitySoundsCommon>().swordSwingSounds;
     }
@@ -68,7 +62,6 @@ public class MeleeWeapon : MonoBehaviour
     {
         state = anim.GetCurrentAnimatorStateInfo(0);
         trans = anim.GetAnimatorTransitionInfo(0);
-        Debug.Log(trans.ToString());
         IsAttacking =
             state.fullPathHash == attackStateOneHash ||
             state.fullPathHash == attackStateTwoHash ||
@@ -76,9 +69,8 @@ public class MeleeWeapon : MonoBehaviour
             state.fullPathHash == attackBossOneHash ||
             state.fullPathHash == attackBossTwoHash ||
             state.fullPathHash == attackHash ||
+
             trans.fullPathHash == transAttackStateOneHash ||
-            trans.fullPathHash == transAttackStateTwoHash ||
-            trans.fullPathHash == transAttackStateThreeHash ||
             trans.fullPathHash == transAttackBossOneHash ||
             trans.fullPathHash == transAttackBossTwoHash ||
             trans.fullPathHash == transAttackHash;
