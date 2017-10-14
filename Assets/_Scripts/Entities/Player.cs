@@ -29,7 +29,7 @@ public class Player : Entity
     /// <summary>The physics layer mask for movable boxes.</summary>
     public LayerMask BoxMask;
 
-    private Rigidbody movingObject;
+    //private Rigidbody movingObject;
 
     private PerspectivePieceHolderUiInteractor perspPieceUI;
 
@@ -111,7 +111,7 @@ public class Player : Entity
             timeFreeze.FreezeTime(5f, 20f);
         }   
         
-        MoveObject();
+        //MoveObject();
 
         CheckRunning();
 
@@ -122,8 +122,6 @@ public class Player : Entity
         CheckUseItem();
 
         //CheckFalling();
-        if (Input.GetKeyDown(KeyCode.L))
-            Debug.Log(rb.velocity.y);
     }
 
     public void TogglePause(bool state)
@@ -139,48 +137,44 @@ public class Player : Entity
         freeLookCam.hideCursor = !state;
     }
 
-    private void CheckFalling()
-    {
-        /*
-        Vector3 horizontalMove = rigidBody.velocity;
-        horizontalMove.y = 0;
-        float distance = horizontalMove.magnitude * Time.fixedDeltaTime;
-        horizontalMove.Normalize();
-        RaycastHit hit;
+    //private void CheckFalling()
+    //{
+    //    Vector3 horizontalMove = rigidBody.velocity;
+    //    horizontalMove.y = 0;
+    //    float distance = horizontalMove.magnitude * Time.fixedDeltaTime;
+    //    horizontalMove.Normalize();
+    //    RaycastHit hit;
 
-        if (rigidBody.SweepTest(horizontalMove, out hit, distance))
-        {
-            rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
-        }
+    //    if (rigidBody.SweepTest(horizontalMove, out hit, distance))
+    //    {
+    //        rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
+    //    }
+        
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(transform.position, Vector3.forward, out hit, 0.01f * 10))
+    //    {
+    //        if (!Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10))
+    //        {
+    //            if (hit.transform.tag == "Decor")
+    //            {
+    //                animator.SetFloat("Speed", 0);
+    //                thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            thirdPersonUserControl.movementActive = true;
+    //        }
+    //    }
 
-    */
-        /*
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 0.01f * 10))
-        {
-            if (!Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10))
-            {
-                if (hit.transform.tag == "Decor")
-                {
-                    animator.SetFloat("Speed", 0);
-                    thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
-                }
-            }
-            else
-            {
-                thirdPersonUserControl.movementActive = true;
-            }
-        }
-        */
-
-        if(Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10) && rb.velocity.y < 0.003)
-        {
-            animator.SetFloat("Speed", 0);
-            thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
-        }
-        else
-            thirdPersonUserControl.movementActive = true;
-    }
+    //    if(Physics.Raycast(transform.position, -Vector3.up, 0.5f * 10) && rb.velocity.y < 0.003)
+    //    {
+    //        animator.SetFloat("Speed", 0);
+    //        thirdPersonUserControl.movementActive = !thirdPersonUserControl.movementActive;
+    //    }
+    //    else
+    //        thirdPersonUserControl.movementActive = true;
+    //}
 
     private void CheckRunning()
     {
@@ -203,9 +197,9 @@ public class Player : Entity
     
     private void CheckBlocking()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse1))
+        if(Input.GetKeyDown(KeyCode.Mouse1) && thirdPersonUserControl.movementActive)
             SetBlocking(true);
-        else if(Input.GetKeyUp(KeyCode.Mouse1))
+        else if(Input.GetKeyUp(KeyCode.Mouse1) && thirdPersonUserControl.movementActive)
             SetBlocking(false);
     }
 
@@ -316,56 +310,56 @@ public class Player : Entity
         freeLookCam.hideCursor = !state;
     }
 
-    private void MoveObject()
-    {
-        if(IsMovingObject)
-            animator.speed = Input.GetKey(KeyCode.W) ? 1 : 0;
+    //private void MoveObject()
+    //{
+    //    if(IsMovingObject)
+    //        animator.speed = Input.GetKey(KeyCode.W) ? 1 : 0;
 
-        if(Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            RaycastHit hit;
-            Physics.Raycast(transform.position, transform.forward, out hit, MAX_RAYCAST_DISTANCE, BoxMask);
-            if(hit.transform != null)
-            {
-                animator.SetBool("Pushing", true);
+    //    if(Input.GetKeyDown(KeyCode.LeftControl))
+    //    {
+    //        RaycastHit hit;
+    //        Physics.Raycast(transform.position, transform.forward, out hit, MAX_RAYCAST_DISTANCE, BoxMask);
+    //        if(hit.transform != null)
+    //        {
+    //            animator.SetBool("Pushing", true);
 
-                movingObject = hit.transform.GetComponent<Rigidbody>();
-                IsMovingObject = true;
+    //            movingObject = hit.transform.GetComponent<Rigidbody>();
+    //            IsMovingObject = true;
 
-                ConstrainMovement();
+    //            ConstrainMovement();
 
-                movingObject.GetComponent<MovableObject>().BeingMoved = true;
-            }
-        }
-        else if(Input.GetKeyUp(KeyCode.LeftControl) && movingObject != null)
-        {
-            animator.SetBool("Pushing", false);
+    //            movingObject.GetComponent<MovableObject>().BeingMoved = true;
+    //        }
+    //    }
+    //    else if(Input.GetKeyUp(KeyCode.LeftControl) && movingObject != null)
+    //    {
+    //        animator.SetBool("Pushing", false);
 
-            movingObject.GetComponent<MovableObject>().BeingMoved = false;
+    //        movingObject.GetComponent<MovableObject>().BeingMoved = false;
             
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
-            movingObject.constraints = RigidbodyConstraints.FreezeRotation;
+    //        rb.constraints = RigidbodyConstraints.FreezeRotation;
+    //        movingObject.constraints = RigidbodyConstraints.FreezeRotation;
 
-            movingObject = null;
-            IsMovingObject = false;
-        }
-    }
+    //        movingObject = null;
+    //        IsMovingObject = false;
+    //    }
+    //}
 
-    private void ConstrainMovement()
-    {
-        Vector3 fwd = transform.forward;
-        if(Mathf.Abs(fwd.x) > Mathf.Abs(fwd.z))
-            ConstrainAxis(new Vector3(fwd.x > 0 ? 1 : -1, fwd.y, 0), RigidbodyConstraints.FreezePositionZ);
-        else
-            ConstrainAxis(new Vector3(0, fwd.y, fwd.z > 0 ? 1 : -1), RigidbodyConstraints.FreezePositionX);
-    }
+    //private void ConstrainMovement()
+    //{
+    //    Vector3 fwd = transform.forward;
+    //    if(Mathf.Abs(fwd.x) > Mathf.Abs(fwd.z))
+    //        ConstrainAxis(new Vector3(fwd.x > 0 ? 1 : -1, fwd.y, 0), RigidbodyConstraints.FreezePositionZ);
+    //    else
+    //        ConstrainAxis(new Vector3(0, fwd.y, fwd.z > 0 ? 1 : -1), RigidbodyConstraints.FreezePositionX);
+    //}
 
-    private void ConstrainAxis(Vector3 fwd, RigidbodyConstraints axis)
-    {
-        transform.forward = fwd;
-        rb.constraints |= axis;
-        movingObject.constraints |= axis;
-    }
+    //private void ConstrainAxis(Vector3 fwd, RigidbodyConstraints axis)
+    //{
+    //    transform.forward = fwd;
+    //    rb.constraints |= axis;
+    //    movingObject.constraints |= axis;
+    //}
 
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
@@ -391,15 +385,15 @@ public class Player : Entity
     }
 
     /// <summary>Throws the currently equipped item from the player's inventory.</summary>
-    public void ThrowEquippedItem()
-    {
-        ThrowableItem equippedItem = inventory.EquippedItem as ThrowableItem;
-        if(equippedItem == null)
-            return;
+    //public void ThrowEquippedItem()
+    //{
+    //    ThrowableItem equippedItem = inventory.EquippedItem as ThrowableItem;
+    //    if(equippedItem == null)
+    //        return;
         
-        equippedItem.Throw();
-        inventory.RemoveItem(inventory.EquippedItem);
-    }
+    //    equippedItem.Throw();
+    //    inventory.RemoveItem(inventory.EquippedItem);
+    //}
     
     private void OnTriggerEnter(Collider other)
     {
@@ -410,8 +404,8 @@ public class Player : Entity
             SpawnPoint = other.transform;
     }
 
-    private void OnParticleTrigger()
-    {
-        GetComponent<Health>().TakeDamage(25);
-    }
+    //private void OnParticleTrigger()
+    //{
+    //    GetComponent<Health>().TakeDamage(25);
+    //}
 }

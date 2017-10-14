@@ -13,6 +13,7 @@ public class MeleeWeapon : MonoBehaviour
     private new AudioSource audio;
 	private AudioClip[] swordWhoosh;
     private AnimatorStateInfo state;
+    private AnimatorTransitionInfo trans;
 
     private int attackStateOneHash;
     private int attackStateTwoHash;
@@ -21,6 +22,14 @@ public class MeleeWeapon : MonoBehaviour
     private int attackBossTwoHash;
     private int attackHash;
     private int blockHash;
+
+    private int transAttackStateOneHash;
+    private int transAttackStateTwoHash;
+    private int transAttackStateThreeHash;
+    private int transAttackBossOneHash;
+    private int transAttackBossTwoHash;
+    private int transAttackHash;
+    private int transBlockHash;
 
     private void Awake()
     {
@@ -32,6 +41,14 @@ public class MeleeWeapon : MonoBehaviour
         attackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
         attackHash = Animator.StringToHash("Base Layer.Attack");
         blockHash = Animator.StringToHash("Base Layer.Block");
+
+        transAttackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
+        transAttackStateTwoHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 2");
+        transAttackStateThreeHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 3");
+        transAttackBossOneHash = Animator.StringToHash("Base Layer.Attack Stage 1");
+        transAttackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
+        transAttackHash = Animator.StringToHash("Base Layer.Attack");
+        transBlockHash = Animator.StringToHash("Base Layer.Block");
 
         audio = Self.GetComponent<AudioSource>();
         swordWhoosh = Self.GetComponent<EntitySoundsCommon>().swordSwingSounds;
@@ -50,13 +67,21 @@ public class MeleeWeapon : MonoBehaviour
     private void Update()
     {
         state = anim.GetCurrentAnimatorStateInfo(0);
-        IsAttacking = 
+        trans = anim.GetAnimatorTransitionInfo(0);
+        Debug.Log(trans.ToString());
+        IsAttacking =
             state.fullPathHash == attackStateOneHash ||
             state.fullPathHash == attackStateTwoHash ||
             state.fullPathHash == attackStateThreeHash ||
             state.fullPathHash == attackBossOneHash ||
             state.fullPathHash == attackBossTwoHash ||
-            state.fullPathHash == attackHash;
+            state.fullPathHash == attackHash ||
+            trans.fullPathHash == transAttackStateOneHash ||
+            trans.fullPathHash == transAttackStateTwoHash ||
+            trans.fullPathHash == transAttackStateThreeHash ||
+            trans.fullPathHash == transAttackBossOneHash ||
+            trans.fullPathHash == transAttackBossTwoHash ||
+            trans.fullPathHash == transAttackHash;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -80,7 +105,7 @@ public class MeleeWeapon : MonoBehaviour
                 shield = se.Shield;
         }
 
-        if(shield != null && (shield.IsBlocking || state.fullPathHash == blockHash))
+        if(shield != null && (shield.IsBlocking /*|| state.fullPathHash == blockHash*/))
         {
             Vector3 targetDir = target.transform.position - Self.transform.position;
             float angle = Vector3.Angle(-(target.transform.forward), targetDir);
