@@ -5,6 +5,7 @@ using UnityStandardAssets.Characters.ThirdPerson;
 public class StartBossFight : MonoBehaviour
 {
     public GameObject rocks;
+    public GameObject[] potions;
 
     private BossEnemy boss;
 
@@ -12,6 +13,8 @@ public class StartBossFight : MonoBehaviour
     {
         boss = FindObjectOfType<BossEnemy>();
         rocks.SetActive(false);
+        foreach(GameObject p in potions)
+            p.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider col)
