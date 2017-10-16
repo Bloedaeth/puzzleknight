@@ -22,7 +22,7 @@ public class PendulumHinge : MonoBehaviour {
 	//bool target; 
 
 	// Used for the size of the swing.
-	float degreeSwing = 15f;
+	float degreeSwing = 20f;
 	//public float swingSpeedMult = 1f;
 	//private float currSwingSpeed;
 	//private float fastSwingSpeed = 1f;
