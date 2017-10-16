@@ -40,6 +40,7 @@ public class BossEnemy : Enemy
 
     private Vector3 originalScale;
     private Vector3 originalPosition;
+	private float windowOfOpportunity = 1.1f;
 
     private int attackHashStage1;
     private int attackHashStage2;
@@ -81,12 +82,12 @@ public class BossEnemy : Enemy
         //else
         	animator.SetInteger("Stage", 1);
 		
-        if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x)
+		if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x * windowOfOpportunity)
         {
             ps.Play();
             hp.IsInvulnerable = true;
         }
-        else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x)
+		else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x * windowOfOpportunity)
         {
             ps.Stop();
             hp.IsInvulnerable = false;
