@@ -27,8 +27,6 @@ public class PylonParticles : MonoBehaviour {
 
 		em = ps.emission;
 		origEmRate = em.rateOverTime.constant;
-
-		print (origEmRate.ToString ());
 	}
 	
 	// Update is called once per frame
