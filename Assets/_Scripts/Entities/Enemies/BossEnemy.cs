@@ -33,7 +33,7 @@ public class BossEnemy : Enemy
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
-    [SerializeField] private ParticleSystem ps;
+    private ParticleSystem[] invulnurableParticleSystems;
     private GameObject startCollider;
     [SerializeField] private ParticleSystem stompParticles;
     private BossSounds sounds;
@@ -70,6 +70,16 @@ public class BossEnemy : Enemy
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
+
+		invulnurableParticleSystems = new ParticleSystem[GetComponentsInChildren<ParticleSystem> ().Length - 1];
+		int j = 0;
+
+		for (int i = 0; i < GetComponentsInChildren<ParticleSystem> ().Length; i++) {
+			if (GetComponentsInChildren<ParticleSystem> () [i].CompareTag("BossInvulnurabilityParticles")) {
+				invulnurableParticleSystems [j] = GetComponentsInChildren<ParticleSystem> () [i];
+				j++;
+			}
+		}
     }
 
     private void Update()
@@ -84,12 +94,16 @@ public class BossEnemy : Enemy
 		
 		if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x * windowOfOpportunity)
         {
-            ps.Play();
+			foreach (ParticleSystem ps in invulnurableParticleSystems) {
+				ps.Play ();
+			}
             hp.IsInvulnerable = true;
         }
 		else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x * windowOfOpportunity)
         {
-            ps.Stop();
+			foreach (ParticleSystem ps in invulnurableParticleSystems) {
+				ps.Stop ();
+			}
             hp.IsInvulnerable = false;
         }
 
