@@ -155,7 +155,10 @@ public class Shop : MonoBehaviour
         for(int i = 0; i < shopSlots.childCount; ++i)
         {
             Image slot = shopSlots.GetChild(i).GetComponent<Image>();
-            BuildDebug.Log("Slot before: " + slot.sprite.name + " " + slot.color, true);
+            if(slot.sprite)
+                BuildDebug.Log("Slot before: " + slot.sprite.name + " " + slot.color, true);
+            else
+                BuildDebug.Log("Slot before: null", true);
             if(i < shopInventory.Count)
             {
                 slot.sprite = shopInventory[i].Icon;
@@ -166,7 +169,10 @@ public class Shop : MonoBehaviour
                 slot.sprite = null;
                 slot.color = new Color(255, 255, 255, 0);
             }
-            BuildDebug.Log("Slot after: " + slot.sprite.name + " " + slot.color, true);
+            if(slot.sprite)
+                BuildDebug.Log("Slot after: " + slot.sprite.name + " " + slot.color, true);
+            else
+                BuildDebug.Log("Slot after: null", true);
         }
     }
 

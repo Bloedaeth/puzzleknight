@@ -115,7 +115,8 @@ public class BossEnemy : Enemy
             }
         }
 
-		ScaleBoss (); // Use this instead ~ Steve
+        if(hp.HealthRemaining > 0)
+            ScaleBoss();
     }
 
     private void SetHurtSounds()
@@ -128,7 +129,7 @@ public class BossEnemy : Enemy
             sounds.hurtSounds = sounds.hurtSize3;
     }
 
-	private void ScaleBoss() { // Here is the method I'm using
+	private void ScaleBoss() {
 		bossScaleMult = 1f;
 
 		for (int i = 0; i < pylons.Count; i++) {

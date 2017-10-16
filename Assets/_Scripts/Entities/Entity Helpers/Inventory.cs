@@ -113,7 +113,7 @@ public class Inventory : MonoBehaviour
         if(item.CompareTag(EquippedItem.tag))
         {
             guiNumEquipped.text = inventory.Where(i => i.TypeId == EquippedItem.TypeId).ToArray().Length.ToString();
-            EquippedItem = inventory.Find(e => e.CompareTag(EquippedItem.tag));
+            EquippedItem = inventory.Find(e => e.TypeId == EquippedItem.TypeId);
             if(EquippedItem == null)
             {
                 GuiEquippedItem.sprite = null;
