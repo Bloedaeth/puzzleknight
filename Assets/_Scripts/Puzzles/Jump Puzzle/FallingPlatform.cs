@@ -28,8 +28,11 @@ public class FallingPlatform : MonoBehaviour {
         yield return new WaitForSeconds(fallDelay);
         rbody.isKinematic = false;
         GetComponent<Collider>().isTrigger = true;
-        if(PS.particle)
-            PS.particle.Stop ();
+		yield return new WaitForSeconds(fallDelay);
+		if (PS.particle) {
+			ParticleSystem.EmissionModule em = PS.particle.emission;
+			em.enabled = false;
+		}
 		PS.enabled = false;
         yield return 0;
     }

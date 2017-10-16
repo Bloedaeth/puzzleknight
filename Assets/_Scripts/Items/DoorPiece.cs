@@ -10,6 +10,14 @@ public class DoorPiece : MonoBehaviour
     private const int MONEY_REWARD = 50;
     private const float SPEED = 2f;
 
+	bool collected = false;
+
+	void OnEnable() {
+		if (collected) {
+			gameObject.SetActive(false);
+		}
+	}
+
     private void Update()
     {
         transform.eulerAngles += Vector3.up * SPEED;
@@ -23,6 +31,7 @@ public class DoorPiece : MonoBehaviour
             Inventory inventory = other.GetComponent<Inventory>();
             inventory.AddDoorPiece(Type);
             inventory.AddMoney(MONEY_REWARD);
+			collected = true;
             gameObject.SetActive(false);
         }
     }

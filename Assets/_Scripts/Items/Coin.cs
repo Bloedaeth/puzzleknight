@@ -9,6 +9,14 @@ public class Coin : MonoBehaviour
     /// <summary>The list of sounds to be randomly played when the coin is picked up.</summary>
     public AudioClip[] pickupSounds;
 
+	bool collected = false;
+
+	void OnEnable() {
+		if (collected) {
+			gameObject.SetActive (false);
+		}
+	}
+
     private void OnTriggerEnter(Collider other)
     {
         Inventory inv = other.gameObject.GetComponent<Inventory>();
@@ -18,6 +26,7 @@ public class Coin : MonoBehaviour
         inv.AddMoney(CoinValue);
         AudioClip clip = pickupSounds[Random.Range(0, pickupSounds.Length)];
         AudioSource.PlayClipAtPoint(clip, transform.position, PlayPrefs.GameSoundVolume);
-        gameObject.SetActive(false);
+		collected = true;
+		gameObject.SetActive (false);
     }
 }

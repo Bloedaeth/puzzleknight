@@ -92,6 +92,7 @@ public class Inventory : MonoBehaviour
         
         inventory.Add(item);
         item.gameObject.SetActive(false);
+		item.collected = true;
 
         if(!EquippedItem)
             EquipItem(inventory.Count - 1);
