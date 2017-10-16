@@ -81,6 +81,8 @@ public class BossEnemy : Enemy
 			if (GetComponentsInChildren<ParticleSystem> () [i].CompareTag("BossInvulnerabilityParticles")) {
 				invulnurableParticleSystems [j] = GetComponentsInChildren<ParticleSystem> () [i];
 				particleSystemOriginalScale [j] = invulnurableParticleSystems [j].shape.box;
+
+				invulnurableParticleSystems [j].Stop ();
 				j++;
 			}
 		}

@@ -19,7 +19,7 @@ public class Pylon : MonoBehaviour, IFreezable
 
     private new AudioSource audio;
     private Lever lever;
-    private ParticleSystem ps;
+    private ParticleSystem[] ps;
 
     private bool isActive = false;
 
@@ -42,7 +42,7 @@ public class Pylon : MonoBehaviour, IFreezable
 
         audio = GetComponent<AudioSource>();
         lever = transform.parent.GetComponentInChildren<Lever>();
-        ps = GetComponentInChildren<ParticleSystem>();
+        ps = GetComponentsInChildren<ParticleSystem>();
     }
 
     private void Update()
@@ -95,7 +95,9 @@ public class Pylon : MonoBehaviour, IFreezable
         StopAllCoroutines();
         if(isActive)
         {
-            ps.Stop();
+			foreach (ParticleSystem p in ps) {
+				p.Stop ();
+			}
             isActive = false;
             --numPylonsActive;
         }
@@ -111,13 +113,17 @@ public class Pylon : MonoBehaviour, IFreezable
         {
             ++numPylonsActive;
             StartCoroutine(RaiseLower(maxHeightPos));
-            ps.Play();
+			foreach (ParticleSystem p in ps) {
+				p.Play ();
+			}
         }
         else
         {
             --numPylonsActive;
             StartCoroutine(RaiseLower(minHeightPos));
-            ps.Stop();
+			foreach (ParticleSystem p in ps) {
+				p.Stop ();
+			}
         }
     }
 }
