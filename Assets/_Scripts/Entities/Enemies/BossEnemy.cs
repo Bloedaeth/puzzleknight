@@ -39,6 +39,7 @@ public class BossEnemy : Enemy
     private BossSounds sounds;
 
     private Vector3 originalScale;
+	private Vector3[] particleSystemOriginalScale;
     private Vector3 originalPosition;
 	private float windowOfOpportunity = 1.1f;
 
@@ -72,11 +73,14 @@ public class BossEnemy : Enemy
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
 
 		invulnurableParticleSystems = new ParticleSystem[GetComponentsInChildren<ParticleSystem> ().Length - 1];
+		particleSystemOriginalScale = new Vector3[invulnurableParticleSystems.Length];
+
 		int j = 0;
 
 		for (int i = 0; i < GetComponentsInChildren<ParticleSystem> ().Length; i++) {
-			if (GetComponentsInChildren<ParticleSystem> () [i].CompareTag("BossInvulnurabilityParticles")) {
+			if (GetComponentsInChildren<ParticleSystem> () [i].CompareTag("BossInvulnerabilityParticles")) {
 				invulnurableParticleSystems [j] = GetComponentsInChildren<ParticleSystem> () [i];
+				particleSystemOriginalScale [j] = invulnurableParticleSystems [j].shape.box;
 				j++;
 			}
 		}
@@ -150,6 +154,11 @@ public class BossEnemy : Enemy
 			bossScaleMult += pylons [i].pylonScaleModifier;
 		}
 
+		ParticleSystem.ShapeModule s;
+		for (int i = 0; i < invulnurableParticleSystems.Length; i++) {
+			s = invulnurableParticleSystems [i].shape;
+			s.box = particleSystemOriginalScale [i] * bossScaleMult;
+		}
 		transform.localScale = originalScale * bossScaleMult;
 	}
 
