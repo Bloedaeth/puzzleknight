@@ -8,18 +8,27 @@ public class PylonParticles : MonoBehaviour {
 	ParticleSystem.Particle[] particles;
 	int aliveParticles;
 
+	ParticleSystem.EmissionModule em;
+	float origEmRate;
+
 	[SerializeField] float acceleration = 0.8f;
-	[Range(0f, 1f)][SerializeField] float maxSpeedFraction = 0.5f;
+	[Range(0f, 10f)][SerializeField] float maxSpeedFraction = 0.5f;
 	[Range(0f, 10f)][SerializeField] float distanceToStartDying = 1f;
 
 	public Transform hook;
 
 	// Use this for initialization
 	void Start () {
+
 		if (!hook)
 			hook = transform;
 
 		particles = new ParticleSystem.Particle[ps.main.maxParticles];
+
+		em = ps.emission;
+		origEmRate = em.rateOverTime.constant;
+
+		print (origEmRate.ToString ());
 	}
 	
 	// Update is called once per frame
@@ -41,5 +50,22 @@ public class PylonParticles : MonoBehaviour {
 
 			ps.SetParticles (particles, aliveParticles);
 		}
+	}
+
+	public void SetEmissionMult(float mult) {
+		
+
+		if (mult > 1f) {
+			mult = 1f;
+		} else if (mult < 0f) {
+			mult = 0f;
+			ps.Stop ();
+		} else if (!ps.isPlaying){
+			ps.Play ();
+		}
+
+		em.rateOverTime = origEmRate * mult;
+
+		print (mult.ToString());
 	}
 }
