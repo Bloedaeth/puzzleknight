@@ -40,21 +40,23 @@ public class ParticleAndLightHider : MonoBehaviour {
 	void Update() {
 		if (Time.time > 0.5f && !defaultApplied) {
 			ResetGameObjects ();
-			SetObjectStates (false);
 			defaultApplied = true;
+			SetObjectStates (false);
 		}
 	}
 
 	void SetObjectStates(bool state) {
-		foreach (GameObject g in objects) {
-			g.SetActive (state);
+		if (defaultApplied) {
+			foreach (GameObject g in objects) {
+				g.SetActive (state);
+			}
 		}
 	}
 
 	void OnTriggerEnter(Collider o) {
-		if (o.CompareTag ("Player")) {
-			SetObjectStates (true);
-		}
+			if (o.CompareTag ("Player")) {
+				SetObjectStates (true);
+			}
 	}
 
 	void OnTriggerExit(Collider o) {

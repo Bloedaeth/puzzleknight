@@ -36,13 +36,10 @@ public class DoorPiece : MonoBehaviour
             Inventory inventory = other.GetComponent<Inventory>();
             inventory.AddDoorPiece(Type);
             inventory.AddMoney(MONEY_REWARD);
-<<<<<<< HEAD
             
             popupText.Activate(popupPiece);
 
-=======
 			collected = true;
->>>>>>> Particle_Efficiency_Enhancements
             gameObject.SetActive(false);
         }
     }
