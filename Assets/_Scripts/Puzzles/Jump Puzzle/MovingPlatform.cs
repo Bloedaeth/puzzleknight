@@ -83,7 +83,7 @@ public class MovingPlatform : MonoBehaviour {
 
 		float scalar = -0.5f * Mathf.Cos (Mathf.PI * stage) + 0.5f;
 
-		Debug.DrawLine (transform.position, transform.position + path);
+		//Debug.DrawLine (transform.position, transform.position + path);
 
 		transform.position += path * scalar;
 	}

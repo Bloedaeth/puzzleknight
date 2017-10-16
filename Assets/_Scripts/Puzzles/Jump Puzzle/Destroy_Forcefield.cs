@@ -16,6 +16,7 @@ public class Destroy_Forcefield : MonoBehaviour
 
     private void OnTriggerEnter(Collider o)
     {
+<<<<<<< HEAD
         if(o.CompareTag("Player") && forceField)
         {
             BuildDebug.Log("Destroying force field");
@@ -24,6 +25,16 @@ public class Destroy_Forcefield : MonoBehaviour
         	foreach(ParticleSystem p in particles)
 				p.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
+=======
+		if (o.CompareTag ("Player")) {
+			Destroy (GameObject.FindGameObjectWithTag ("ForceField"));
+			foreach (ParticleSystem p in particles) {
+				ParticleSystem.EmissionModule em = p.emission;
+				em.enabled = false;
+			}
+		}
+
+>>>>>>> Particle_Efficiency_Enhancements
         audio.Play();
     }
 
