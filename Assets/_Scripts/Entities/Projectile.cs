@@ -8,23 +8,17 @@ public class Projectile : MonoBehaviour
     public int projectileDamage = 5;
     public float despawnTime = LIFETIME;
     public Vector3 forward;
-
-    private Transform myTransform;
+    
     private Vector3 origin;
     private Vector3 endPos;
     private float step;
 
     private const float LIFETIME = 5f;
 
-    private void Start()
-    {
-        myTransform = transform;
-    }
-
     private void OnEnable()
     {
         despawnTime = Time.time + LIFETIME;
-        origin = myTransform.position;
+        origin = transform.position;
         endPos = origin + (forward * projectileSpeed);
         step = 0;
     }
@@ -32,7 +26,7 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         step += Time.deltaTime / LIFETIME;
-        myTransform.position = Vector3.Lerp(origin, endPos, step);
+        transform.position = Vector3.Lerp(origin, endPos, step);
 
         if(Time.time >= despawnTime)
             gameObject.SetActive(false);

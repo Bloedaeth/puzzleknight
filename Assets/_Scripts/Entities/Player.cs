@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using System.Collections;
+using UnityEngine;
+using UnityStandardAssets.Characters.ThirdPerson;
 
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(Health))]
@@ -42,6 +45,8 @@ public class Player : Entity
     //The max distance to check for movable objects
     private const float MAX_RAYCAST_DISTANCE = 2f;
 
+    private bool forcedWalk = false;
+
     //private Animator animator;
     //private new AudioSource audio;
     //private Rigidbody rb;
@@ -49,7 +54,7 @@ public class Player : Entity
     private Inventory inventory;
 	private Shop shop;
 	private UnityStandardAssets.Cameras.FreeLookCam freeLookCam;
-	private UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl thirdPersonUserControl;
+	private ThirdPersonUserControl thirdPersonUserControl;
 
     private TimeFreeze timeFreeze;
 
@@ -67,7 +72,7 @@ public class Player : Entity
         animator = GetComponent<Animator>();
 
         freeLookCam = Camera.main.GetComponentInParent<UnityStandardAssets.Cameras.FreeLookCam>();
-		thirdPersonUserControl = GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl>();
+		thirdPersonUserControl = GetComponent<ThirdPersonUserControl>();
         perspPieceUI = FindObjectOfType<PerspectivePieceHolderUiInteractor>();
 
         attackerList = new GameObject[2];
@@ -76,6 +81,20 @@ public class Player : Entity
 
     private void Update()
     {
+        if(forcedWalk)
+        {
+            if(inventory.IsOpen)
+                ToggleInventory(false);
+            else if(shop != null && shop.IsOpen)
+                shop.ToggleGuiShop(false);
+            else if(perspPieceUI != null && perspPieceUI.IsOpen)
+                perspPieceUI.TogglePuzzlePieceUI(false);
+            else if(PauseMenu.activeInHierarchy)
+                TogglePause(false);
+
+            return;
+        }
+
         enemylist = GameObject.FindGameObjectsWithTag("Enemy");
 
         if(PauseMenu.activeInHierarchy)
@@ -384,17 +403,38 @@ public class Player : Entity
         inventory.RemoveItem(equippedItem);
     }
 
+    /// <summary>Forces the player to walk to a particular point in the scene.</summary>
+    /// <param name="pos">The position to walk to.</param>
+    public void WalkTo(Vector3 pos)
+    {
+        BuildDebug.Log("Force walking to: " + pos);
+        forcedWalk = true;
+        thirdPersonUserControl.movementActive = false;
+        Vector3 dir = -(transform.position - pos).normalized;
+        StartCoroutine(ForceWalk(dir));
+    }
+
+    private IEnumerator ForceWalk(Vector3 dir)
+    {
+        ThirdPersonCharacterNEW character = GetComponent<ThirdPersonCharacterNEW>();
+        while(true)
+        {
+            character.Move(dir, false, false, false);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
     /// <summary>Throws the currently equipped item from the player's inventory.</summary>
     //public void ThrowEquippedItem()
     //{
     //    ThrowableItem equippedItem = inventory.EquippedItem as ThrowableItem;
     //    if(equippedItem == null)
     //        return;
-        
+
     //    equippedItem.Throw();
     //    inventory.RemoveItem(inventory.EquippedItem);
     //}
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Shop"))
