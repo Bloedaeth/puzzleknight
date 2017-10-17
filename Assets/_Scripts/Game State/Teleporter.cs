@@ -10,8 +10,9 @@ public class Teleporter : MonoBehaviour
 	private Transform shadowPuzzle;
 	private Transform bossFight;
     private Transform hub;
-	private Transform player;
-
+    private Transform tutEnd;
+    private Transform player;
+    
 	private void Awake()
 	{
         if(instance == null)
@@ -41,7 +42,7 @@ public class Teleporter : MonoBehaviour
         shadowPuzzle = GameObject.FindGameObjectWithTag("TPshadow").transform;
         bossFight = GameObject.FindGameObjectWithTag("TPboss").transform;
         hub = GameObject.FindGameObjectWithTag("TPhub").transform;
-
+        tutEnd = GameObject.FindGameObjectWithTag("TPend").transform;
     }
 
     private void Update()
@@ -49,20 +50,25 @@ public class Teleporter : MonoBehaviour
         if(!(Application.isEditor || Debug.isDebugBuild))
             return;
 
-        if(SceneManager.GetActiveScene().buildIndex == 3 && Input.GetKeyDown(KeyCode.Alpha0))
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-		else
-		{
+        if(SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            if(Input.GetKeyDown(KeyCode.Alpha9))
+                player.position = tutEnd.position;
+            if(Input.GetKeyDown(KeyCode.Alpha0))
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else
+        {
             if(Input.GetKeyDown(KeyCode.Alpha6))
                 player.position = hub.position;
-			if(Input.GetKeyDown(KeyCode.Alpha7))
-				player.position = jumpPuzzle.position;
-			if(Input.GetKeyDown(KeyCode.Alpha8))
-				player.position = shadowPuzzle.position;
-			if(Input.GetKeyDown(KeyCode.Alpha9))
-				player.position = pressurePlatePuzzle.position;
-			if(Input.GetKeyDown(KeyCode.Alpha0))
-				player.position = bossFight.position;
-		}
+            if(Input.GetKeyDown(KeyCode.Alpha7))
+                player.position = jumpPuzzle.position;
+            if(Input.GetKeyDown(KeyCode.Alpha8))
+                player.position = shadowPuzzle.position;
+            if(Input.GetKeyDown(KeyCode.Alpha9))
+                player.position = pressurePlatePuzzle.position;
+            if(Input.GetKeyDown(KeyCode.Alpha0))
+                player.position = bossFight.position;
+        }
 	}
 }
