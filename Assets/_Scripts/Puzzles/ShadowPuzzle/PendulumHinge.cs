@@ -17,7 +17,7 @@ public class PendulumHinge : MonoBehaviour {
 	GameObject hinge;
 
 	// Used for the size of the swing.
-	float degreeSwing = 15f;
+	float degreeSwing = 20f;
 
 	// Used for determining the time the pendulum spends between extremes (NOT IN SECONDS but in a similar timescale)
 	public float swingTime = 4f;

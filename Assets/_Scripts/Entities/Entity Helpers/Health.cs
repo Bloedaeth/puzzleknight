@@ -48,6 +48,7 @@ public class Health : MonoBehaviour
     /// <param name="amount">The amount of damage to deal to the entity.</param>
     public void TakeDamage(int amount)
     {
+        Debug.Log(name + " taking " + amount + " damage!");
         if(WasAttackedRecently)
             return;
 

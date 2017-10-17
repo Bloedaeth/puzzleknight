@@ -57,6 +57,7 @@ public abstract class Entity : MonoBehaviour
     /// <param name="damage">The damage to deal to the entity.</param>
     public virtual void Attack(Entity target, int damage)
     {
+        Debug.Log(name + " attacking " + target.name + " for " + damage + " damage!");
         target.GetComponent<Health>().TakeDamage(damage);
     }
 

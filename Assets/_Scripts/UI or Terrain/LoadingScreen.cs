@@ -13,8 +13,6 @@ public class LoadingScreen : MonoBehaviour
     private void Update()
     {
         if(slider.value == slider.maxValue && Input.anyKey)
-        {
             FindObjectOfType<LevelManager>().ContinueToScene();
-        }
     }
 }

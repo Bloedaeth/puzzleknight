@@ -39,6 +39,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
+        private ThirdPersonUserControl ctrl;
 
 		void Start()
 		{
@@ -50,6 +51,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
+
+            ctrl = GetComponent<ThirdPersonUserControl>();
 		}
 
         //internal void Move(Vector3 zero, bool v1, bool v2, bool v3)
@@ -104,6 +107,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         public void Move(Vector3 move, bool crouch, bool jump, bool unused)
 		{
+            if(!ctrl.movementActive)
+                jump = false;
+
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
 			// direction.
