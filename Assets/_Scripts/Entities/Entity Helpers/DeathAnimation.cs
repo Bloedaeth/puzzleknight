@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class DeathAnimation : MonoBehaviour
@@ -9,6 +10,7 @@ public class DeathAnimation : MonoBehaviour
 
     private void Awake()
     {
+        BuildDebug.Log(name + " has been killed!");
         ThirdPersonUserControl uc = GetComponent<ThirdPersonUserControl>();
         if(uc)
             uc.movementActive = false;
@@ -41,11 +43,15 @@ public class DeathAnimation : MonoBehaviour
             if(player == null)
             {
                 if(GetComponent<BossEnemy>())
+                {
+                    BuildDebug.Log("Loading next level.");
                     FindObjectOfType<LevelManager>().LoadNextLevel();
+                }
                 gameObject.SetActive(false);
             }
             else
-			{
+            {
+                BuildDebug.Log("Respawning player");
                 anim.SetTrigger("Respawn");
 
                 Health hp = GetComponent<Health>();

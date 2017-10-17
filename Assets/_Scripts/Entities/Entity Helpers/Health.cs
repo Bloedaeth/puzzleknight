@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 public class Health : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class Health : MonoBehaviour
     /// <param name="amount">The amount of damage to deal to the entity.</param>
     public void TakeDamage(int amount)
     {
-        Debug.Log(name + " taking " + amount + " damage!");
+        BuildDebug.Log(name + " taking " + amount + " damage!");
         if(WasAttackedRecently)
             return;
 
@@ -70,6 +71,7 @@ public class Health : MonoBehaviour
     /// <summary>Forcibly kills the entity, regardless of whether it is invulnerable or has been attacked recently.</summary>
     public void ForceKill()
     {
+        BuildDebug.Log("Force killing " + name);
         if(!audio.isPlaying)
         {
             AudioClip[] damageSounds = GetComponent<EntitySoundsCommon>().hurtSounds;
@@ -84,12 +86,14 @@ public class Health : MonoBehaviour
     /// <param name="amount">The amount of health to recover.</param>
     public void RecoverHealth(int amount)
     {
+        BuildDebug.Log(name + " recovering " + amount + " health!");
         SetHealth(Mathf.Clamp(HealthRemaining + amount, 0, InitialAndMaxHealth));
     }
 
     /// <summary>Resets the entity's health to full.</summary>
     public void ResetHealth()
     {
+        BuildDebug.Log("Resetting " + name + "'s health!");
         HealthRemaining = InitialAndMaxHealth;
         if(HealthBar)
             HealthBar.UpdateGUI(HealthRemaining, InitialAndMaxHealth);

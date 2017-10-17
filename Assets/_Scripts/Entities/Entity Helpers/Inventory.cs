@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameLogging;
 
 public class Inventory : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class Inventory : MonoBehaviour
     /// <summary>Toggles the visibility of the GUI Inventory.</summary>
     public void ToggleGuiInventory()
     {
+        BuildDebug.Log("Toggling inventory: " + !IsOpen);
         IsOpen = !GuiInventory.gameObject.activeInHierarchy;
         GuiInventory.gameObject.SetActive(IsOpen);
         if(!IsOpen)
@@ -62,6 +64,7 @@ public class Inventory : MonoBehaviour
 	/// <param name="state">controls the state of the inventory, on (true) and off (false)</param>
     public void ToggleGuiInventory(bool state)
     {
+        BuildDebug.Log("Toggling inventory: " + state);
         IsOpen = state;
         GuiInventory.gameObject.SetActive(IsOpen);
         if(!IsOpen)
@@ -74,6 +77,8 @@ public class Inventory : MonoBehaviour
     {
         if(index >= inventory.Count)
             return;
+
+        BuildDebug.Log("Equipping item at index " + index);
 
         EquippedItem = GetItem(index);
         GuiEquippedItem.sprite = EquippedItem.Icon;
@@ -89,7 +94,9 @@ public class Inventory : MonoBehaviour
     {
         if(inventory.Count == inventoryLimit)
             return false;
-        
+
+        BuildDebug.Log("Adding item: " + item.name);
+
         inventory.Add(item);
         item.gameObject.SetActive(false);
 		item.collected = true;
@@ -107,6 +114,7 @@ public class Inventory : MonoBehaviour
     /// <param name="item">The item to remove from the inventory.</param>
     public void RemoveItem(Item item)
     {
+        BuildDebug.Log("Removing item: " + item.name);
         inventory.Remove(item);
 
         //Sort(item);
@@ -166,6 +174,7 @@ public class Inventory : MonoBehaviour
     /// <param name="value">The amount of money to give to the player.</param>
     public void AddMoney(int value)
     {
+        BuildDebug.Log("Adding money: " + value);
         Money += value;
         MoneyText.text = Money.ToString();
     }
@@ -174,6 +183,7 @@ public class Inventory : MonoBehaviour
     /// <param name="value">The amount of money to take from the player.</param>
     public void RemoveMoney(int value)
     {
+        BuildDebug.Log("Removing money: " + value);
         Money -= value;
         MoneyText.text = Money.ToString();
     }
@@ -182,6 +192,7 @@ public class Inventory : MonoBehaviour
     /// <param name="piece">The piece that has been collected.</param>
     public void AddDoorPiece(DoorPiece.PieceType piece)
     {
+        BuildDebug.Log("Adding door piece to inventory: " + piece.ToString());
         switch(piece)
         {
             case DoorPiece.PieceType.Frame:
@@ -204,6 +215,7 @@ public class Inventory : MonoBehaviour
 
     public void ShowToolTip(int slot)
     {
+        BuildDebug.Log("Showing tooltip for slot " + slot);
         if(slot < inventory.Count)
             tooltip.Display(inventory[slot].InventoryTooltip);
         else

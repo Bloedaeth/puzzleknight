@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Rigidbody))]
@@ -86,6 +87,8 @@ public class MeleeWeapon : MonoBehaviour
 
 		if (!target)
 			return;
+
+        BuildDebug.Log("Sword attacking entity: " + other.name);
 
         Shield shield = null;
         if(target.transform.CompareTag("Player"))

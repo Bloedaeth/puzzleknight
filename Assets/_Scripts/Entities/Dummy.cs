@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
@@ -20,6 +21,7 @@ public class Dummy : MonoBehaviour
         MeleeWeapon weapon = other.GetComponent<MeleeWeapon>();
         if(weapon.IsAttacking && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != hitHash)
         {
+            BuildDebug.Log(name + " was attacked.");
             animator.SetTrigger("Attacked");
             audio.Play();
         }

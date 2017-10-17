@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
@@ -57,13 +58,14 @@ public abstract class Entity : MonoBehaviour
     /// <param name="damage">The damage to deal to the entity.</param>
     public virtual void Attack(Entity target, int damage)
     {
-        Debug.Log(name + " attacking " + target.name + " for " + damage + " damage!");
+        BuildDebug.Log(name + " attacking " + target.name + " for " + damage + " damage!");
         target.GetComponent<Health>().TakeDamage(damage);
     }
 
     /// <summary>Triggers the stagger animation of the entity.</summary>
     public virtual void Stagger()
     {
+        BuildDebug.Log("Triggering block stagger for: " + name);
         SetBlock(false);
         animator.SetTrigger("BlockStagger");
         Invoke("SetBlock", animator.GetCurrentAnimatorStateInfo(0).length);
