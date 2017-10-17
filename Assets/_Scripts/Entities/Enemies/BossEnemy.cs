@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
+using GameLogging;
 
 public class BossEnemy : Enemy
 {
@@ -14,8 +15,10 @@ public class BossEnemy : Enemy
         set
         {
             stage = value;
+            BuildDebug.Log("Setting boss stage to: " + stage);
             if(stage == 0)
             {
+                BuildDebug.Log("Restting pylons");
                 for(int i = 0; i < pylons.Count; ++i)
                     pylons[i].ResetPylon();
             }
@@ -96,18 +99,21 @@ public class BossEnemy : Enemy
         //if(bossScaleMult >= 2f)
         //    animator.SetInteger("Stage", 2);
         //else
-        	animator.SetInteger("Stage", 1);
+        if(animator.GetInteger("Stage") != 1)
+            animator.SetInteger("Stage", 1);
 		
 		if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x * windowOfOpportunity)
         {
-			foreach (ParticleSystem ps in invulnurableParticleSystems) {
+            BuildDebug.Log("Setting boss to be invulnerable");
+            foreach (ParticleSystem ps in invulnurableParticleSystems) {
 				ps.Play ();
 			}
             hp.IsInvulnerable = true;
         }
 		else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x * windowOfOpportunity)
         {
-			foreach (ParticleSystem ps in invulnurableParticleSystems) {
+            BuildDebug.Log("Setting boss to be vulnerable to attacks");
+            foreach (ParticleSystem ps in invulnurableParticleSystems) {
 				ps.Stop ();
 			}
             hp.IsInvulnerable = false;
@@ -126,7 +132,7 @@ public class BossEnemy : Enemy
                 look.y = 0;
                 transform.rotation = Quaternion.LookRotation(look);
                 animator.SetTrigger("Attack");
-				if(animator.GetInteger ("Stage") == 2)
+				if(animator.GetInteger("Stage") == 2)
 				{
 					particleTime = Time.time + particleRate;
 
@@ -165,32 +171,33 @@ public class BossEnemy : Enemy
 		transform.localScale = originalScale * bossScaleMult;
 	}
 
-    private IEnumerator SmoothScale(Vector3 start, Vector3 end, Pylon pylon)
-    {
-        float step = 0;
-        while(step < 1f)
-        {
-            step += 1 / pylon.RAISE_LOWER_TIME * Time.deltaTime;
-            transform.localScale = Vector3.Lerp(start, end, step);
-            yield return new WaitForFixedUpdate();
-        }
-        yield return null;
-    }
+    //private IEnumerator SmoothScale(Vector3 start, Vector3 end, Pylon pylon)
+    //{
+    //    float step = 0;
+    //    while(step < 1f)
+    //    {
+    //        step += 1 / pylon.RAISE_LOWER_TIME * Time.deltaTime;
+    //        transform.localScale = Vector3.Lerp(start, end, step);
+    //        yield return new WaitForFixedUpdate();
+    //    }
+    //    yield return null;
+    //}
 
-    /// <summary>Scales the boss by a fixed amount over time.</summary>
-    /// <param name="scaleIncrease">The increase in the boss' scale.</param>
-    /// <param name="pylon">The pylon doing the scaling, determines the scale time.</param>
-    public void ScaleOverTime(float scaleIncrease, Pylon pylon)
-    {
-        Vector3 start = originalScale * bossScaleMult;
-        bossScaleMult += scaleIncrease;
-        Vector3 end = originalScale * bossScaleMult;
-        StartCoroutine(SmoothScale(start, end, pylon));
-    }
+    ///// <summary>Scales the boss by a fixed amount over time.</summary>
+    ///// <param name="scaleIncrease">The increase in the boss' scale.</param>
+    ///// <param name="pylon">The pylon doing the scaling, determines the scale time.</param>
+    //public void ScaleOverTime(float scaleIncrease, Pylon pylon)
+    //{
+    //    Vector3 start = originalScale * bossScaleMult;
+    //    bossScaleMult += scaleIncrease;
+    //    Vector3 end = originalScale * bossScaleMult;
+    //    StartCoroutine(SmoothScale(start, end, pylon));
+    //}
 
     /// <summary>Resets the boss to its original state from before the boss fight started.</summary>
     public void ResetBoss()
     {
+        BuildDebug.Log("Resetting the boss fight");
         Stage = 0;
         transform.localScale = originalScale;
         transform.position = originalPosition;

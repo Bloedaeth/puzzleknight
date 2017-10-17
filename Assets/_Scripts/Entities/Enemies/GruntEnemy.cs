@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
@@ -57,19 +58,21 @@ public class GruntEnemy : ShieldedEnemy
         }
         
         float dist = Mathf.Abs(Vector3.Distance(transform.position, player.position));
-        if (ai.target == null && dist < MIN_DIST/* * SCALE_MULT*/)
+        if(ai.target == null && dist < MIN_DIST/* * SCALE_MULT*/)
+        {
+            BuildDebug.Log(name + " targeting player.");
             ai.SetTarget(player);
-
+        }
         /*
          * If there is no target,
          * Select a new position using RandomNavSphere and travel there
          * Repeat after every timer until target is found
-         */ 
-        else if (ai.target == null)
+         */
+        else if(ai.target == null)
         {
             timer += Time.deltaTime;
 
-            if (timer >= wanderTimer)
+            if(timer >= wanderTimer)
             {
                 Vector3 newPos = RandomNavSphere(gruntOrigin, wanderRadius, 1);
                 agent.SetDestination(newPos);
@@ -107,7 +110,7 @@ public class GruntEnemy : ShieldedEnemy
                 {
                     if (Vector3.Distance(hit.transform.position, transform.position) < 5)
                     {
-                        float step = (float)-0.1;
+                        float step = -0.1f;
                         transform.position = Vector3.MoveTowards(transform.position, hit.transform.position, step);
                     }
                 }
@@ -123,6 +126,7 @@ public class GruntEnemy : ShieldedEnemy
                 transform.rotation = Quaternion.LookRotation(look);
                 if (timer2 >= attackTimer)
                 {
+                    BuildDebug.Log(name + " attacking player.");
                     animator.SetTrigger("Attack");
                     timer2 = 0;
                 }
@@ -153,6 +157,7 @@ public class GruntEnemy : ShieldedEnemy
             {
                 if (hit.tag == "Enemy")
                 {
+                    BuildDebug.Log(name + " alerting " + hit.name + " to player presence!");
                     hit.GetComponent<GruntEnemy>().ai.SetTarget(player);
                 }
             }
@@ -161,6 +166,7 @@ public class GruntEnemy : ShieldedEnemy
 
     private void SetBlocking(bool value)
     {
+        BuildDebug.Log(name + " blocking: " + value);
         Shield.IsBlocking = value;
         animator.SetBool("Block", value);
     }

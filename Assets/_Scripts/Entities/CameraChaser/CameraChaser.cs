@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameLogging;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -99,6 +100,7 @@ public class CameraChaser : MonoBehaviour {
 	}
 
 	public void BeginChase() {
+        BuildDebug.Log("Beginning camera chase");
 		pointDir = tpuc.freeLookCamera.camObject.transform.position;
 		pointRot = tpuc.freeLookCamera.camObject.transform.rotation;
 
@@ -125,10 +127,11 @@ public class CameraChaser : MonoBehaviour {
 
 	public void EndChase() {
 
-		//hanging = true;
+        //hanging = true;
 
+        BuildDebug.Log("Ending camera chase");
 
-		while (currHangTime < hangTime) {
+        while (currHangTime < hangTime) {
 			currHangTime += Time.deltaTime;
 			return;
 		}
