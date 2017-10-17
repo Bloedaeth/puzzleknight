@@ -94,6 +94,9 @@ public class BossEnemy : Enemy
     private void Update()
     {
         SetHurtSounds();
+        
+        if (ai.target != player && ai.target != null)
+            ai.SetTarget(null);
 
         agent.stoppingDistance = 1.5f + bossScaleMult - 1;
         //if(bossScaleMult >= 2f)
