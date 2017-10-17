@@ -33,13 +33,15 @@ public class BossEnemy : Enemy
     private AICharacterControl ai;
     private NavMeshAgent agent;
     private Transform player;
-    [SerializeField] private ParticleSystem ps;
+    private ParticleSystem[] invulnurableParticleSystems;
     private GameObject startCollider;
     [SerializeField] private ParticleSystem stompParticles;
     private BossSounds sounds;
 
     private Vector3 originalScale;
+	private Vector3[] particleSystemOriginalScale;
     private Vector3 originalPosition;
+	private float windowOfOpportunity = 1.1f;
 
     private int attackHashStage1;
     private int attackHashStage2;
@@ -69,6 +71,21 @@ public class BossEnemy : Enemy
         attackHashStage2 = Animator.StringToHash("Base Layer.Attack Stage 2");
 
         startCollider = FindObjectOfType<StartBossFight>().gameObject;
+
+		invulnurableParticleSystems = new ParticleSystem[GetComponentsInChildren<ParticleSystem> ().Length - 1];
+		particleSystemOriginalScale = new Vector3[invulnurableParticleSystems.Length];
+
+		int j = 0;
+
+		for (int i = 0; i < GetComponentsInChildren<ParticleSystem> ().Length; i++) {
+			if (GetComponentsInChildren<ParticleSystem> () [i].CompareTag("BossInvulnerabilityParticles")) {
+				invulnurableParticleSystems [j] = GetComponentsInChildren<ParticleSystem> () [i];
+				particleSystemOriginalScale [j] = invulnurableParticleSystems [j].shape.box;
+
+				invulnurableParticleSystems [j].Stop ();
+				j++;
+			}
+		}
     }
 
     private void Update()
@@ -81,14 +98,18 @@ public class BossEnemy : Enemy
         //else
         	animator.SetInteger("Stage", 1);
 		
-        if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x)
+		if(!hp.IsInvulnerable && transform.localScale.x > originalScale.x * windowOfOpportunity)
         {
-            ps.Play();
+			foreach (ParticleSystem ps in invulnurableParticleSystems) {
+				ps.Play ();
+			}
             hp.IsInvulnerable = true;
         }
-        else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x)
+		else if(hp.IsInvulnerable && transform.localScale.x <= originalScale.x * windowOfOpportunity)
         {
-            ps.Stop();
+			foreach (ParticleSystem ps in invulnurableParticleSystems) {
+				ps.Stop ();
+			}
             hp.IsInvulnerable = false;
         }
 
@@ -136,6 +157,11 @@ public class BossEnemy : Enemy
 			bossScaleMult += pylons [i].pylonScaleModifier;
 		}
 
+		ParticleSystem.ShapeModule s;
+		for (int i = 0; i < invulnurableParticleSystems.Length; i++) {
+			s = invulnurableParticleSystems [i].shape;
+			s.box = particleSystemOriginalScale [i] * bossScaleMult;
+		}
 		transform.localScale = originalScale * bossScaleMult;
 	}
 

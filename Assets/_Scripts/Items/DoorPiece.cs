@@ -14,6 +14,14 @@ public class DoorPiece : MonoBehaviour
     private const int MONEY_REWARD = 50;
     private const float SPEED = 4f;
 
+	bool collected = false;
+
+	void OnEnable() {
+		if (collected) {
+			gameObject.SetActive(false);
+		}
+	}
+
     private void Update()
     {
         transform.eulerAngles += Vector3.up * SPEED;
@@ -31,6 +39,7 @@ public class DoorPiece : MonoBehaviour
             
             popupText.Activate(popupPiece);
 
+			collected = true;
             gameObject.SetActive(false);
         }
     }

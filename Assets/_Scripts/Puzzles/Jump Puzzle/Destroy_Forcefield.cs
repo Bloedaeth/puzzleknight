@@ -24,6 +24,13 @@ public class Destroy_Forcefield : MonoBehaviour
         	foreach(ParticleSystem p in particles)
 				p.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
+		if (o.CompareTag ("Player")) {
+			Destroy (GameObject.FindGameObjectWithTag ("ForceField"));
+			foreach (ParticleSystem p in particles) {
+				ParticleSystem.EmissionModule em = p.emission;
+				em.enabled = false;
+			}
+		}
         audio.Play();
     }
 
