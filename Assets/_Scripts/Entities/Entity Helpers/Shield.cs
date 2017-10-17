@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Shield : MonoBehaviour
     /// <returns>true if in range, false otherwise.</returns>
     public bool BlockSuccessful(float angle)
     {
+        BuildDebug.Log("Blocking attack");
         return (angle < 90.0f);
     }
 }
