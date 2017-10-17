@@ -145,6 +145,8 @@ public class Player : Entity
 
     public void TogglePause(bool state)
     {
+        BuildDebug.Log("Pausing game: " + state);
+
 		Time.timeScale = state ? 0f : 1f;
 
 		PauseMenu.SetActive(state);
@@ -202,6 +204,7 @@ public class Player : Entity
             runTimer += Time.deltaTime;
             if(runTimer > PUFFED_RUN_TIME && canPlayRunSound)
             {
+                BuildDebug.Log("So much running!");
                 canPlayRunSound = false;
                 audio.clip = SoMuchRunning;
                 audio.Play();
@@ -227,7 +230,10 @@ public class Player : Entity
         if(animator.GetCurrentAnimatorStateInfo(0).fullPathHash == attackStateThreeHash)
             animator.ResetTrigger("LightAttack");
         else if(Input.GetKeyDown(KeyCode.Mouse0) && thirdPersonUserControl.movementActive)
+        {
+            BuildDebug.Log("Triggering player attack");
             animator.SetTrigger("LightAttack");
+        }
     }
 
     public void AttackPlaySound()
@@ -279,14 +285,18 @@ public class Player : Entity
     private void CheckUseItem()
     {
         if(Input.GetKeyDown(KeyCode.F))
+        {
+            BuildDebug.Log("Trying to use item");
             UseEquippedItem();
+        }
         //else if (Input.GetKeyDown (KeyCode.Alpha2))
         //	ThrowEquippedItem ();
     }
 
     private void SetBlocking(bool value)
     {
-		Shield.IsBlocking = value;
+        BuildDebug.Log("Player blocking: " + value);
+        Shield.IsBlocking = value;
 		//thirdPersonUserControl.isAiming = value;
         animator.SetBool("Blocking", value);
     }
@@ -306,6 +316,7 @@ public class Player : Entity
 
     public void StopMovement()
     {
+        BuildDebug.Log("Stopping player movement: true");
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !freeLookCam.orbitActive;
         //stop the player from moving while the inventory is open
@@ -317,9 +328,9 @@ public class Player : Entity
 	
 	///<summary>Change of StopMovement(), allows the code to set a devinitive state as opposed to toggling between the states</summary>
 	///<param name="state"> controls whether to stop movement; on (true), or off (false).</param>
-	public void StopMovement(bool state) 
+	public void StopMovement(bool state)
     {
-		
+        BuildDebug.Log("Stopping player movement: " + state);
         //stop camera from moving around while inventory is open
         freeLookCam.orbitActive = !state;
         //stop the player from moving while the inventory is open
@@ -397,7 +408,11 @@ public class Player : Entity
     {
         Item equippedItem = inventory.EquippedItem;
         if(equippedItem == null)
+        {
+            BuildDebug.Log("No item equipped.");
             return;
+        }
+        BuildDebug.Log("Successfully using item.");
 
         equippedItem.UseOn(this);
         inventory.RemoveItem(equippedItem);
@@ -416,6 +431,7 @@ public class Player : Entity
 
     private IEnumerator ForceWalk(Vector3 dir)
     {
+        BuildDebug.Log("Starting forced walk.");
         ThirdPersonCharacterNEW character = GetComponent<ThirdPersonCharacterNEW>();
         while(true)
         {
@@ -441,7 +457,10 @@ public class Player : Entity
             shop = other.GetComponent<Shop>();
 
         if(other.CompareTag("Checkpoint"))
+        {
+            BuildDebug.Log("Spawnpoint set to: " + other.name);
             SpawnPoint = other.transform;
+        }
     }
 
     //private void OnParticleTrigger()

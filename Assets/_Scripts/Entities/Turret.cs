@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 public class Turret : Enemy
 {
@@ -11,24 +12,23 @@ public class Turret : Enemy
 
     private float fireTime;
     
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
         myTransform = transform;
         player = FindObjectOfType<Player>().GetComponent<Transform>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if(Time.time > fireTime && Vector3.Distance(myTransform.position, player.position) < range)
         {
+            BuildDebug.Log("Cannon firing: " + name, true);
+
             Projectile projectile = ObjectPooler.main.GetPooledObject().GetComponent<Projectile>();
             projectile.transform.position = turretMuzzle.position;
             projectile.transform.rotation = turretMuzzle.rotation;
             projectile.Self = this;
             projectile.forward = turretMuzzle.forward;
-            //projectile.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             projectile.gameObject.SetActive(true);
             fireTime = Time.time + Random.Range(1, 7);
         }

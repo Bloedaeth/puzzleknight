@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class Shopkeeper : MonoBehaviour
@@ -39,6 +40,9 @@ public class Shopkeeper : MonoBehaviour
         if(Greetings.Length == 0 || timeSinceGreet < SOUND_COOLDOWN)
             return;
 
+        BuildDebug.Log("Playing Shopkeeper greeting.");
+        BuildDebug.Log("# possible sounds: " + Greetings.Length);
+
         audio.clip = Greetings[Random.Range(0, Greetings.Length)];
         audio.Play();
 
@@ -53,6 +57,9 @@ public class Shopkeeper : MonoBehaviour
         if(Goodbyes.Length == 0 || timeSinceGoodbye < SOUND_COOLDOWN)
             return;
 
+        BuildDebug.Log("Playing Shopkeeper farewell.");
+        BuildDebug.Log("# possible sounds: " + Goodbyes.Length);
+
         audio.clip = Goodbyes[Random.Range(0, Goodbyes.Length)];
         audio.Play();
 
@@ -63,6 +70,9 @@ public class Shopkeeper : MonoBehaviour
     {
         if(Purchases.Length == 0)
             return;
+
+        BuildDebug.Log("Playing Shopkeeper purchase sound.");
+        BuildDebug.Log("# possible sounds: " + Purchases.Length);
 
         audio.clip = Purchases[Random.Range(0, Purchases.Length)];
         audio.Play();

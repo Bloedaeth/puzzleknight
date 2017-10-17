@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameLogging;
+using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class Projectile : MonoBehaviour
         if(target == Self)
             return;
 
+        BuildDebug.Log("Projectile attacking target: " + target.name);
+
         if(target)
         {
             Shield shield = null;
@@ -58,7 +61,6 @@ public class Projectile : MonoBehaviour
             }
             else if(!target.GetComponent<DeathAnimation>())
                     Self.Attack(target, projectileDamage);
-
         }
 
         gameObject.SetActive(false);
