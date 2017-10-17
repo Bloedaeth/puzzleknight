@@ -1,24 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class FlashingText : MonoBehaviour
+public class FlashingImage : MonoBehaviour
 {
-    private Text text;
+    private RawImage img;
     private float nextChangeTime = 0;
-
-    private const string EMPTY = "";
-    private const string MSG = "Press any key to continue";
 
     private void OnEnable()
     {
-        text = GetComponent<Text>();
+        img = GetComponent<RawImage>();
     }
 
     private void Update()
     {
         if(Time.time > nextChangeTime)
         {
-            text.text = text.text == EMPTY ? MSG : EMPTY;
+            img.enabled = !img.enabled;
             nextChangeTime = Time.time + 1f;
         }
     }

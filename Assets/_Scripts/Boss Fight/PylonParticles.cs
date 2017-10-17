@@ -64,6 +64,6 @@ public class PylonParticles : MonoBehaviour {
 
 		em.rateOverTime = origEmRate * mult;
 
-		print (mult.ToString());
+		//print (mult.ToString());
 	}
 }

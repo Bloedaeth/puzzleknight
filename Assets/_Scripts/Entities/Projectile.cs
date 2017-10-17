@@ -39,10 +39,10 @@ public class Projectile : MonoBehaviour
         if(target == Self)
             return;
 
-        BuildDebug.Log("Projectile attacking target: " + target.name);
-
         if(target)
         {
+            BuildDebug.Log("Projectile attacking target: " + target.name);
+
             Shield shield = null;
             if(target.transform.CompareTag("Player"))
                 shield = target.GetComponent<Player>().Shield;

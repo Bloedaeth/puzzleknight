@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
         {
             progressSlider = loadingScreen.GetComponentInChildren<Slider>();
             progressText = loadingScreen.GetComponentInChildren<ProgressText>().GetComponent<Text>();
-            anyKeyToContinue = loadingScreen.GetComponentInChildren<FlashingText>(true).gameObject;
+            anyKeyToContinue = loadingScreen.GetComponentInChildren<FlashingImage>(true).gameObject;
         }
         else
         {
