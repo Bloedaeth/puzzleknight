@@ -28,7 +28,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
-		bool m_IsGrounded;
+
+		public bool isGrounded { get { return m_IsGrounded; } }
+		[SerializeField] bool m_IsGrounded;
+
 		float m_OrigGroundCheckDistance;
 		const float k_Half = 0.5f;
 		float m_TurnAmount;

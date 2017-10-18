@@ -145,14 +145,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		}
 
 		public void ResetCamera() { // <---------------- CHANGE
-				if (cameraRight) {
-					freeLookCamera.UpdateTransforms (cameraDistancesRight);
-				} else {
-					freeLookCamera.UpdateTransforms (cameraDistancesLeft);
-				}
+			if (cameraRight) {
+				freeLookCamera.UpdateTransforms (cameraDistancesRight);
+			} else {
+				freeLookCamera.UpdateTransforms (cameraDistancesLeft);
+			}
 
 			cameraAiming[0] = cameraRight ? cameraDistancesRight [0] : cameraDistancesLeft [0];
-			}
+		}
 
 		/// <summary>
 		/// Resets the camera, and also resets the target back to the character.

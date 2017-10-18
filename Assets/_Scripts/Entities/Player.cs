@@ -425,14 +425,17 @@ public class Player : Entity
         BuildDebug.Log("Force walking to: " + pos);
         forcedWalk = true;
         thirdPersonUserControl.movementActive = false;
-        Vector3 dir = -(transform.position - pos).normalized;
-        StartCoroutine(ForceWalk(dir));
+        StartCoroutine(ForceWalk(pos));
     }
 
-    private IEnumerator ForceWalk(Vector3 dir)
-    {
+	private IEnumerator ForceWalk(Vector3 pos)
+	{
+		ThirdPersonCharacterNEW character = GetComponent<ThirdPersonCharacterNEW>();
+		while(!character.isGrounded) yield return new WaitForFixedUpdate();
+			
+		Vector3 dir = -(transform.position - pos).normalized;
+
         BuildDebug.Log("Starting forced walk.");
-        ThirdPersonCharacterNEW character = GetComponent<ThirdPersonCharacterNEW>();
         while(true)
         {
             character.Move(dir, false, false, false);
