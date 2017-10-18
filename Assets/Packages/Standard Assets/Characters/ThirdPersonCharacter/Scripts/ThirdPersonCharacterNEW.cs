@@ -30,7 +30,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		Animator m_Animator;
 
 		public bool isGrounded { get { return m_IsGrounded; } }
-		[SerializeField] bool m_IsGrounded;
+		bool m_IsGrounded;
 
 		float m_OrigGroundCheckDistance;
 		const float k_Half = 0.5f;

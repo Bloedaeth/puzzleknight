@@ -6,6 +6,7 @@ using UnityEngine;
 public class CameraChaser : MonoBehaviour {
 
 	bool active;
+	bool willEndChase = true;
 
 	Transform ChaseObject;
 	//Vector3 coOrigPos;
@@ -88,7 +89,7 @@ public class CameraChaser : MonoBehaviour {
 			if (ChasePoints.GetNextPoint (out temp)) {
 				pointDir = temp.position;
 				pointRot = temp.rotation;
-			} else {
+			} else if(willEndChase) {
 				EndChase ();
 			}
 
@@ -101,6 +102,36 @@ public class CameraChaser : MonoBehaviour {
 
 	public void BeginChase() {
         BuildDebug.Log("Beginning camera chase");
+		pointDir = tpuc.freeLookCamera.camObject.transform.position;
+		pointRot = tpuc.freeLookCamera.camObject.transform.rotation;
+
+		positionBuffer = pointDir;
+		rotationBuffer = pointRot;
+
+		ChaseObject.position = pointDir;
+
+
+		active = true;
+		tpuc.isLooking = true;
+		tpuc.freeLookCamera.BreakRig (ChaseObject);
+		tpuc.freeLookCamera.orbitActive = false;
+		tpuc.freeLookCamera.SetTarget (ChaseObject);
+		tpuc.SetCameraToZeros ();
+		tpuc.freeLookCamera.ToggleCamClip (true);
+		currHangTime = 0f;
+
+		ChasePoints.ResetPoints ();
+		pointDir = ChasePoints.GetNextPoint().position;
+
+		p.StopMovement (true);
+	}
+
+
+	public void BeginChase(bool willEnd) {
+
+		willEndChase = willEnd;
+
+		BuildDebug.Log("Beginning camera chase. Will end: " + willEnd);
 		pointDir = tpuc.freeLookCamera.camObject.transform.position;
 		pointRot = tpuc.freeLookCamera.camObject.transform.rotation;
 

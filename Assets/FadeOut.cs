@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class FadeOut : MonoBehaviour
 {
     private Image img;
-    private const float FADE_STEP = 0.005f;
+    private const float FADE_STEP = 0.004f;
 
     private void Awake()
     {

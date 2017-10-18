@@ -18,6 +18,7 @@ public class FadeOutLoad : MonoBehaviour
             p.WalkTo(PathEndPos.position);
             fade.gameObject.SetActive(true);
             StartCoroutine(fade.Fade());
+			GetComponentInChildren<CameraChaser>().BeginChase(false);
         }
     }
 }
