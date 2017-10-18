@@ -22,7 +22,7 @@ public class MeleeWeapon : MonoBehaviour
     private int attackBossOneHash;
     private int attackBossTwoHash;
     private int attackHash;
-    private int blockHash;
+    //private int blockHash;
 
     private int transAttackStateOneHash;
     private int transAttackBossOneHash;
@@ -38,12 +38,12 @@ public class MeleeWeapon : MonoBehaviour
         attackBossOneHash = Animator.StringToHash("Base Layer.Attack Stage 1");
         attackBossTwoHash = Animator.StringToHash("Base Layer.Attack Stage 2");
         attackHash = Animator.StringToHash("Base Layer.Attack");
-        blockHash = Animator.StringToHash("Base Layer.Block");
+        //blockHash = Animator.StringToHash("Base Layer.Block");
 
-        transAttackStateOneHash = Animator.StringToHash("Base Layer.Grounded -> Base Layer.Light Attacks.Light Attack 1");
-        transAttackBossOneHash = Animator.StringToHash("Base Layer.Idle -> Base Layer.Attack Stage 1");
-        transAttackBossTwoHash = Animator.StringToHash("Base Layer.Idle -> Base Layer.Attack Stage 2");
-        transAttackHash = Animator.StringToHash("Base Layer.Idle -> Base Layer.Attack");
+        transAttackStateOneHash = Animator.StringToHash("Grounded -> Light Attacks.Light Attack 1");
+        transAttackBossOneHash = Animator.StringToHash("Idle -> Attack Stage 1");
+        transAttackBossTwoHash = Animator.StringToHash("Idle -> Attack Stage 2");
+        transAttackHash = Animator.StringToHash("Idle -> Attack");
         
         audio = Self.GetComponent<AudioSource>();
         swordWhoosh = Self.GetComponent<EntitySoundsCommon>().swordSwingSounds;

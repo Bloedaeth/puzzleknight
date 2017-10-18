@@ -13,6 +13,8 @@ public class Teleporter : MonoBehaviour
     private Transform tutEnd;
     private Transform player;
     
+	private Scene scene;
+
 	private void Awake()
 	{
         if(instance == null)
@@ -28,21 +30,29 @@ public class Teleporter : MonoBehaviour
         SceneManager_SceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
-    private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
+    private void SceneManager_SceneLoaded(Scene loadedScene, LoadSceneMode mode)
 	{
-        if((Application.isEditor || Debug.isDebugBuild) && SceneManager.GetActiveScene().name.Contains("Deliverable"))
+		scene = loadedScene;
+		if((Application.isEditor || Debug.isDebugBuild))
             FindTransforms();
     }
 
     private void FindTransforms()
     {
-        player = FindObjectOfType<Player>().transform;
-        pressurePlatePuzzle = GameObject.FindGameObjectWithTag("TPplate").transform;
-        jumpPuzzle = GameObject.FindGameObjectWithTag("TPjump").transform;
-        shadowPuzzle = GameObject.FindGameObjectWithTag("TPshadow").transform;
-        bossFight = GameObject.FindGameObjectWithTag("TPboss").transform;
-        hub = GameObject.FindGameObjectWithTag("TPhub").transform;
-        tutEnd = GameObject.FindGameObjectWithTag("TPend").transform;
+		if(scene.buildIndex != 3 && scene.buildIndex != 4)
+			return;
+		
+		player = FindObjectOfType<Player>().transform;
+		if(scene.buildIndex == 4)
+		{
+			pressurePlatePuzzle = GameObject.FindGameObjectWithTag ("TPplate").transform;
+			jumpPuzzle = GameObject.FindGameObjectWithTag ("TPjump").transform;
+			shadowPuzzle = GameObject.FindGameObjectWithTag ("TPshadow").transform;
+			bossFight = GameObject.FindGameObjectWithTag ("TPboss").transform;
+			hub = GameObject.FindGameObjectWithTag ("TPhub").transform;
+		}
+		else
+			tutEnd = GameObject.FindGameObjectWithTag("TPend").transform;
     }
 
     private void Update()
@@ -50,14 +60,14 @@ public class Teleporter : MonoBehaviour
         if(!(Application.isEditor || Debug.isDebugBuild))
             return;
 
-        if(SceneManager.GetActiveScene().buildIndex == 3)
+        if(scene.buildIndex == 3)
         {
             if(Input.GetKeyDown(KeyCode.Alpha9))
                 player.position = tutEnd.position;
             if(Input.GetKeyDown(KeyCode.Alpha0))
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        else
+		else if(scene.buildIndex == 4)
         {
             if(Input.GetKeyDown(KeyCode.Alpha6))
                 player.position = hub.position;

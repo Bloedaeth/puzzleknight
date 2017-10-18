@@ -24,7 +24,7 @@ public class GruntEnemy : ShieldedEnemy
     private const float MIN_DIST = 10f;
 
     //private int attackHash;
-    private int blockHash;
+    //private int blockHash;
 
     private Vector3 gruntOrigin;
 
@@ -38,7 +38,7 @@ public class GruntEnemy : ShieldedEnemy
         player = FindObjectOfType<Player>().transform;
         animator = GetComponent<Animator>();
         attackHash = Animator.StringToHash("Base Layer.Attack");
-        blockHash = Animator.StringToHash("Base Layer.Block");
+        //blockHash = Animator.StringToHash("Base Layer.Block");
         
         agent.stoppingDistance = 1.5f;// * SCALE_MULT;
         gruntOrigin = transform.position;

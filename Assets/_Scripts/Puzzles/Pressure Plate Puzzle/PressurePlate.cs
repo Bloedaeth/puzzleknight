@@ -5,7 +5,6 @@ public class PressurePlate : MonoBehaviour
     private int numEntitiesOnPlate;
 
     private LowerPlatform platform;
-    private bool triggered = false;
 
     private void Awake()
     {
