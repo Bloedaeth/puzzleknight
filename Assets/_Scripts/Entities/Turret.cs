@@ -7,6 +7,8 @@ public class Turret : Enemy
 
     public float range = 100.0f;
 
+    [SerializeField] private AudioClip[] fireSounds;
+
     private Transform myTransform;
     private Transform player;
 
@@ -31,6 +33,9 @@ public class Turret : Enemy
             projectile.forward = turretMuzzle.forward;
             projectile.gameObject.SetActive(true);
             fireTime = Time.time + Random.Range(1, 7);
+
+            audio.clip = fireSounds[Random.Range(0, fireSounds.Length)];
+            audio.Play();
         }
     }
 
