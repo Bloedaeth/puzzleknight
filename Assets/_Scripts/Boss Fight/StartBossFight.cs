@@ -14,7 +14,15 @@ public class StartBossFight : MonoBehaviour
         boss = FindObjectOfType<BossEnemy>();
         rocks.SetActive(false);
         foreach(GameObject p in potions)
-            p.SetActive(true);
+        {
+            Item i = p.GetComponent<Item>();
+            if(i.collected)
+            {
+                i.collected = false;
+                p.SetActive(true);
+                FindObjectOfType<Inventory>().RemoveItem(i);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider col)

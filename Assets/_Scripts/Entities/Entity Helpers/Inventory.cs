@@ -119,7 +119,7 @@ public class Inventory : MonoBehaviour
 
         //Sort(item);
 
-        if(item.CompareTag(EquippedItem.tag))
+        if(item.TypeId == EquippedItem.TypeId)
         {
             guiNumEquipped.text = inventory.Where(i => i.TypeId == EquippedItem.TypeId).ToArray().Length.ToString();
             EquippedItem = inventory.Find(e => e.TypeId == EquippedItem.TypeId);
