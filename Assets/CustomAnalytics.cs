@@ -38,8 +38,6 @@ public class CustomAnalytics : MonoBehaviour
             { "deaths", Deaths },
             { "doorOpenTime", timeTilDoorOpened }
         });
-
-        FindObjectOfType<LevelManager>().LoadNextLevel();
     }
 
     public void BossDefeated()
