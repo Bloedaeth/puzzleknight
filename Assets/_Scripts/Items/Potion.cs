@@ -41,6 +41,7 @@ public class Potion : Item
 
     private void ApplyEffect(Entity entity)
     {
+        ++FindObjectOfType<CustomAnalytics>().PotionsConsumed;
         entity.GetComponent<Health>().RecoverHealth(healthPotionHealAmount);
         //switch(Type)
         //{

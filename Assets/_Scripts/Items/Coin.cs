@@ -30,5 +30,9 @@ public class Coin : MonoBehaviour
         AudioSource.PlayClipAtPoint(clip, transform.position, PlayPrefs.GameSoundVolume);
 		collected = true;
 		gameObject.SetActive (false);
+
+        CustomAnalytics analytics = FindObjectOfType<CustomAnalytics>();
+        if(analytics)
+            ++analytics.CoinsCollected;
     }
 }

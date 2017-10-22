@@ -130,6 +130,7 @@ public class Shop : MonoBehaviour
 
         if(playerInventory.AddItem(item))
         {
+            ++FindObjectOfType<CustomAnalytics>().PotionsBought;
             BuildDebug.Log("Purchase successful. Cost: " + item.ShopCost);
             playerInventory.RemoveMoney(item.ShopCost);
             RemoveItem(item);

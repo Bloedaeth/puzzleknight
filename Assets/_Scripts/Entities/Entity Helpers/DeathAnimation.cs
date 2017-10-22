@@ -1,5 +1,7 @@
 ﻿using GameLogging;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class DeathAnimation : MonoBehaviour
@@ -45,12 +47,17 @@ public class DeathAnimation : MonoBehaviour
                 if(GetComponent<BossEnemy>())
                 {
                     BuildDebug.Log("Loading next level.");
-                    FindObjectOfType<LevelManager>().LoadNextLevel();
+                    FindObjectOfType<CustomAnalytics>().BossDefeated();
                 }
-                gameObject.SetActive(false);
+                else
+                {
+                    ++FindObjectOfType<CustomAnalytics>().EnemiesKilled;
+                    gameObject.SetActive(false);
+                }
             }
             else
             {
+                ++FindObjectOfType<CustomAnalytics>().Deaths;
                 BuildDebug.Log("Respawning player");
                 anim.SetTrigger("Respawn");
 

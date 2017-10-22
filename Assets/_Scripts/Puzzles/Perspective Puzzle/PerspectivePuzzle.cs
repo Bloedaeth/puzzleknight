@@ -43,6 +43,7 @@ public class PerspectivePuzzle : Puzzle {
 			solved = true;
             GetComponent<AudioSource>().Play();
 			FinilizePieces ();
+            FindObjectOfType<CustomAnalytics>().DoorOpened();
 		}
 	}
 }
