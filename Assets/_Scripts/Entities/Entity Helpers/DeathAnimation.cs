@@ -50,10 +50,8 @@ public class DeathAnimation : MonoBehaviour
                     FindObjectOfType<CustomAnalytics>().BossDefeated();
                 }
                 else
-                {
                     ++FindObjectOfType<CustomAnalytics>().EnemiesKilled;
-                    gameObject.SetActive(false);
-                }
+                gameObject.SetActive(false);
             }
             else
             {
