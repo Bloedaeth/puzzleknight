@@ -6,7 +6,6 @@ public class DeathCollider : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("KILLING ENTITY " + other.name);
         BuildDebug.Log("Death collider activated on " + other.name);
         if(other.GetComponent<DeathAnimation>())
         {
