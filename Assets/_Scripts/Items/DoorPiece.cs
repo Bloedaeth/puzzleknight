@@ -1,5 +1,7 @@
 ﻿using GameLogging;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class DoorPiece : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class DoorPiece : MonoBehaviour
     public PieceCollectNotif popupText;
     public GameObject popupPiece;
 
-    public float AnalyticsCollected;
+    [SerializeField] private string puzzleEventName;
 
     private const int MONEY_REWARD = 50;
     private const float SPEED = 4f;
@@ -33,7 +35,7 @@ public class DoorPiece : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            AnalyticsCollected = Time.timeSinceLevelLoad;
+            FindObjectOfType<CustomAnalytics>().DoorPieceCollected(puzzleEventName);
             BuildDebug.Log("Door Piece collected: " + Type);
             AudioSource.PlayClipAtPoint(CollectedClip, transform.position, PlayPrefs.GameSoundVolume);
             Inventory inventory = other.GetComponent<Inventory>();

@@ -9,9 +9,6 @@ public class CustomAnalytics : MonoBehaviour
     public int CoinsCollected { get; set; }
     public int EnemiesKilled { get; set; }
     public int Deaths { get; set; }
-
-    private float timeTilDoorOpened;
-    private float timeTilBossDefeated;
     
     private static CustomAnalytics instance;
 
@@ -26,9 +23,21 @@ public class CustomAnalytics : MonoBehaviour
             Destroy(gameObject);
     }
 
+    public void DoorPieceCollected(string puzzle)
+    {
+        if(!PlayPrefs.LoggingEnabled)
+            return;
+
+        Analytics.CustomEvent(puzzle, new Dictionary<string, object> {
+            { "timeTilCompleted", Time.timeSinceLevelLoad }
+        });
+    }
+
     public void DoorOpened()
     {
-        timeTilDoorOpened = Time.timeSinceLevelLoad;
+        if(!PlayPrefs.LoggingEnabled)
+            return;
+        
         Analytics.CustomEvent("doorOpened", new Dictionary<string, object>
         {
             { "potionsBought", PotionsBought },
@@ -36,13 +45,15 @@ public class CustomAnalytics : MonoBehaviour
             { "coinsCollected", CoinsCollected },
             { "enemiesKilled", EnemiesKilled },
             { "deaths", Deaths },
-            { "doorOpenTime", timeTilDoorOpened }
+            { "doorOpenTime", Time.timeSinceLevelLoad }
         });
     }
 
     public void BossDefeated()
     {
-        timeTilBossDefeated = Time.timeSinceLevelLoad;
+        if(!PlayPrefs.LoggingEnabled)
+            return;
+        
         Analytics.CustomEvent("bossDefeated", new Dictionary <string, object>
         {
             { "potionsBought", PotionsBought },
@@ -50,7 +61,7 @@ public class CustomAnalytics : MonoBehaviour
             { "coinsCollected", CoinsCollected },
             { "enemiesKilled", EnemiesKilled },
             { "deaths", Deaths },
-            { "bossBeatTime", timeTilBossDefeated }
+            { "bossBeatTime", Time.timeSinceLevelLoad }
         });
 
         FindObjectOfType<LevelManager>().LoadNextLevel();
