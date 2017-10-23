@@ -48,6 +48,7 @@ public class DeathAnimation : MonoBehaviour
                 {
                     BuildDebug.Log("Loading next level.");
                     FindObjectOfType<CustomAnalytics>().BossDefeated();
+                    FindObjectOfType<LevelManager>().LoadNextLevel();
                 }
                 else
                     ++FindObjectOfType<CustomAnalytics>().EnemiesKilled;
