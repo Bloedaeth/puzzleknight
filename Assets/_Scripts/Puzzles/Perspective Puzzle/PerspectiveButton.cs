@@ -56,6 +56,7 @@ public class PerspectiveButton : MonoBehaviour {
 			tpuc = o.GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl> ();
 
 			if (pp.IndexesAllCorrect () && !pp.puzzleIsSolved) {
+				o.transform.position = transform.position + (Vector3.up / 4);
 				pp.cc.BeginChase (1f);
 			}
 		}

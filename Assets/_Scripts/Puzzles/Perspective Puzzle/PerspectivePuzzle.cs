@@ -22,7 +22,7 @@ public class PerspectivePuzzle : Puzzle {
 	}
 
 	public void CheckCamPosition() {
-		if (!solved && ((-ppm.cam.transform.position + c.transform.position).magnitude <= 0.03 || cc.CurrPoint > 6)) {
+		if (!solved && ((-ppm.cam.transform.position + c.transform.position).magnitude <= 0.03 || cc.CurrPoint > 7)) {
 			CheckFinalizePuzzle ();
 		}
 	}
