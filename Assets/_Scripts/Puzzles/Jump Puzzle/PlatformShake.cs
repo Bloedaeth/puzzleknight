@@ -40,6 +40,13 @@ public class PlatformShake : MonoBehaviour {
 		maxParticleRate *= 2f;
 	}
 
+	public void ResetAfterFall() {
+		isAboutToFall = false;
+		shakeMaxAngle /= 4f;
+		maxParticleRate /= 2f;
+		currShakeRate = shakeRate;
+	}
+
 	void Update() {
 		if (Time.time > shakeTime && !isShaking && !isAboutToFall) {
 			currShakeRate = shakeRate;
