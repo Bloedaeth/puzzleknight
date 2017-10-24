@@ -20,10 +20,10 @@ public class PendulumHinge : MonoBehaviour {
 	float degreeSwing = 20f;
 
 	// Used for determining the time the pendulum spends between extremes (NOT IN SECONDS but in a similar timescale)
-	public float swingTime = 4f;
+	public float swingSpeed = 4f;
 
 	// The code used to find at what stage the pendulum is at
-	float stage { get { return ((Time.time + timeMod)) % swingTime / swingTime; } }
+	float stage { get { return ((Time.time + timeMod)) % swingSpeed / swingSpeed; } }
 
 	// The amount the pendulum is slowed on time freeze
 	float slowAmount = 10f;
