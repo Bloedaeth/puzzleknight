@@ -45,7 +45,7 @@ public class FallingPlatform : MonoBehaviour {
 			ParticleSystem.EmissionModule em = PS.particle.emission;
 			em.enabled = false;
 		}
-		//PS.enabled = false;
+		PS.enabled = false;
 
 		yield return new WaitForSeconds(fallDelay+1+respawnDelay);
 		ReturnPlatform ();
@@ -54,11 +54,12 @@ public class FallingPlatform : MonoBehaviour {
     }
 
 	void ReturnPlatform() {
+
+		PS.enabled = true;
+		PS.ResetAfterFall ();
 		rbody.isKinematic = true;
 		rbody.transform.localRotation = Quaternion.Euler(Vector3.zero);
 		rbody.transform.localPosition = Vector3.zero;
-		//PS.enabled = true;
-		PS.ResetAfterFall ();
 		c.isTrigger = false;
 
 		if (PS.particle) {

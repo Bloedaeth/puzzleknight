@@ -32,6 +32,10 @@ public class PlatformShake : MonoBehaviour {
             pem = p.emission;
 	}
 
+	void OnDisable() {
+		transform.rotation = originalRotation;
+	}
+
 	public void FallShake(float delay) {
 		isAboutToFall = true;
 		currShakeRate = delay * 2f;
