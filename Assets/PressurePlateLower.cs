@@ -7,7 +7,7 @@ public class PressurePlateLower : MonoBehaviour
     private bool lower = false;
 
     private Vector3 upperPos;
-    [SerializeField] private Vector3 lowerPos;
+    private Vector3 lowerPos;
 
     private new AudioSource audio;
 
@@ -16,45 +16,50 @@ public class PressurePlateLower : MonoBehaviour
 
     private void Awake()
     {
-        upperPos = transform.localPosition;
+        upperPos = transform.position;
+		lowerPos = upperPos - Vector3.up/20;
         audio = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
         if(lower)
-            transform.localPosition = lowerPos;
+            transform.position = lowerPos;
         else
-            transform.localPosition = upperPos;
+            transform.position = upperPos;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<Entity>() == null && other.GetComponent<MovableObject>() == null)
-            return;
+		if ((other.GetComponent<Entity> () == null && other.GetComponent<MovableObject> () == null) || other.GetComponent<MeleeWeapon> ()) {
+			return;
+		}
 
         ++numEntitiesOnPlate;
         if(!lower)
         {
             BuildDebug.Log("Playing pressure plate off sound");
             lower = true;
+
             audio.clip = stepOn;
-            audio.Play();
+			audio.Play ();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.GetComponent<Entity>() == null && other.GetComponent<MovableObject>() == null)
-            return;
+		if ((other.GetComponent<Entity> () == null && other.GetComponent<MovableObject> () == null) || other.GetComponent<MeleeWeapon> ()) {
+			return;
+		}
 
         --numEntitiesOnPlate;
         if(numEntitiesOnPlate == 0)
         {
             BuildDebug.Log("Playing pressure plate off sound");
             lower = false;
-            audio.clip = stepOff;
-            audio.Play();
+
+			audio.clip = stepOff;
+			audio.Play ();
         }
     }
 }

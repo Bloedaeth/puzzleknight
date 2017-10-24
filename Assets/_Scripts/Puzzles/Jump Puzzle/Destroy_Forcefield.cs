@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class Destroy_Forcefield : MonoBehaviour
 {
-    private new AudioSource audio;
+	public Transform particleContainer;
 	private ParticleSystem[] particles;
     private GameObject forceField;
 
     private void Awake()
     {
-        audio = GetComponent<AudioSource>();
-		particles = GetComponentsInChildren<ParticleSystem> ();
+		particles = particleContainer ? particleContainer.GetComponentsInChildren<ParticleSystem> () : GetComponentsInChildren<ParticleSystem> ();
         forceField = GameObject.FindGameObjectWithTag("ForceField");
     }
 
@@ -31,13 +30,8 @@ public class Destroy_Forcefield : MonoBehaviour
 				em.enabled = false;
 			}
 		}
-        audio.Play();
     }
-
-    private void OnTriggerExit(Collider o)
-    {
-        audio.Play();
-    }
+		
 }
 
 
