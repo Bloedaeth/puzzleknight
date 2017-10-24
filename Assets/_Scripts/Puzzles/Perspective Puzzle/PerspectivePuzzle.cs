@@ -5,6 +5,7 @@ public class PerspectivePuzzle : Puzzle {
 
 	PerspectivePieceManager ppm;
 	Camera c;
+	public CameraChaser cc {get {return GetComponentInChildren<CameraChaser> ();}}
 
 	public GameObject door;
 	public GameObject pieces;
@@ -21,7 +22,7 @@ public class PerspectivePuzzle : Puzzle {
 	}
 
 	public void CheckCamPosition() {
-		if (!solved && (-ppm.cam.transform.position + c.transform.position).magnitude <= 0.03) {
+		if (!solved && ((-ppm.cam.transform.position + c.transform.position).magnitude <= 0.03 || cc.CurrPoint > 6)) {
 			CheckFinalizePuzzle ();
 		}
 	}
@@ -34,6 +35,10 @@ public class PerspectivePuzzle : Puzzle {
 		for (int i = 0; i < brokenPieces.Length; i++) {
 			brokenPieces [i].enabled = false;
 		}
+	}
+
+	public bool IndexesAllCorrect() {
+		return ppm.IndexesAllCorrect ();
 	}
 
 	public override void CheckFinalizePuzzle() {

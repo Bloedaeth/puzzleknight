@@ -15,6 +15,7 @@ public abstract class Puzzle : MonoBehaviour {
 	/// The variables to test if the puzzle has been solved as of yet.
 	/// </summary>
 	protected bool solved;
+	public bool puzzleIsSolved { get { return solved; } }
 
 	private float doorMoveSpeed = 2f;
 

@@ -54,7 +54,13 @@ public class PerspectiveButton : MonoBehaviour {
             BuildDebug.Log("Perspective button stepped on");
             playerStanding = true;
 			tpuc = o.GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonUserControl> ();
+
+			if (pp.IndexesAllCorrect () && !pp.puzzleIsSolved) {
+				pp.cc.BeginChase (1f);
+			}
 		}
+
+
 	}
 
     private void OnTriggerExit(Collider o) {
@@ -66,11 +72,17 @@ public class PerspectiveButton : MonoBehaviour {
 			tpuc.isLooking = false;
 			tpuc.ResetCamera ();
 			tpuc.freeLookCamera.UpdateTarget (o.gameObject.transform);
+
+			if (pp.cc.active) {
+				pp.cc.EndChase ();
+			}
 		}
+
+
 	}
 
     private void OnTriggerStay(Collider o) {
-		if (o.gameObject.transform.tag.ToLower() == "player" && isActive) {
+		if (o.gameObject.transform.tag.ToLower() == "player" && isActive && !pp.cc.active) {
 			tpuc.isLooking = true;
 			tpuc.SetCameraToZeros();
 			tpuc.freeLookCamera.UpdateTarget (cameraPoint.transform);

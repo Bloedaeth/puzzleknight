@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CameraChaser : MonoBehaviour {
 
-	bool active;
+	public bool active;
 	bool willEndChase = true;
 
 	Transform ChaseObject;
@@ -24,8 +24,11 @@ public class CameraChaser : MonoBehaviour {
 	//Camera cam;
 
 	//bool hanging;
-	float hangTime = 2f;
-	float currHangTime = 0f;
+	public float hangTime = 2f;
+	public float currHangTime = 0f;
+
+	float pointChangeTime;
+	public float minTimeOnPoints = 0f;
 
 	float moveSpeed = 3f;
 
@@ -84,9 +87,10 @@ public class CameraChaser : MonoBehaviour {
 			return;
 		}*/
 
-		if ((-pointDir + positionBuffer).magnitude < 0.1f) {
+		if ((-pointDir + positionBuffer).magnitude < 0.1f && Time.time > pointChangeTime) {
 			Transform temp;
 			if (ChasePoints.GetNextPoint (out temp)) {
+				pointChangeTime = Time.time + minTimeOnPoints;
 				pointDir = temp.position;
 				pointRot = temp.rotation;
 			} else if(willEndChase) {
@@ -99,7 +103,9 @@ public class CameraChaser : MonoBehaviour {
 
 
 	}
-
+	/// <summary>
+	/// Begins the camera chasing script, EndChase will be called when the camera reaches the end of the chase.
+	/// </summary>
 	public void BeginChase() {
         BuildDebug.Log("Beginning camera chase");
 		pointDir = tpuc.freeLookCamera.camObject.transform.position;
@@ -126,7 +132,22 @@ public class CameraChaser : MonoBehaviour {
 		p.StopMovement (true);
 	}
 
+	/// <summary>
+	/// Begins the camera chasing script, allowing you to set the minimun time the points remain stationary.
+	/// 
+	/// EndChase will be called when the camera reaches the end of the chase.
+	/// </summary>
+	/// <param name="minPointTimes">Minimum time the chaser will stay on a point.</param>
+	public void BeginChase(float minPointTime) {
+		minTimeOnPoints = minPointTime;
 
+		BeginChase ();
+	}
+
+	/// <summary>
+	/// Begins the camera chasing action.
+	/// </summary>
+	/// <param name="willEnd">If set to <c>true</c> chaser will call EndChase when the camera is at the end of the chase.</param>
 	public void BeginChase(bool willEnd) {
 
 		willEndChase = willEnd;
