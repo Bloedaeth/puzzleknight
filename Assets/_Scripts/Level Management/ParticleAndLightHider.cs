@@ -11,6 +11,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class ParticleAndLightHider : MonoBehaviour {
 
+	bool showing = false;
+
 	ParticleSystem[] particles { get { return GetComponentsInChildren<ParticleSystem> (); } }
 	Light[] lights {
 		get {
@@ -46,6 +48,8 @@ public class ParticleAndLightHider : MonoBehaviour {
 	}
 
 	void SetObjectStates(bool state) {
+		showing = state;
+
 		if (defaultApplied) {
 			foreach (GameObject g in objects) {
 				g.SetActive (state);
@@ -62,6 +66,12 @@ public class ParticleAndLightHider : MonoBehaviour {
 	void OnTriggerExit(Collider o) {
 		if (o.CompareTag ("Player")) {
 			SetObjectStates (false);
+		}
+	}
+
+	void OnTriggerStay(Collider o) {
+		if (!showing && o.CompareTag ("Player")) {
+			SetObjectStates (true);
 		}
 	}
 }

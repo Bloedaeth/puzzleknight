@@ -40,6 +40,7 @@ public class BossEnemy : Enemy
     private GameObject startCollider;
     [SerializeField] private ParticleSystem stompParticles;
     private BossSounds sounds;
+	private AudioSource aS;
 
     private Vector3 originalScale;
 	private Vector3[] particleSystemOriginalScale;
@@ -56,8 +57,17 @@ public class BossEnemy : Enemy
 	private float particleTime;
 	private float particleRate = 2f;
 
-    private void Awake()
+	private MeleeWeapon club;
+
+	bool attacking = false;
+
+	private void Awake()
     {
+
+		aS = GetComponent<AudioSource> ();
+		club = GetComponentInChildren<MeleeWeapon> ();
+		esc = GetComponent<EntitySoundsCommon> ();
+
         pylons = FindObjectsOfType<Pylon>().OrderBy(p => p.ID).ToList();
 
         originalScale = transform.localScale;
@@ -174,6 +184,27 @@ public class BossEnemy : Enemy
 		transform.localScale = originalScale * bossScaleMult;
 	}
 
+	public void PlaySwingSound() {
+		if (!ai.target) {
+			return;
+		}
+
+		if (bossScaleMult >= 1f) {
+			club.PlaySound (sounds.bigSwordSwingSounds [Random.Range (0, sounds.bigSwordSwingSounds.Length)]);
+		} else {
+			club.PlaySound ();
+		}
+	}
+
+	public void PlayAttackHitSound() {
+
+		if (esc.attackHitSounds.Length > 0) {
+			aS.clip = esc.attackHitSounds [Random.Range (0, esc.attackHitSounds.Length)];
+			aS.Play ();
+		}
+
+	}
+
     //private IEnumerator SmoothScale(Vector3 start, Vector3 end, Pylon pylon)
     //{
     //    float step = 0;
@@ -214,11 +245,27 @@ public class BossEnemy : Enemy
         startCollider.SetActive(true);
     }
     
+	public void Attacking(int isAttacking) {
+		if (isAttacking == 0) {
+			attacking = false;
+		} else {
+			attacking = true;
+		}
+	}
+
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
     public override void Attack(Entity target, int damage)
     {
+		if (!(target is Player) || !attacking) {
+			return;
+		}
+
+		attacking = false;
+
+		PlayAttackHitSound ();
+
         base.Attack(target, damage + 5 * Mathf.RoundToInt(bossScaleMult));
     }
 }

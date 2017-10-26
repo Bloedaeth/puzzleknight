@@ -70,6 +70,7 @@ public class Player : Entity
         rb = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
+		esc = GetComponent<EntitySoundsCommon> ();
 
         freeLookCam = Camera.main.GetComponentInParent<UnityStandardAssets.Cameras.FreeLookCam>();
 		thirdPersonUserControl = GetComponent<ThirdPersonUserControl>();
@@ -236,9 +237,17 @@ public class Player : Entity
         }
     }
 
+	public void SwingPlaySound() {
+		sword.PlaySound();
+
+	}
+
     public void AttackPlaySound()
     {
-        sword.PlaySound();
+		if (esc.attackHitSounds.Length > 0) {
+			audio.clip = (esc.attackHitSounds[Random.Range(0, esc.attackHitSounds.Length)]);
+			audio.Play ();
+		}
     }
     
     //private void CheckScrollItem()

@@ -11,15 +11,15 @@ public class MeleeWeapon : MonoBehaviour
     public bool IsAttacking;
 
     private Animator anim;
-    private new AudioSource audio;
-	private AudioClip[] swordWhoosh;
+    private AudioSource audioS;
+	private EntitySoundsCommon esc;
     private AnimatorStateInfo state;
     private AnimatorTransitionInfo trans;
 
     private int attackStateOneHash;
     private int attackStateTwoHash;
     private int attackStateThreeHash;
-    private int attackBossOneHash;
+	private int attackBossOneHash;
     private int attackBossTwoHash;
     private int attackHash;
     //private int blockHash;
@@ -45,19 +45,29 @@ public class MeleeWeapon : MonoBehaviour
         transAttackBossTwoHash = Animator.StringToHash("Idle -> Attack Stage 2");
         transAttackHash = Animator.StringToHash("Idle -> Attack");
         
-        audio = Self.GetComponent<AudioSource>();
-        swordWhoosh = Self.GetComponent<EntitySoundsCommon>().swordSwingSounds;
+        audioS = GetComponent<AudioSource>();
+        esc = Self.GetComponent<EntitySoundsCommon>();
     }
 
-    /// <summary>Plays a random attack sound from the list of sounds.</summary>
+    /// <summary>
+    /// Plays a random sword swing sound.
+    /// </summary>
     public void PlaySound()
     {
-        if(swordWhoosh.Length > 0)
+		if(esc.swordSwingSounds.Length > 0)
         {
-            audio.clip = swordWhoosh[Random.Range(0, swordWhoosh.Length)];
-            audio.Play();
+			PlaySound(esc.swordSwingSounds[Random.Range(0, esc.swordSwingSounds.Length)]);
         }
     }
+
+	/// <summary>
+	/// Plays a specific sound on the MeleeWeapon AudioSource.
+	/// </summary>
+	/// <param name="s">The AudioClip to play.</param>
+	public void PlaySound(AudioClip s) {
+		audioS.clip = s;
+		audioS.Play ();
+	}
 
     private void Update()
     {

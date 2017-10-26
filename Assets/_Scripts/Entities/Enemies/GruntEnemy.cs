@@ -9,6 +9,7 @@ public class GruntEnemy : ShieldedEnemy
     private NavMeshAgent agent;
     private Transform player;
     private AnimatorStateInfo state;
+	private new AudioSource audioS;
 
     private float wanderRadius = 15;
     private float wanderTimer = 5;
@@ -31,15 +32,21 @@ public class GruntEnemy : ShieldedEnemy
     //private Animator animator;
     //private Rigidbody rb;
 
+	private MeleeWeapon club;
+
     private void Awake()
     {
+		audioS = GetComponent<AudioSource> ();
+		esc = GetComponent<EntitySoundsCommon> ();
         ai = GetComponent<AICharacterControl>();
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>().transform;
         animator = GetComponent<Animator>();
         attackHash = Animator.StringToHash("Base Layer.Attack");
         //blockHash = Animator.StringToHash("Base Layer.Block");
-        
+		deathHash = Animator.StringToHash("Base Layer.Death");
+
+		club = GetComponentInChildren<MeleeWeapon> ();
         agent.stoppingDistance = 1.5f;// * SCALE_MULT;
         gruntOrigin = transform.position;
     }
@@ -99,6 +106,10 @@ public class GruntEnemy : ShieldedEnemy
         }
 
         state = animator.GetCurrentAnimatorStateInfo(0);
+
+		if (state.fullPathHash == deathHash) {
+			GetComponent<Collider> ().enabled = false;
+		}
 
         if (dist < agent.stoppingDistance + 0.5)
         {
@@ -184,11 +195,28 @@ public class GruntEnemy : ShieldedEnemy
         return navHit.position;
     }
 
+	public void SwingPlaySound() {
+		club.PlaySound ();
+	}
+
+	void AttackPlaySound() {
+		if (esc.attackHitSounds.Length > 0) {
+			audioS.clip = esc.attackHitSounds [Random.Range (0, esc.attackHitSounds.Length)];
+			audioS.Play ();
+		}
+	}
+
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
     public override void Attack(Entity target, int damage)
     {
+		if(!(target is Player))
+			return;
+
+		if (!audioS.isPlaying) {
+			AttackPlaySound ();
+		}
         base.Attack(target, damage);
     }
     /*

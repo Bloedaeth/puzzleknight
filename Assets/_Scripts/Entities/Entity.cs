@@ -11,7 +11,7 @@ public abstract class Entity : MonoBehaviour
 	protected new AudioSource audio;
     protected Rigidbody rb;
 
-	private AudioClip[] attackSounds;
+	protected EntitySoundsCommon esc;
 
     private int attackStateOneHash;
     private int attackStateTwoHash;
@@ -19,12 +19,13 @@ public abstract class Entity : MonoBehaviour
     private int attackBossOneHash;
     private int attackBossTwoHash;
     protected int attackHash;
+	protected int deathHash;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
-		attackSounds = GetComponent<EntitySoundsCommon>().attackHitSounds;
+		esc = GetComponent<EntitySoundsCommon>();
         rb = GetComponent<Rigidbody>();
 
         attackStateOneHash = Animator.StringToHash("Base Layer.Light Attacks.Light Attack 1");
@@ -73,12 +74,14 @@ public abstract class Entity : MonoBehaviour
 
 	public void AttackTaunt()
 	{
-		if(attackSounds.Length > 0)
+		if(esc.attackHitSounds.Length > 0)
 		{
-			audio.clip = attackSounds[Random.Range(0, attackSounds.Length)];
+			audio.clip = esc.attackHitSounds[Random.Range(0, esc.attackHitSounds.Length)];
 			audio.Play();
 		}
 	}
+
+
 
     private void SetBlock()
     {

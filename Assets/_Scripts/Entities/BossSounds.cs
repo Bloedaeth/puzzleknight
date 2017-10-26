@@ -2,6 +2,8 @@
 
 public class BossSounds : EntitySoundsCommon
 {
+	public AudioClip[] bigSwordSwingSounds;
+
     /// <summary>A list of sounds to be played when the boss is damaged at small scale.</summary>
     public AudioClip[] hurtSize1;
 
