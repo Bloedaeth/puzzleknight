@@ -61,6 +61,8 @@ public class Player : Entity
     public GameObject[] enemylist;
     public GameObject[] attackerList; 
 
+	bool attacking = false;
+
     //private int attackStateThreeHash;
 
     private void Awake()
@@ -232,6 +234,8 @@ public class Player : Entity
             animator.ResetTrigger("LightAttack");
         else if(Input.GetKeyDown(KeyCode.Mouse0) && thirdPersonUserControl.movementActive)
         {
+			attacking = true;
+
             BuildDebug.Log("Triggering player attack");
             animator.SetTrigger("LightAttack");
         }
@@ -405,8 +409,10 @@ public class Player : Entity
     /// <param name="damage">The damage to deal to the entity.</param>
     public override void Attack(Entity target, int damage)
     {
-        if(!(target is Enemy))
+        if(!(target is Enemy) || !attacking)
             return;
+
+		attacking = false;
 
         AttackPlaySound();
         base.Attack(target, damage);
