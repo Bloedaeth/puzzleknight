@@ -53,12 +53,20 @@ public class Health : MonoBehaviour
         if(WasAttackedRecently)
             return;
 
-        if(!audio.isPlaying)
-        {
-            AudioClip[] damageSounds = GetComponent<EntitySoundsCommon>().hurtSounds;
-            audio.clip = damageSounds[Random.Range(0, damageSounds.Length)];
-            audio.Play();
-        }
+		if (GetComponentInChildren<PlayerTaunter> ()) {
+			if (!GetComponentInChildren<PlayerTaunter> ().a.isPlaying) {
+				AudioClip[] damageSounds = GetComponent<EntitySoundsCommon> ().hurtSounds;
+				GetComponentInChildren<PlayerTaunter> ().a.clip = damageSounds [Random.Range (0, damageSounds.Length)];
+				GetComponentInChildren<PlayerTaunter> ().a.Play ();
+			}
+		} else {
+
+			if (!audio.isPlaying) {
+				AudioClip[] damageSounds = GetComponent<EntitySoundsCommon> ().hurtSounds;
+				audio.clip = damageSounds [Random.Range (0, damageSounds.Length)];
+				audio.Play ();
+			}
+		}
 
         if(IsInvulnerable)
             return;

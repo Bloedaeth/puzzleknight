@@ -36,6 +36,8 @@ public class Player : Entity
 
     private PerspectivePieceHolderUiInteractor perspPieceUI;
 
+	AudioSource taunter;
+
     //Timer to make above clip play after running for set period of time
     private float runTimer = 0;
     //Stop run sound from being played repeatedly while running
@@ -65,8 +67,15 @@ public class Player : Entity
 
     //private int attackStateThreeHash;
 
+	private Animator animator;
+	public bool leg; // true = right, false = left
+
     private void Awake()
     {
+		taunter = GetComponentInChildren<PlayerTaunter> ().a;
+
+		animator = GetComponent<Animator> ();
+
         inventory = GetComponent<Inventory>();
         timeFreeze = FindObjectOfType<TimeFreeze>();
         rb = GetComponent<Rigidbody>();
@@ -84,6 +93,8 @@ public class Player : Entity
 
     private void Update()
     {
+		CheckPlayFootstep ();
+
         if(forcedWalk)
         {
             if(inventory.IsOpen)
@@ -209,8 +220,8 @@ public class Player : Entity
             {
                 BuildDebug.Log("So much running!");
                 canPlayRunSound = false;
-                audio.clip = SoMuchRunning;
-                audio.Play();
+                taunter.clip = SoMuchRunning;
+				taunter.Play();
             }
         }
         else
@@ -253,6 +264,37 @@ public class Player : Entity
 			audio.Play ();
 		}
     }
+
+	void FootstepPlaySound(TerrainType tt) {
+		audio.clip = tt.footstepSound;
+
+		if (audio.clip != null) {
+			audio.Play ();
+		}
+	}
+
+	void Footstep() {
+		Ray r = new Ray (transform.position, -Vector3.up); 
+		RaycastHit i;
+
+		Debug.DrawRay (r.origin, r.direction, Color.white, 0.5f);
+
+		LayerMask lm = LayerMask.GetMask (new string[] { "FootstepMap"});
+
+		if (Physics.Raycast (r, out i, 200f, lm)) {
+			print (i.transform.name);
+			FootstepPlaySound (i.transform.GetComponent<TerrainType> ());
+		}
+	}
+
+	void CheckPlayFootstep() {
+		float newJumpleg = animator.GetFloat ("JumpLeg");
+
+		if ((leg && newJumpleg < 0) || (!leg && newJumpleg > 0)) {
+			Footstep ();
+			leg = !leg;
+		}
+	}
     
     //private void CheckScrollItem()
     //{

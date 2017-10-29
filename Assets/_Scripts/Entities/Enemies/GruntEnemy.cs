@@ -206,6 +206,28 @@ public class GruntEnemy : ShieldedEnemy
 		}
 	}
 
+	void FootstepPlaySound(TerrainType tt) {
+		audioS.clip = tt.footstepSound;
+
+		if (audioS.clip != null) {
+			audioS.Play ();
+		}
+	}
+
+	public void Footstep() {
+		Ray r = new Ray (transform.position, -Vector3.up); 
+		RaycastHit i;
+
+		Debug.DrawRay (r.origin, r.direction, Color.white, 0.5f);
+
+		LayerMask lm = LayerMask.GetMask (new string[] { "FootstepMap"});
+
+		if (Physics.Raycast (r, out i, 200f, lm)) {
+			print (i.transform.name);
+			FootstepPlaySound (i.transform.GetComponent<TerrainType> ());
+		}
+	}
+
     /// <summary>Checks if the entity can be attacked, and attacks them if so.</summary>
     /// <param name="target">The entity to attack.</param>
     /// <param name="damage">The damage to deal to the entity.</param>
@@ -213,6 +235,7 @@ public class GruntEnemy : ShieldedEnemy
     {
 		if(!(target is Player))
 			return;
+
 
 		if (!audioS.isPlaying) {
 			AttackPlaySound ();
