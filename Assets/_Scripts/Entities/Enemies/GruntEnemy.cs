@@ -9,7 +9,7 @@ public class GruntEnemy : ShieldedEnemy
     private NavMeshAgent agent;
     private Transform player;
     private AnimatorStateInfo state;
-	private new AudioSource audioS;
+	private AudioSource audioS;
 
     private float wanderRadius = 15;
     private float wanderTimer = 5;
@@ -104,13 +104,7 @@ public class GruntEnemy : ShieldedEnemy
                     ai.target = null;
             }
         }
-
-        state = animator.GetCurrentAnimatorStateInfo(0);
-
-		if (state.fullPathHash == deathHash) {
-			GetComponent<Collider> ().enabled = false;
-		}
-
+        
         if (dist < agent.stoppingDistance + 0.5)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2);

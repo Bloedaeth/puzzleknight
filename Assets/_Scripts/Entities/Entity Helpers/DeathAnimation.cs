@@ -24,7 +24,11 @@ public class DeathAnimation : MonoBehaviour
 		Rigidbody rb = GetComponent<Rigidbody> ();
         if(rb)
             rb.velocity = Vector3.zero;
-		
+
+        Collider col = GetComponent<Collider>();
+        if(col)
+            col.enabled = false;
+
         anim = GetComponent<Animator>();
         anim.SetTrigger("Die");
 
@@ -64,7 +68,7 @@ public class DeathAnimation : MonoBehaviour
                 hp.enabled = true;
                 hp.ResetHealth();
                 transform.position = player.SpawnPoint.position;
-
+                GetComponent<Collider>().enabled = true;
                 if(player.InBossFight)
                 {
                     FindObjectOfType<BossEnemy>().ResetBoss();
