@@ -63,7 +63,5 @@ public class CustomAnalytics : MonoBehaviour
             { "deaths", Deaths },
             { "bossBeatTime", Time.timeSinceLevelLoad }
         });
-
-        FindObjectOfType<LevelManager>().LoadNextLevel();
     }
 }
