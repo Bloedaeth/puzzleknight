@@ -217,7 +217,6 @@ public class GruntEnemy : ShieldedEnemy
 		LayerMask lm = LayerMask.GetMask (new string[] { "FootstepMap"});
 
 		if (Physics.Raycast (r, out i, 200f, lm)) {
-			print (i.transform.name);
 			FootstepPlaySound (i.transform.GetComponent<TerrainType> ());
 		}
 	}
