@@ -71,6 +71,7 @@ public class Player : Entity
 
     private void Awake()
     {
+
 		taunter = GetComponentInChildren<PlayerTaunter> ().a;
 
 		animator = GetComponent<Animator> ();
@@ -92,6 +93,10 @@ public class Player : Entity
 
     private void Update()
     {
+		if (!GetComponent<Collider>().enabled) {
+			GetComponent<Collider>().enabled = true;
+		}
+
 		CheckPlayFootstep ();
 
         if(forcedWalk)
@@ -281,7 +286,6 @@ public class Player : Entity
 		LayerMask lm = LayerMask.GetMask (new string[] { "FootstepMap"});
 
 		if (Physics.Raycast (r, out i, 200f, lm)) {
-			print (i.transform.name);
 			FootstepPlaySound (i.transform.GetComponent<TerrainType> ());
 		}
 	}
