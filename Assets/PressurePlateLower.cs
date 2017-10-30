@@ -1,10 +1,12 @@
 ﻿using GameLogging;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PressurePlateLower : MonoBehaviour
 {
-    private int numEntitiesOnPlate = 0;
-    private bool lower = false;
+    private List<GameObject> entitiesOnPlate = new List<GameObject>();
+    private bool lowered = false;
 
     private Vector3 upperPos;
     private Vector3 lowerPos;
@@ -19,47 +21,45 @@ public class PressurePlateLower : MonoBehaviour
         upperPos = transform.position;
 		lowerPos = upperPos - Vector3.up/20;
         audio = GetComponent<AudioSource>();
+        audio.clip = stepOff;
     }
 
     private void Update()
     {
-        if(lower)
+        entitiesOnPlate = entitiesOnPlate.Where(obj => obj.activeInHierarchy).ToList();
+
+        if(entitiesOnPlate.Count > 0 && audio.clip != stepOn)
+        {
+            BuildDebug.Log("Playing pressure plate on sound");
             transform.position = lowerPos;
-        else
+
+            audio.clip = stepOn;
+            audio.Play();
+        }
+        else if(entitiesOnPlate.Count == 0 && audio.clip != stepOff)
+        {
+            BuildDebug.Log("Playing pressure plate off sound");
             transform.position = upperPos;
+
+            audio.clip = stepOff;
+            audio.Play();
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-		if ((other.GetComponent<Entity> () == null && other.GetComponent<MovableObject> () == null) || other.GetComponent<MeleeWeapon> ()) {
+		if((other.GetComponent<Entity>() == null && other.GetComponent<MovableObject>() == null) || other.GetComponent<MeleeWeapon>())
 			return;
-		}
 
-        ++numEntitiesOnPlate;
-        if(!lower)
-        {
-            BuildDebug.Log("Playing pressure plate off sound");
-            lower = true;
-
-            audio.clip = stepOn;
-			audio.Play ();
-        }
+        entitiesOnPlate.Add(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-		if ((other.GetComponent<Entity> () == null && other.GetComponent<MovableObject> () == null) || other.GetComponent<MeleeWeapon> ()) {
-			return;
-		}
+        if((other.GetComponent<Entity>() == null && other.GetComponent<MovableObject>() == null) || other.GetComponent<MeleeWeapon>())
+            return;
 
-        --numEntitiesOnPlate;
-        if(numEntitiesOnPlate == 0)
-        {
-            BuildDebug.Log("Playing pressure plate off sound");
-            lower = false;
-
-			audio.clip = stepOff;
-			audio.Play ();
-        }
+        entitiesOnPlate.Remove(other.gameObject);
     }
 }

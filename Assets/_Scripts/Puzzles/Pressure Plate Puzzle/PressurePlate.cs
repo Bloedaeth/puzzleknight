@@ -2,9 +2,10 @@
 
 public class PressurePlate : MonoBehaviour
 {
-    private int numEntitiesOnPlate;
-
     private LowerPlatform platform;
+
+    private int numEntitiesOnPlate;
+    private bool triggered;
 
     private void Awake()
     {
@@ -13,25 +14,17 @@ public class PressurePlate : MonoBehaviour
 
     private void Update()
     {
-        if(numEntitiesOnPlate == 0 && platform.PressurePlateActive)
-            platform.PressurePlateActive = false;
-        else if(numEntitiesOnPlate > 0 && !platform.PressurePlateActive)
+        if(triggered && !platform.PressurePlateActive)
             platform.PressurePlateActive = true;
+        else if(!triggered && platform.PressurePlateActive)
+            platform.PressurePlateActive = false;
+
+        triggered = false;
     }
 
-    private void OnTriggerEnter(Collider o)
+    private void OnTriggerStay(Collider o)
     {
-        if(o.GetComponent<Entity>() == null && o.GetComponent<MovableObject>() == null)
-            return;
-
-        ++numEntitiesOnPlate;
-    }
-
-    private void OnTriggerExit(Collider o)
-    {
-        if(o.GetComponent<Entity>() == null && o.GetComponent<MovableObject>() == null)
-            return;
-
-        --numEntitiesOnPlate;
+        if(o.GetComponent<Entity>() != null || o.GetComponent<MovableObject>() != null)
+            triggered = true;
     }
 }
