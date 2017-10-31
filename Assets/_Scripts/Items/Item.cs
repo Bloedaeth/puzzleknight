@@ -24,16 +24,16 @@ public abstract class Item : MonoBehaviour
 
     //Shop items are never active so Awake() wasn't called to assign audioSource
     //This method solves that problem so all items (shop/collect) work properly
-    private AudioSource _audioSource;
-    private AudioSource audioSource
-    {
-        get
-        {
-            if(_audioSource == null)
-                _audioSource = FindObjectOfType<Player>().GetComponent<AudioSource>();
-            return _audioSource;
-        }
-    }
+    //private AudioSource _audioSource;
+    //private AudioSource audioSource
+    //{
+    //    get
+    //    {
+    //        if(_audioSource == null)
+    //            _audioSource = FindObjectOfType<Player>().GetComponent<AudioSource>();
+    //        return _audioSource;
+    //    }
+    //}
 
 	void OnEnable() {
 		if (collected) {
@@ -44,9 +44,9 @@ public abstract class Item : MonoBehaviour
     /// <summary>Plays the use sound of the item.</summary>
     public void PlayUseSound()
     {
-        audioSource.clip = UseSound;
-        audioSource.Play();
-        //AudioSource.PlayClipAtPoint(UseSound, transform.position, PlayPrefs.GameSoundVolume);
+        //audioSource.clip = UseSound;
+        //audioSource.Play();
+        AudioSource.PlayClipAtPoint(UseSound, FindObjectOfType<Player>().transform.position, PlayPrefs.GameSoundVolume);
     }
 
     /// <summary>Uses the item on the given entity.</summary>
@@ -63,9 +63,9 @@ public abstract class Item : MonoBehaviour
         if(inv && inv.AddItem(this))
         {
             BuildDebug.Log("Potion collected");
-            audioSource.clip = PickupSound;
-            audioSource.Play();
-            //AudioSource.PlayClipAtPoint(PickupSound, transform.position, PlayPrefs.GameSoundVolume);
+            //audioSource.clip = PickupSound;
+            //audioSource.Play();
+            AudioSource.PlayClipAtPoint(PickupSound, transform.position, PlayPrefs.GameSoundVolume);
         }
     }
 }
