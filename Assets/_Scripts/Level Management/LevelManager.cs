@@ -61,6 +61,12 @@ public class LevelManager : MonoBehaviour
     public void BtnLoadLevelAsync(string levelName) { FindObjectOfType<LevelManager>().LoadLevelAsync(levelName); }
     public void BtnLoadLevelAsync(int sceneIndex) { FindObjectOfType<LevelManager>().LoadLevelAsync(sceneIndex); }
 
+    public void ReturnToMenu(string menu)
+    {
+        Time.timeScale = 1;
+        LoadLevel(menu);
+    }
+
     public void LoadLevelAsync(string levelName)
     {
         SilenceSounds();

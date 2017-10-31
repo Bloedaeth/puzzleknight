@@ -13,10 +13,10 @@ public class FlashingImage : MonoBehaviour
 
     private void Update()
     {
-        if(Time.time > nextChangeTime)
+        if(Time.timeSinceLevelLoad > nextChangeTime)
         {
             img.enabled = !img.enabled;
-            nextChangeTime = Time.time + 1f;
+            nextChangeTime = Time.timeSinceLevelLoad + 1f;
         }
     }
 }
