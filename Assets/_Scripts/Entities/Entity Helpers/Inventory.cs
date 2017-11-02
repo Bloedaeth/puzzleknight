@@ -28,6 +28,7 @@ public class Inventory : MonoBehaviour
 
     private Text guiUseButton;
     private Text guiNumEquipped;
+	private Text guiMaxText;
 
     private List<Item> inventory = new List<Item>();
     //private Image[] guiInventorySlots;
@@ -48,6 +49,7 @@ public class Inventory : MonoBehaviour
 
         guiUseButton = GuiEquippedItem.transform.GetChild(0).GetComponent<Text>();
         guiNumEquipped = GuiEquippedItem.transform.GetChild(1).GetComponent<Text>();
+		guiMaxText = GuiEquippedItem.transform.GetChild(2).GetComponent<Text>();
     }
 
     /// <summary>Toggles the visibility of the GUI Inventory.</summary>
@@ -104,6 +106,10 @@ public class Inventory : MonoBehaviour
         if(!EquippedItem)
             EquipItem(inventory.Count - 1);
 
+		if (inventory.Count == inventoryLimit) {
+			guiMaxText.text = "MAX";
+		}
+
         guiNumEquipped.text = inventory.Where(i => i.TypeId == EquippedItem.TypeId).ToArray().Length.ToString();
         //Sort(item);
 
@@ -116,6 +122,10 @@ public class Inventory : MonoBehaviour
     {
         BuildDebug.Log("Removing item: " + item.name);
         inventory.Remove(item);
+
+		if (inventory.Count != inventoryLimit) {
+			guiMaxText.text = "";
+		}
 
         //Sort(item);
 

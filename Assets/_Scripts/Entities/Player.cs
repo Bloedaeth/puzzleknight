@@ -67,7 +67,7 @@ public class Player : Entity
 
     //private int attackStateThreeHash;
     
-	public bool leg; // true = right, false = left
+	bool leg; // true = right, false = left
 
     private void Awake()
     {
