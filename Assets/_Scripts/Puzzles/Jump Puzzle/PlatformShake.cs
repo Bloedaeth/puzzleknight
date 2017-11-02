@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlatformShake : MonoBehaviour {
 
+	Transform shaker;
+
 	float shakeTime;
 	float shakeRateMin = 1f;
 	float shakeRateMax = 3f;
@@ -30,10 +32,13 @@ public class PlatformShake : MonoBehaviour {
 		p = GetComponentInChildren<ParticleSystem> ();
         if(p)
             pem = p.emission;
+		
+		shaker = GetComponentsInChildren<Transform> () [1];
+
 	}
 
 	void OnDisable() {
-		transform.rotation = originalRotation;
+		shaker.rotation = originalRotation;
 	}
 
 	public void FallShake(float delay) {
@@ -64,7 +69,7 @@ public class PlatformShake : MonoBehaviour {
 
 	void ShakePlatform(float stage) {
 
-		transform.rotation = originalRotation;
+		shaker.rotation = originalRotation;
 
         if(p)
             pem.rateOverTime = 0;
@@ -87,7 +92,7 @@ public class PlatformShake : MonoBehaviour {
 		x = Random.Range (-max, max);
 		z = Random.Range (-max, max);
 
-		transform.rotation = Quaternion.Euler (originalRotation.eulerAngles + new Vector3 (x, 0f, z));
+		shaker.rotation = Quaternion.Euler (originalRotation.eulerAngles + new Vector3 (x, 0f, z));
 
 
 	}
