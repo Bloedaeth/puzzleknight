@@ -13,6 +13,7 @@ public class StartBossFight : MonoBehaviour
     {
         boss = FindObjectOfType<BossEnemy>();
         rocks.SetActive(false);
+
         foreach(GameObject p in potions)
         {
             Item i = p.GetComponent<Item>();
