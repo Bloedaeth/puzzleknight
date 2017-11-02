@@ -45,13 +45,13 @@ public class PlatformShake : MonoBehaviour {
 		isAboutToFall = true;
 		currShakeRate = delay * 2f;
 		shakeTime = Time.time;
-		shakeMaxAngle *= 4f;
+		shakeMaxAngle *= 2f;
 		maxParticleRate *= 2f;
 	}
 
 	public void ResetAfterFall() {
 		isAboutToFall = false;
-		shakeMaxAngle /= 4f;
+		shakeMaxAngle /= 2f;
 		maxParticleRate /= 2f;
 		currShakeRate = shakeRate;
 	}

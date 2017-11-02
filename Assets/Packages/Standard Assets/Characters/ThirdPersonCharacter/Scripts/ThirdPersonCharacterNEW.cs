@@ -63,7 +63,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         //    throw new NotImplementedException();
         //}
 
-		void Update() {
+		void FixedUpdate() {
 			SetUpIncs();
 
 			SetUpJumpVec ();
@@ -80,14 +80,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		void RunThroughIncs() {
 			float max = Input.GetKey (KeyCode.LeftShift) ? jumpMultMax * 2 : jumpMultMax;
+
 			for (int i = 0; i < buttonsHoldInc.Length; i++) {
 				if (buttonsHoldInc [i]) {
-					if (buttonsHoldTime [i] < max) {
-						buttonsHoldTime [i] += buttonsIncRate * Time.deltaTime;
-					} else {
+					//if (buttonsHoldTime [i] < max) {
+					//	buttonsHoldTime [i] += buttonsIncRate * Time.deltaTime;
+					//} else {
 						buttonsHoldTime [i] = max;
-					}
-				} else{
+					//}
+				} else {
 					buttonsHoldTime [i] = 0f;
 				}
 
