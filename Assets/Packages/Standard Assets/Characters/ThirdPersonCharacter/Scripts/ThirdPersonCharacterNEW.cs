@@ -25,6 +25,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		float buttonsIncRate = 8f;
 
 		Vector3 jumpVector;
+		public float justJumped;
+		float jumpApplyRate = 0.1f;
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
@@ -96,6 +98,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		}
 
 		void SetUpJumpVec() {
+			if (Time.time < justJumped) {
+				return;
+			}
+
 			Vector3 cFor = Vector3.ProjectOnPlane (Camera.main.transform.forward, m_GroundNormal).normalized;
 			Vector3 cRight = Vector3.ProjectOnPlane (Camera.main.transform.right, m_GroundNormal).normalized;
 
@@ -114,6 +120,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             if(!ctrl.movementActive)
                 jump = false;
 
+
+
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
 			// direction.
@@ -127,7 +135,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			ApplyExtraTurnRotation();
 
 			// control and velocity handling is different when grounded and airborne:
-			if (m_IsGrounded)
+			if (m_IsGrounded || Time.time < justJumped)
 			{
 				HandleGroundedMovement(crouch, jump, move);
 			}
@@ -233,11 +241,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		void HandleGroundedMovement(bool crouch, bool jump, Vector3 m_Move)
 		{
+			if (jump) justJumped = Time.time + jumpApplyRate;
+
 			// check whether conditions are right to allow a jump:
-			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
+			if ((jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded")) || Time.time < justJumped)
 			{
 				// jump!
 				m_Rigidbody.velocity = new Vector3(jumpVector.x, m_JumpPower, jumpVector.z);
+
 				m_IsGrounded = false;
 				m_Animator.applyRootMotion = false;
 				m_GroundCheckDistance = 0.1f;
